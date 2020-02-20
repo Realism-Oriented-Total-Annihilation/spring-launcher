@@ -2,11 +2,11 @@
 // Main Window
 //
 
-import { Topbar } from "./topbar";
+import { Sidebar } from "./sidebar";
 
 export class Workbench
 {
-    private topbar: Topbar;
+    private sidebar: Sidebar;
 
     private _workbench: HTMLDivElement;
 
@@ -14,19 +14,18 @@ export class Workbench
     {
         this._workbench = <HTMLDivElement>document.getElementById("main");
 
-        let dom_top = document.createElement("div");
+        let dom_left = document.createElement("div");
 
-        this.topbar = new Topbar(dom_top);
+        this.sidebar = new Sidebar(dom_left);
 
-        // Events.emit("topbar.new", this.topbar);
-        this.topbar.create_playbutton();
+        // Events.emit("Sidebar.new", this.Sidebar);
 
-        let tabbar = this.topbar.create_tabbar();
+        let tabbar = this.sidebar.create_tabbar();
 
-        tabbar.create_tab("Home", 1);
-        tabbar.create_tab("Profile", 2);
-        tabbar.create_tab("Settings", 3);
+        tabbar.create_tab("Home", "");
+        tabbar.create_tab("Profile", "");
+        tabbar.create_tab("Settings", "../logos/settingsoff.svg");
 
-        this._workbench.appendChild(dom_top);
+        this._workbench.appendChild(dom_left);
     }
 }

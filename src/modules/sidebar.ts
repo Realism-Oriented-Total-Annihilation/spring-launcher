@@ -1,23 +1,17 @@
 //
-//  Topbar in which you can select tabs or play
+//  Sidebar in which you can select tabs or play
 //
 
-import { PlayButton } from "./playbutton";
 import { Tabbar, Tab } from "./tabbar";
 
-export class Topbar
+export class Sidebar
 {
     public bar: HTMLDivElement;
 
     constructor(container: HTMLDivElement)
     {
-        this.bar = container;
-        this.bar.id += "topbar";
-    }
-
-    public create_playbutton()
-    {
-        new PlayButton(this.bar)
+        this.bar     = container;
+        container.id = "sidebar";
     }
 
     public create_tabbar(): Tabbar
