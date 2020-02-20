@@ -21,6 +21,12 @@ export class Workbench
         // Events.emit("topbar.new", this.topbar);
         this.topbar.create_playbutton();
 
+        let tabbar = this.topbar.create_tabbar();
+
+        tabbar.create_tab("Home", 1);
+        tabbar.create_tab("Profile", 2);
+        tabbar.create_tab("Settings", 3);
+
         this._workbench.appendChild(dom_top);
     }
 }

@@ -3,6 +3,7 @@
 //
 
 import { PlayButton } from "./playbutton";
+import { Tabbar, Tab } from "./tabbar";
 
 export class Topbar
 {
@@ -16,6 +17,12 @@ export class Topbar
 
     public create_playbutton()
     {
-        let playbtn = new PlayButton(this.bar)
+        new PlayButton(this.bar)
+    }
+
+    public create_tabbar(): Tabbar
+    {
+        let tabbar = new Tabbar(this.bar);
+        return tabbar;
     }
 }
