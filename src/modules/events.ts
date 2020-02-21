@@ -1,48 +1,38 @@
-//
-//
-//
-// import { EventEmitter } from "events";
-
+// //
+// //
+// //
+import { EventEmitter } from "events";
+import { Tab } from "./left/leftbarcontainer";
 
 // enum _EventKey
 // {
 //     ""
 // }
 
+export class EventSubsystem
+{
+    private _bus: EventEmitter;
 
-// export type EventKey = keyof typeof _EventKey;
+    public constructor()
+    {
+        this._bus = new EventEmitter();
+    }
 
+    // signals emittance
+    public emit(event: "tab.selected", tab: Tab): EventSubsystem;
 
-// class EventBus
-// {
-//     private static _instance: EventBus;
+    public emit(event: string, ...args: any[]): EventSubsystem
+    {
+        this._bus.emit(event, ...args);
+        return this;
+    }
 
-//     private _bus: EventEmitter;
+    // listener registration
+    public on(event: "tab.selected", listener: (tab: Tab) => void): EventSubsystem;
 
-//     private constructor()
-//     {
-//         this._bus = new EventEmitter();
-//     }
-
-//     public static get Instance(): EventBus
-//     {
-//         return this._instance || (this._instance = new this());
-//     }
-
-//     public emit(event: EventKey, ...args: any[]): EventBus
-//     {
-//         this._bus.emit(event, ...args);
-
-//         return this;
-//     }
-
-//     public on(event: EventKey, listener: (...args: any[]) => void): EventBus
-//     {
-//         this._bus.on(event, listener);
-
-//         return this;
-//     }
-// }
-
-
-// export const Events = EventBus.Instance;
+    public on(event: string, listener: (...args: any[]) => void): EventSubsystem
+    {
+        this._bus.on(event, listener);
+        return this;
+    }
+}

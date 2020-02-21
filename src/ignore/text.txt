@@ -1,0 +1,11 @@
+"Icon made by surang from www.flaticon.com"
+"Icon made by Freepik from www.flaticon.com"
+"Icon made by Those Icons from www.flaticon.com"
+"Icon made by Smashicons from www.flaticon.com"
+
+
+colors
+/* rgb(0, 122, 204) */
+/* rgb(23, 136, 211); */
+/* rgb(22, 130, 93); */
+/* rgb(30, 138, 100); */
