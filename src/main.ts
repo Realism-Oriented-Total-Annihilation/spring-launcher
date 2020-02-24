@@ -15,7 +15,7 @@ function createWindow()
         webPreferences: {nodeIntegration: true}
     });
 
-    win.loadFile(path.join(__dirname, "modules/main.html"))
+    win.loadFile(path.join(__dirname, "modules/html/main.html"))
     // win.loadFile('modules/index.html')
 }
 

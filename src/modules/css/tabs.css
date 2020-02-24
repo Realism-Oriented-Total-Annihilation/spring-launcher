@@ -1,0 +1,113 @@
+/*
+ *
+ */
+
+
+#menu
+{
+    display: flex;
+
+    flex-direction: column;
+
+    left: 0;
+
+    height: 100%;
+    width:  58px;
+}
+
+.tab-container
+{
+    display: flex;
+
+    background-color: rgb(51, 51, 51);
+}
+
+.tab-container.top
+{
+    flex-direction: column;
+    flex-grow:      1;
+}
+
+.tab-container.center
+{
+    flex-direction: column;
+    flex-shrink:    1;
+}
+
+.tab-container.bottom
+{
+    flex-direction: column-reverse;
+    flex-grow:      1;
+}
+
+.tab
+{
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: center;
+
+    height: 58px;
+
+    background-color: rgb(51, 51, 51);
+}
+
+.tab:hover
+{
+    background-color: rgb(71, 71, 71);
+}
+
+.tab-light
+{
+    width:  3px;
+    height: 100%;
+
+    flex-shrink: 0;
+}
+
+.tab > .tab-light
+{
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.tab.active > .tab-light
+{
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.tab-logo
+{
+    display: flex;
+
+    align-items: center;
+
+    padding: 7px;
+}
+
+.tab-logo > svg
+{
+    flex: auto;
+
+    width:  70%;
+    height: 70%;
+
+}
+
+.tab > .tab-logo
+{
+    fill:   rgba(255, 255, 255, .4);
+    stroke: rgba(255, 255, 255, .4);
+}
+
+.tab:hover > .tab-logo
+{
+    fill:   rgba(255, 255, 255, 1);
+    stroke: rgba(255, 255, 255, 1);
+}
+
+.tab.active > .tab-logo
+{
+    fill:   rgba(255, 255, 255, 1);
+    stroke: rgba(255, 255, 255, 1);
+}

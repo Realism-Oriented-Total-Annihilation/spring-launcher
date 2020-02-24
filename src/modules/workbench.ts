@@ -2,15 +2,19 @@
 // Main Window
 //
 import { EventSubsystem } from "./events";
-import { Leftbar } from "./left/leftbar";
-import { Rightbar } from "./right/rightbar";
+
+import { LeftBar } from "./menu/menu";
+
+import { Chat }    from "./chat/chat";
+import { ChatBar } from "./chat/bar";
 
 export class Workbench
 {
     public events: EventSubsystem;
 
-    private leftbar:   Leftbar;
-    // private rightbar:  Rightbar;
+    private leftbar: LeftBar;
+    private chatbar: ChatBar;
+    private chat:    Chat;
 
     private _workbench: HTMLDivElement;
 
@@ -18,22 +22,17 @@ export class Workbench
     {
         this._workbench = <HTMLDivElement>document.getElementById("main");
 
-        let dom_left = document.createElement("div");
-        // let dom_right = document.createElement("div");
+        this.events = new EventSubsystem();
 
-
-        this.leftbar  = new Leftbar(dom_left);
-        // this.rightbar = new Rightbar(dom_right);
-        this.events   = new EventSubsystem();
-
-        // Events.emit("Leftbar.new", this.Leftbar);
-
-        this._workbench.appendChild(dom_left);
-        // this._workbench.appendChild(dom_right);
+        this.leftbar = <any>null;
+        this.chatbar = <any>null;
+        this.chat    = <any>null;
     }
 
-    public run()
+    public init()
     {
-        this.leftbar.paint();
+        this.leftbar = new LeftBar(this._workbench);  // Leftbar(dom_left);
+        this.chatbar = new ChatBar(this._workbench);  // Chatbar(dom_chatbar);
+        this.chat    = new Chat(this._workbench);  // Chat(dom_chat);
     }
 }
