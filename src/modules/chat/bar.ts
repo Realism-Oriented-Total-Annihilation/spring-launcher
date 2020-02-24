@@ -1,8 +1,10 @@
 //
 //
 //
-import { workbench } from "../main";
+import * as fs   from "fs";
+import * as path from "path";
 
+import { workbench } from "../main";
 
 export class ChatBar
 {
@@ -44,13 +46,23 @@ export class ChatBar
 export class ChatButton
 {
     container: HTMLDivElement;
-    // svg: SVGSVGElement;
+    private logodiv: HTMLDivElement;
+
+    svg: SVGSVGElement;
 
     private active: boolean;
 
     constructor(parent: HTMLDivElement)
     {
         this.container = document.createElement("div");
+        this.logodiv = document.createElement("div");
+
+        this.logodiv.innerHTML = fs.readFileSync(
+            path.join(__dirname, `../../icons/chat.svg`),
+            {encoding: "UTF8"}
+        );
+
+        this.svg = this.logodiv.getElementsByTagName("svg")[0];
 
         this.active = false;
 
@@ -62,7 +74,10 @@ export class ChatButton
 
     public setup_dom()
     {
-        this.container.id = "chatbutton"
+        this.container.className = "chatbutton"
+        this.logodiv.id = "chatlogo"
+
+        this.container.appendChild(this.logodiv);
     }
 
     public setup_wiring()
@@ -76,7 +91,23 @@ export class ChatButton
             }
 
             this.active = !this.active;
+
+            if (this.active) {
+                this.select();
+            } else {
+                this.unselect();
+            }
         });
+    }
+
+    public select()
+    {
+        this.container.className = "chatbutton active";
+    }
+
+    public unselect()
+    {
+        this.container.className = "chatbutton";
     }
 }
 

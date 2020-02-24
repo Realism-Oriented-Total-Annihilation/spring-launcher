@@ -27,13 +27,49 @@
     background-color: rgb(51, 51, 51);
 }
 
-#chatbutton
+.chatbutton
 {
     height: 58px;
     width: 58px;
     /* background-color: gold; */
     background-color: rgb(22, 130, 93);
 }
+
+#chatlogo
+{
+    display: flex;
+
+    align-items: center;
+
+    padding: 7px;
+}
+
+#chatlogo > svg
+{
+    flex: auto;
+
+    width:  70%;
+    height: 70%;
+}
+
+.chatbutton > #chatlogo
+{
+    fill:   rgba(255, 255, 255, .4);
+    stroke: rgba(255, 255, 255, .4);
+}
+
+.chatbutton:hover > #chatlogo
+{
+    fill:   rgba(255, 255, 255, 1);
+    stroke: rgba(255, 255, 255, 1);
+}
+
+.chatbutton.active > #chatlogo
+{
+    fill:   rgba(255, 255, 255, 1);
+    stroke: rgba(255, 255, 255, 1);
+}
+
 
 #chatinput
 {
@@ -43,7 +79,7 @@
     background-color: white;
 }
 
-#chatbutton:hover
+.chatbutton:hover
 {
     background-color: rgb(49, 148, 113);
 }

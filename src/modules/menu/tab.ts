@@ -11,7 +11,7 @@ export class Tab
 {
     tab:     HTMLDivElement;
     light:   HTMLDivElement;
-    logodiv: HTMLDivElement;
+    private logodiv: HTMLDivElement;
 
     svg: SVGSVGElement;
 
