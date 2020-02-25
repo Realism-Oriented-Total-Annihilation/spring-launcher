@@ -1,14 +1,11 @@
-// //
-// //
-// //
+//
+//
+//
 import { EventEmitter } from "events";
-import { Tab } from "./menu/tab";
+
+import { Tab }        from "./menu/tab";
 import { ChatButton } from "./chat/bar";
 
-// enum _EventKey
-// {
-//     ""
-// }
 
 export class EventSubsystem
 {
