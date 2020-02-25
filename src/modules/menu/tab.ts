@@ -4,7 +4,7 @@
 import * as fs   from "fs";
 import * as path from "path";
 
-import { workbench } from "../main";
+import { sl } from "../main";
 
 
 export class Tab
@@ -62,7 +62,7 @@ export class Tab
 
     private setup_wiring()
     {
-        workbench.events.on("tab.selected", (tab: Tab) => {
+        sl.events.on("tab.selected", (tab: Tab) => {
             if (tab === this) {
                 this.select();
             } else {
@@ -71,7 +71,7 @@ export class Tab
         });
 
         this.tab.addEventListener("click", () => {
-            workbench.events.emit("tab.selected", this);
+            sl.events.emit("tab.selected", this);
         })
     }
 }

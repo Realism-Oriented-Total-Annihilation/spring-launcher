@@ -4,10 +4,10 @@
 import { Workbench } from "./workbench";
 
 
-export let workbench: Workbench;
+export let sl: Workbench;
 
 
 window.addEventListener("DOMContentLoaded", () => {
-    workbench = new Workbench();
-    workbench.init();
+    sl = new Workbench();
+    sl.init();
 });

@@ -4,7 +4,7 @@
 import * as fs   from "fs";
 import * as path from "path";
 
-import { workbench } from "../main";
+import { sl } from "../main";
 
 export class ChatBar
 {
@@ -33,11 +33,11 @@ export class ChatBar
 
     private setup_wiring()
     {
-        workbench.events.on("chat.show", (btn: ChatButton) => {
+        sl.events.on("chat.show", (btn: ChatButton) => {
             this.container.style.right = "0px"
         });
 
-        workbench.events.on("chat.hide", (btn: ChatButton) => {
+        sl.events.on("chat.hide", (btn: ChatButton) => {
             this.container.style.right = "-192px"
         });
     }
@@ -85,9 +85,9 @@ export class ChatButton
         this.container.addEventListener("click", () =>
         {
             if (this.active) {
-                workbench.events.emit("chat.hide", this);
+                sl.events.emit("chat.hide", this);
             } else {
-                workbench.events.emit("chat.show", this);
+                sl.events.emit("chat.show", this);
             }
 
             this.active = !this.active;

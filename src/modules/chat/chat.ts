@@ -2,7 +2,7 @@
 // Chat window // Maybe change it to rightbarcontainer and make it general
 //
 
-import { workbench } from "../main";
+import { sl } from "../main";
 
 import { ChatButton } from "./bar";
 
@@ -28,11 +28,11 @@ export class Chat
 
     private setup_wiring()
     {
-        workbench.events.on("chat.show", (btn: ChatButton) => {
+        sl.events.on("chat.show", (btn: ChatButton) => {
             this.container.style.right = "0px";
         });
 
-        workbench.events.on("chat.hide", (btn: ChatButton) => {
+        sl.events.on("chat.hide", (btn: ChatButton) => {
             this.container.style.right = "-250px";
         });
     }
