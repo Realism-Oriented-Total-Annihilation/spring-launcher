@@ -9,13 +9,13 @@ import { workbench } from "../main";
 
 export class Tab
 {
-    tab:     HTMLDivElement;
-    light:   HTMLDivElement;
+    private tab:     HTMLDivElement;
+    private light:   HTMLDivElement;
     private logodiv: HTMLDivElement;
 
-    svg: SVGSVGElement;
+    private svg: SVGSVGElement;
 
-    name: string
+    private name: string
 
     constructor(parent: HTMLDivElement, name: string)
     {
