@@ -4,7 +4,7 @@
 import { EventEmitter } from "events";
 
 import { Tab }        from "./menu/tab";
-import { ChatButton } from "./chat/bar";
+import { ChatButton } from "./modules/chat/bar";
 
 
 export class EventSubsystem
@@ -21,6 +21,8 @@ export class EventSubsystem
 
     public emit(event: "chat.show", chtbtn: ChatButton): EventSubsystem;
     public emit(event: "chat.hide", chtbtn: ChatButton): EventSubsystem;
+    public emit(event: "msg.sent", msg: string): EventSubsystem;
+    public emit(event: "msg.recieved", msg: string): EventSubsystem;
 
     public emit(event: string, ...args: any[]): EventSubsystem
     {
@@ -33,6 +35,8 @@ export class EventSubsystem
 
     public on(event: "chat.show", listener: (chtbtn: ChatButton) => void): EventSubsystem;
     public on(event: "chat.hide", listener: (chtbtn: ChatButton) => void): EventSubsystem;
+    public on(event: "msg.sent", listener: (msg: string) => void): EventSubsystem;
+    public on(event: "msg.recieved", listener: (msg: string) => void): EventSubsystem;
 
     public on(event: string, listener: (...args: any[]) => void): EventSubsystem
     {

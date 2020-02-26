@@ -8,12 +8,24 @@ body
     margin: 0px;
 }
 
-#main
+#window
 {
+    display: flex;
+
     position: fixed;
 
     width:  100%;
     height: 100%;
+
+    background-color: rgb(37, 37, 38);
+}
+
+
+#content
+{
+    display: flex;
+
+    flex: auto;
 
     background-color: rgb(37, 37, 38);
 }

@@ -4,7 +4,7 @@
 import * as fs   from "fs";
 import * as path from "path";
 
-import { sl } from "../main";
+import { sl } from "../../main";
 
 export class ChatBar
 {
@@ -58,7 +58,7 @@ export class ChatButton
         this.logodiv = document.createElement("div");
 
         this.logodiv.innerHTML = fs.readFileSync(
-            path.join(__dirname, `../../icons/chat.svg`),
+            path.join(__dirname, `../../../icons/chat.svg`),
             {encoding: "UTF8"}
         );
 
@@ -137,6 +137,26 @@ export class ChatInput
 
     private setup_wiring()
     {
+        this.textarea.addEventListener("keypress", (e) =>
+        {
+            switch (e.key)
+            {
+                case "Enter":
+                    if (!e.shiftKey)
+                    {
+                        let text = this.textarea.value.trim();
 
+                        if (text != "")
+                        {
+                            sl.events.emit("msg.sent", text);
+                            this.textarea.value = "";
+                        }
+
+                        e.preventDefault();
+                    }
+
+                    break;
+            }
+        })
     }
 }

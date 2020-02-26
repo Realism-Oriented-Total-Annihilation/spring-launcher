@@ -7,7 +7,7 @@
             "type": "gulp",
             "task": "watch",
             "problemMatcher": [
-                "$tsc"
+                "$tsc",
             ],
             "group": "build",
             "isBackground": true

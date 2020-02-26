@@ -4,7 +4,7 @@
 import { TabContainer } from "./container";
 
 
-export class LeftBar
+export class Menu
 {
     public container: HTMLDivElement;
 
@@ -30,10 +30,11 @@ export class LeftBar
     {
         this.container.id = "menu";
 
-        this.top.create_tab("Profile");
-        this.center.create_tab("Battlelist");
-        this.center.create_tab("Download");
+        this.top.create_tab("profile");
 
-        this.bottom.create_tab("Settings");
+        this.center.create_tab("battles");
+        this.center.create_tab("download");
+
+        this.bottom.create_tab("settings");
     }
 }

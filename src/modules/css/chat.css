@@ -1,5 +1,7 @@
 /*
- * Chat Widget Styling
+ *
+ *   Chat Widget Styling
+ *
  */
 
 
@@ -8,12 +10,46 @@
     position: fixed;
     top: 0;
     right: -250px;
+    display: flex;
+    flex-direction: column;
 
     height: calc(100% - 58px);
     width: 250px;
-    /* transition: 1s; */
+    overflow: auto;
 
     background-color: rgb(51, 51, 51);
+
+    /* Transition not yet implemented, wont work so easily */
+    /* transition: 1s; */
+}
+
+#chat > .msg
+{
+    margin: 0px;
+
+    padding-top:    4px;
+    padding-bottom: 4px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size:   16px;
+}
+
+#chat > .msg.right
+{
+    color: rgba(255, 255, 255, 1);
+
+    padding-right: 8px;
+
+    text-align: right;
+}
+
+#chat > .msg.left
+{
+    color: rgba(255, 255, 255, .4);
+
+    padding-left: 8px;
+
+    text-align: left;
 }
 
 #chatbar
@@ -54,8 +90,8 @@
 
 .chatbutton > #chatlogo
 {
-    fill:   rgba(255, 255, 255, .4);
-    stroke: rgba(255, 255, 255, .4);
+    fill:   rgb(187, 187, 187);
+    stroke: rgb(187, 187, 187);
 }
 
 .chatbutton:hover > #chatlogo
@@ -69,7 +105,6 @@
     fill:   rgba(255, 255, 255, 1);
     stroke: rgba(255, 255, 255, 1);
 }
-
 
 #chatinput
 {
@@ -86,6 +121,15 @@
 
 #textarea
 {
+    background-color: rgba(255, 255, 255, 1);
+
     width: 100%;
     height: 100%;
+
+    font-size: 16px;
+}
+
+::-webkit-scrollbar
+{
+    width: 0;
 }

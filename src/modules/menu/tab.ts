@@ -9,13 +9,13 @@ import { sl } from "../main";
 
 export class Tab
 {
+    public readonly name: string
+
     private tab:     HTMLDivElement;
     private light:   HTMLDivElement;
     private logodiv: HTMLDivElement;
 
     private svg: SVGSVGElement;
-
-    private name: string
 
     constructor(parent: HTMLDivElement, name: string)
     {
@@ -26,7 +26,7 @@ export class Tab
         this.logodiv = document.createElement("div");
 
         this.logodiv.innerHTML = fs.readFileSync(
-            path.join(__dirname, `../../icons/${this.name.toLowerCase()}.svg`),
+            path.join(__dirname, `../../icons/${this.name}.svg`),
             {encoding: "UTF8"}
         );
 
