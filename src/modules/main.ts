@@ -9,5 +9,6 @@ export let sl: Workbench;
 
 window.addEventListener("DOMContentLoaded", () => {
     sl = new Workbench();
-    sl.init();
+    // sl.init();
+    sl.authenticate();
 });

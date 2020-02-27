@@ -10,7 +10,7 @@ import { ChatBar } from "./modules/chat/bar";
 
 // modules
 import { Profile }    from "./modules/profile";
-import { Login }      from "./modules/login";
+import { Login }      from "./modules/login/login";
 import { BattleList } from "./modules/battlelist";
 import { BattleRoom } from "./modules/battleroom";
 import { Download }   from "./modules/download";
@@ -33,11 +33,13 @@ export class Workbench
     private module_settings:   Settings;
 
     private window:  HTMLDivElement;
+    private loginwindow: HTMLDivElement;
     private content: HTMLDivElement;
 
     constructor()
     {
         this.window  = <HTMLDivElement>document.getElementById("window");
+        this.loginwindow = <HTMLDivElement>document.getElementById("loginwindow");
         this.content = <HTMLDivElement>document.createElement("div");
 
         this.events = new EventSubsystem();
@@ -56,6 +58,13 @@ export class Workbench
         this.setup_dom();
     }
 
+    public authenticate()
+    {
+        this.module_login = new Login(this.loginwindow);
+        this.window.style.display = "none";
+        this.module_login.show();
+    }
+
     public init()
     {
         this.leftbar = new Menu(this.window);
@@ -68,11 +77,11 @@ export class Workbench
         this.module_battlelist = new BattleList(this.content);
         this.module_battleroom = new BattleRoom(this.content);
         this.module_download   = new Download(this.content);
-        this.module_login      = new Login(this.content);
+
         this.module_profile    = new Profile(this.content);
         this.module_settings   = new Settings(this.content);
 
-        this.module_login.show();
+
     }
 
     private setup_dom()

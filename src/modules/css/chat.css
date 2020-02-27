@@ -67,8 +67,10 @@
 {
     height: 58px;
     width: 58px;
-    /* background-color: gold; */
     background-color: rgb(22, 130, 93);
+
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 #chatlogo
