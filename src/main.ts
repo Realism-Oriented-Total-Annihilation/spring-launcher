@@ -9,10 +9,18 @@ import { app, BrowserWindow } from "electron";
 function createWindow()
 {
     let win = new BrowserWindow({
-        width:  1200,
-        height: 900,
-        webPreferences: {nodeIntegration: true}
+        // width:  1200,
+        // height: 900,
+        width:  400,
+        height: 700,
+        webPreferences: {
+            nodeIntegration: true,
+            // devTools: false
+        },
     });
+
+    win.setResizable(false);
+    win.setMenuBarVisibility(false);
 
     win.loadFile(path.join(__dirname, "modules/html/main.html"))
 }

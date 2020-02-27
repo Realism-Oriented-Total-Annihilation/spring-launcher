@@ -8,6 +8,8 @@ export class Login extends ModuleBase
 {
     private authenticate: HTMLDivElement;
 
+    private springlogo: HTMLDivElement;
+
     // Selector:   Login | Register
     private selector: HTMLDivElement;
     private login:    HTMLLabelElement;
@@ -38,6 +40,8 @@ export class Login extends ModuleBase
         super(parent);
 
         this.authenticate = document.createElement("div");
+
+        this.springlogo = document.createElement("div");
 
         // Selector:   Login | Register
         this.selector = document.createElement("div");
@@ -72,8 +76,10 @@ export class Login extends ModuleBase
     {
         this.authenticate.id = "authenticate";
 
+        this.springlogo.id  = "springlogo";
+
         // Selector:   Login | Register
-        this.selector.id = "selector";
+        this.selector.id = "selectordiv";
 
         this.login.innerHTML = "Login";
         this.login.className = "selector";
@@ -84,7 +90,7 @@ export class Login extends ModuleBase
         this.register.addEventListener("click", () => {this.toggleregister()});
 
         // Login
-        this.logindiv.id          = "logindiv";
+        this.logindiv.className   = "formdiv";
 
         this.userdiv.id           = "userdiv";
         this.username.id          = "username";
@@ -105,7 +111,7 @@ export class Login extends ModuleBase
         this.loginbtn.type        = "submit"
 
         // Register
-        this.registerdiv.id          = "registerdiv";
+        this.registerdiv.className   = "formdiv";
 
         this.newuserdiv.id           = "newuserdiv";
         this.newusername.id          = "newusername";
@@ -135,6 +141,8 @@ export class Login extends ModuleBase
         this.registerbtn.value     = "Register"
         this.registerbtn.type      = "submit"
 
+
+        this.authenticate.appendChild(this.springlogo);
 
         // Selector:   Login | Register
         this.selector.appendChild(this.login);
