@@ -16,7 +16,7 @@ var TASK_CSS  = "copy-css";
 var TASK_SVG  = "copy-svg";
 var TASK_PNG  = "copy-png";
 var TASK_TS   = "transpile-typescript";
-var TASK_ALL  = [TASK_HTML, TASK_CSS, TASK_SVG, TASK_TS];
+var TASK_ALL  = [TASK_HTML, TASK_CSS, TASK_SVG, TASK_PNG, TASK_TS];
 
 var TASK_WATCH_HTML = "watch-html";
 var TASK_WATCH_CSS  = "watch-css";
@@ -73,11 +73,13 @@ gulp.task(TASK_CSS,  task_copy_css);
 gulp.task(TASK_SVG,  task_copy_svg);
 gulp.task(TASK_PNG,  task_copy_png);
 gulp.task(TASK_TS,   task_transpile_typescript);
-gulp.task("all",     gulp.parallel(TASK_ALL));
+
+gulp.task("all", gulp.parallel(TASK_ALL));
 
 gulp.task(TASK_WATCH_HTML, function(done) { gulp.watch(GLOB_HTML, {ignoreInitial: false}, task_copy_html);            done(); })
 gulp.task(TASK_WATCH_CSS,  function(done) { gulp.watch(GLOB_CSS,  {ignoreInitial: false}, task_copy_css);             done(); })
 gulp.task(TASK_WATCH_SVG,  function(done) { gulp.watch(GLOB_SVG,  {ignoreInitial: false}, task_copy_svg);             done(); })
 gulp.task(TASK_WATCH_PNG,  function(done) { gulp.watch(GLOB_PNG,  {ignoreInitial: false}, task_copy_png);             done(); })
 gulp.task(TASK_WATCH_TS,   function(done) { gulp.watch(GLOB_TS,   {ignoreInitial: false}, task_transpile_typescript); done(); })
-gulp.task("watch",         gulp.parallel(TASK_WATCH_ALL));
+
+gulp.task("watch", gulp.parallel(TASK_WATCH_ALL));
