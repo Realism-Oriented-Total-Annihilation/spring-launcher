@@ -4,26 +4,25 @@
 import * as fs   from "fs";
 import * as path from "path";
 
-import { sl } from "../../main";
+import { sl } from "../../../launcher";
 
-export class ChatBar
+import { WidgetBase } from "../../../widgets/base";
+
+
+export class ChatBar extends WidgetBase
 {
-    private container: HTMLDivElement;
-
     private chtbtn:   ChatButton;
     private chtinput: ChatInput;
 
-    constructor(parent: HTMLDivElement)
+    constructor(parent: HTMLElement)
     {
-        this.container = document.createElement("div");
+        super(parent);
 
         this.chtbtn   = new ChatButton(this.container);
         this.chtinput = new ChatInput(this.container);
 
         this.setup_dom();
         this.setup_wiring();
-
-        parent.appendChild(this.container);
     }
 
     private setup_dom()
@@ -45,17 +44,17 @@ export class ChatBar
 
 export class ChatButton
 {
-    container: HTMLDivElement;
-    private logodiv: HTMLDivElement;
+    private container: HTMLDivElement;
+    private logodiv:   HTMLDivElement;
 
     svg: SVGSVGElement;
 
     private active: boolean;
 
-    constructor(parent: HTMLDivElement)
+    constructor(parent: HTMLElement)
     {
         this.container = document.createElement("div");
-        this.logodiv = document.createElement("div");
+        this.logodiv   = document.createElement("div");
 
         this.logodiv.innerHTML = fs.readFileSync(
             path.join(__dirname, `../../../icons/chat.svg`),
@@ -116,7 +115,7 @@ export class ChatInput
     private container: HTMLDivElement;
     private textarea:  HTMLTextAreaElement;
 
-    constructor(parent: HTMLDivElement)
+    constructor(parent: HTMLElement)
     {
         this.container = document.createElement("div");
         this.textarea  = document.createElement("textarea");

@@ -1,10 +1,10 @@
 //
 //
 //
-import { ModuleBase } from "./module";
+import { WidgetBase } from "../../widgets/base";
 
 
-export class Profile extends ModuleBase
+export class Profile extends WidgetBase
 {
     constructor(parent: HTMLDivElement)
     {

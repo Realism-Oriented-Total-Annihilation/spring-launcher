@@ -1,7 +1,7 @@
 //
 // Main Window
 //
-import { EventSubsystem } from "./events";
+import { EventSubsystem } from "./events/events";
 
 import { Menu } from "./menu/menu";
 
@@ -21,7 +21,7 @@ export class Workbench
 {
     public events: EventSubsystem;
 
-    private leftbar: Menu;
+    private menu:    Menu;
     private chatbar: ChatBar;
     private chat:    Chat;
 
@@ -32,19 +32,15 @@ export class Workbench
     private module_profile:    Profile;
     private module_settings:   Settings;
 
-    private window:  HTMLDivElement;
-    private loginwindow: HTMLDivElement;
-    private content: HTMLDivElement;
+    private window: HTMLDivElement;
 
     constructor()
     {
-        this.window  = <HTMLDivElement>document.getElementById("window");
-        this.loginwindow = <HTMLDivElement>document.getElementById("loginwindow");
-        this.content = <HTMLDivElement>document.createElement("div");
+        this.window = <HTMLDivElement>document.getElementById("window");
 
         this.events = new EventSubsystem();
 
-        this.leftbar = <any>null;
+        this.menu    = <any>null;
         this.chatbar = <any>null;
         this.chat    = <any>null;
 
@@ -58,34 +54,28 @@ export class Workbench
         this.setup_dom();
     }
 
-    public authenticate()
-    {
-        this.module_login = new Login(this.loginwindow);
-        this.window.style.display = "none";
-        this.module_login.show();
-    }
-
     public init()
     {
-        this.leftbar = new Menu(this.window);
-
-        this.window.appendChild(this.content);  // placeholder
+        this.menu = new Menu(this.window);
 
         this.chatbar = new ChatBar(this.window);
         this.chat    = new Chat(this.window);
 
-        this.module_battlelist = new BattleList(this.content);
-        this.module_battleroom = new BattleRoom(this.content);
-        this.module_download   = new Download(this.content);
+        this.module_login      = new Login(this.window);
+        this.module_battlelist = new BattleList(this.window);
+        this.module_battleroom = new BattleRoom(this.window);
+        this.module_download   = new Download(this.window);
+        this.module_profile    = new Profile(this.window);
+        this.module_settings   = new Settings(this.window);
+    }
 
-        this.module_profile    = new Profile(this.content);
-        this.module_settings   = new Settings(this.content);
-
-
+    public authenticate()
+    {
+        this.module_login.show();
     }
 
     private setup_dom()
     {
-        this.content.id = "content";
+        this.window.id = "content";
     }
 }

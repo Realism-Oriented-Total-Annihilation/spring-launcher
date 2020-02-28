@@ -1,27 +1,25 @@
 //
 // Chat window // Maybe change it to rightbarcontainer and make it general
 //
+import { sl } from "../../../launcher";
 
-import { sl } from "../../main";
+import { WidgetBase } from "../../../widgets/base";
 
 import { ChatButton } from "./bar";
 
 
-export class Chat
+export class Chat extends WidgetBase
 {
-    private container: HTMLDivElement;
-
     private messages: HTMLParagraphElement[];
 
     constructor(parent: HTMLDivElement)
     {
-        this.container = document.createElement("div");
-        this.messages  = [];
+        super(parent);
+
+        this.messages = [];
 
         this.setup_dom();
         this.setup_wiring();
-
-        parent.appendChild(this.container);
     }
 
     private setup_dom()

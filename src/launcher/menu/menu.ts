@@ -1,20 +1,20 @@
 //
 //  Leftbar in which you can select tabs or play
 //
+import { WidgetBase } from "../../widgets/base";
+
 import { TabContainer } from "./container";
 
 
-export class Menu
+export class Menu extends WidgetBase
 {
-    public container: HTMLDivElement;
-
     private top:    TabContainer;
     private center: TabContainer;
     private bottom: TabContainer;
 
     constructor(parent: HTMLDivElement)
     {
-        this.container = document.createElement("div");
+        super(parent);
 
         // ORDER IS IMPORTANT!! FLEX PROPERTY...
         this.top    = new TabContainer(this.container, "top");
@@ -22,8 +22,6 @@ export class Menu
         this.bottom = new TabContainer(this.container, "bottom");
 
         this.setup_dom();
-
-        parent.appendChild(this.container);
     }
 
     public setup_dom()

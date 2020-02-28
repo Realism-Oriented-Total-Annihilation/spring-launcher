@@ -1,10 +1,10 @@
 //
 //
 //
-import { ModuleBase } from "./module";
+import { WidgetBase } from "../../widgets/base";
 
 
-export class Download extends ModuleBase
+export class Download extends WidgetBase
 {
     constructor(parent: HTMLDivElement)
     {

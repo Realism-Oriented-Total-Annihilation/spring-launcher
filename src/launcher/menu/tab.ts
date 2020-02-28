@@ -4,7 +4,7 @@
 import * as fs   from "fs";
 import * as path from "path";
 
-import { sl } from "../main";
+import { sl } from "../../launcher";
 
 
 export class Tab

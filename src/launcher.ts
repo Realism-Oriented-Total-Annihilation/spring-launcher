@@ -1,7 +1,7 @@
 //
 //
 //
-import { Workbench } from "./workbench";
+import { Workbench } from "./launcher/workbench";
 
 
 export let sl: Workbench;
@@ -9,6 +9,6 @@ export let sl: Workbench;
 
 window.addEventListener("DOMContentLoaded", () => {
     sl = new Workbench();
-    // sl.init();
+    sl.init();
     sl.authenticate();
 });

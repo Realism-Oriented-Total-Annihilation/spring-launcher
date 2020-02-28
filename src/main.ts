@@ -19,10 +19,10 @@ function createWindow()
         },
     });
 
-    win.setResizable(false);
+    // win.setResizable(false);
     win.setMenuBarVisibility(false);
 
-    win.loadFile(path.join(__dirname, "modules/html/main.html"))
+    win.loadFile(path.join(__dirname, "main.html"))
 }
 
 

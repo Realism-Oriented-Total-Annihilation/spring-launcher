@@ -10,7 +10,7 @@ export class TabContainer
 
     private tabs: Tab[];
 
-    constructor(parent: HTMLDivElement, position: "top" | "center" | "bottom")
+    constructor(parent: HTMLElement, position: "top" | "center" | "bottom")
     {
         this.container = document.createElement("div");
 
