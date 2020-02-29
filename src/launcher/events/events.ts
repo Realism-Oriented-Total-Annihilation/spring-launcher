@@ -10,8 +10,10 @@ import { LoginCredentials }    from "./auth";
 import { RegisterCredentials } from "./auth";
 import { LocalCredentials }    from "./auth";
 
-import { PtclAccepted } from "../backend/ptcl";
-import { PtctRegistrationAccepted } from "../backend/ptcl";
+import { PtclAccepted } from "../backend/uberserver/ptcl";
+import { PtctRegistrationAccepted } from "../backend/uberserver/ptcl";
+
+import { Event } from "./keys";
 
 
 export class EventSubsystem
@@ -24,54 +26,58 @@ export class EventSubsystem
     }
 
     // signals emittance
-    public emit(event: "tab.selected", tab: Tab): EventSubsystem;
+    public emit(event: Event.TAB_SELECTED, tab: Tab): EventSubsystem;
 
-    public emit(event: "auth.login",    creds: LoginCredentials): EventSubsystem;
-    public emit(event: "auth.register", creds: RegisterCredentials): EventSubsystem;
-    public emit(event: "auth.offline",  creds: LocalCredentials): EventSubsystem;
+    public emit(event: Event.CHAT_SHOW, chtbtn: ChatButton): EventSubsystem;
+    public emit(event: Event.CHAT_HIDE, chtbtn: ChatButton): EventSubsystem;
 
-    public emit(event: "chat.show", chtbtn: ChatButton): EventSubsystem;
-    public emit(event: "chat.hide", chtbtn: ChatButton): EventSubsystem;
+    public emit(event: Event.MSG_SENT,     msg: string): EventSubsystem;
+    public emit(event: Event.MSG_RECEIVED, msg: string): EventSubsystem;
 
-    public emit(event: "msg.sent", msg: string): EventSubsystem;
-    public emit(event: "msg.recieved", msg: string): EventSubsystem;
+    public emit(event: Event.SERVER_READY):  EventSubsystem;
+    public emit(event: Event.SERVER_CLOSED): EventSubsystem;
+    public emit(event: Event.SERVER_FAILED): EventSubsystem;
 
-    public emit(event: "server.sock.ready"):  EventSubsystem;
-    public emit(event: "server.sock.closed"): EventSubsystem;
-    public emit(event: "server.sock.failed"): EventSubsystem;
+    public emit(event: Event.REQUEST_LOGIN,    creds: LoginCredentials): EventSubsystem;
+    public emit(event: Event.REQUEST_REGISTER, creds: RegisterCredentials): EventSubsystem;
+    public emit(event: Event.REQUEST_OFFLINE,  creds: LocalCredentials): EventSubsystem;
 
-    public emit(event: "server.msg.accepted",   msg: PtclAccepted): EventSubsystem;
-    public emit(event: "server.msg.registered", msg: PtctRegistrationAccepted): EventSubsystem;
+    public emit(event: Event.RESPONSE_ACCEPTED,   msg: PtclAccepted): EventSubsystem;
+    public emit(event: Event.RESPONSE_REGISTERED, msg: PtctRegistrationAccepted): EventSubsystem;
 
-    public emit(event: string, ...args: any[]): EventSubsystem
+    public emit(event: Event, ...args: any[]): EventSubsystem
     {
-        this._bus.emit(event, ...args);
+        console.trace(event, ...args);
+
+        this._bus.emit(Event[event], ...args);
         return this;
     }
 
     // listener registration
-    public on(event: "tab.selected", listener: (tab: Tab) => void): EventSubsystem;
+    public on(event: Event.TAB_SELECTED, listener: (tab: Tab) => void): EventSubsystem;
 
-    public on(event: "auth.login",    listener: (creds: LoginCredentials) => void): EventSubsystem;
-    public on(event: "auth.register", listener: (creds: RegisterCredentials) => void): EventSubsystem;
-    public on(event: "auth.offline",  listener: (creds: LocalCredentials) => void): EventSubsystem;
+    public on(event: Event.CHAT_SHOW, listener: (chtbtn: ChatButton) => void): EventSubsystem;
+    public on(event: Event.CHAT_HIDE, listener: (chtbtn: ChatButton) => void): EventSubsystem;
 
-    public on(event: "chat.show", listener: (chtbtn: ChatButton) => void): EventSubsystem;
-    public on(event: "chat.hide", listener: (chtbtn: ChatButton) => void): EventSubsystem;
+    public on(event: Event.MSG_SENT,     listener: (msg: string) => void): EventSubsystem;
+    public on(event: Event.MSG_RECEIVED, listener: (msg: string) => void): EventSubsystem;
 
-    public on(event: "msg.sent", listener: (msg: string) => void): EventSubsystem;
-    public on(event: "msg.recieved", listener: (msg: string) => void): EventSubsystem;
+    public on(event: Event.SERVER_READY,  listener: () => void): EventSubsystem;
+    public on(event: Event.SERVER_CLOSED, listener: () => void): EventSubsystem;
+    public on(event: Event.SERVER_FAILED, listener: () => void): EventSubsystem;
 
-    public on(event: "server.sock.ready",  listener: () => void): EventSubsystem;
-    public on(event: "server.sock.closed", listener: () => void): EventSubsystem;
-    public on(event: "server.sock.failed", listener: () => void): EventSubsystem;
+    public on(event: Event.REQUEST_LOGIN,    listener: (creds: LoginCredentials) => void): EventSubsystem;
+    public on(event: Event.REQUEST_REGISTER, listener: (creds: RegisterCredentials) => void): EventSubsystem;
+    public on(event: Event.REQUEST_OFFLINE,  listener: (creds: LocalCredentials) => void): EventSubsystem;
 
-    public on(event: "server.msg.accepted",   listener: (msg: PtclAccepted) => void): EventSubsystem;
-    public on(event: "server.msg.registered", listener: (msg: PtctRegistrationAccepted) => void): EventSubsystem;
+    public on(event: Event.RESPONSE_ACCEPTED,   listener: (msg: PtclAccepted) => void): EventSubsystem;
+    public on(event: Event.RESPONSE_REGISTERED, listener: (msg: PtctRegistrationAccepted) => void): EventSubsystem;
 
-    public on(event: string, listener: (...args: any[]) => void): EventSubsystem
+    public on(event: Event, listener: (...args: any[]) => void): EventSubsystem
     {
-        this._bus.on(event, listener);
+        console.trace(event, listener);
+
+        this._bus.on(Event[event], listener);
         return this;
     }
 }

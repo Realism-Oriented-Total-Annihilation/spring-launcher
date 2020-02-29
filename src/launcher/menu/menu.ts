@@ -1,7 +1,7 @@
 //
 //  Leftbar in which you can select tabs or play
 //
-import { WidgetBase } from "../../widgets/base";
+import { WidgetBase } from "../widgets/base";
 
 import { TabContainer } from "./container";
 

@@ -6,6 +6,8 @@ import * as path from "path";
 
 import { sl } from "../../launcher";
 
+import { Event } from "../events/keys";
+
 
 export class Tab
 {
@@ -62,7 +64,7 @@ export class Tab
 
     private setup_wiring()
     {
-        sl.events.on("tab.selected", (tab: Tab) => {
+        sl.events.on(Event.TAB_SELECTED, (tab: Tab) => {
             if (tab === this) {
                 this.select();
             } else {
@@ -71,7 +73,7 @@ export class Tab
         });
 
         this.tab.addEventListener("click", () => {
-            sl.events.emit("tab.selected", this);
+            sl.events.emit(Event.TAB_SELECTED, this);
         })
     }
 }

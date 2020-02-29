@@ -3,8 +3,9 @@
 //
 import { sl } from "../../../launcher";
 
-import { WidgetBase } from "../../../widgets/base";
-import { InputField } from "../../../widgets/input";
+import { WidgetBase } from "../../widgets/base";
+import { InputField } from "../../widgets/input";
+import { Event } from "../../events/keys";
 
 
 export class Login extends WidgetBase
@@ -220,7 +221,7 @@ class FormLogin extends WidgetBase
             let user   = this.field_user.value;
             let passwd = this.field_passwd.value;
 
-            sl.events.emit("auth.login", {
+            sl.events.emit(Event.REQUEST_LOGIN, {
                 user:     user,
                 password: passwd
             });
@@ -293,7 +294,7 @@ class FormRegister extends WidgetBase
             if (passwd != confirm) {
                 // TODO error out
             } else {
-                sl.events.emit("auth.register", {
+                sl.events.emit(Event.REQUEST_REGISTER, {
                     user:     user,
                     password: passwd,
                     email:    email
@@ -338,7 +339,7 @@ class FormLocal extends WidgetBase
         this.container.onsubmit = (ev) => {
             let user = this.field_user.value;
 
-            sl.events.emit("auth.offline", {
+            sl.events.emit(Event.REQUEST_OFFLINE, {
                 user: user,
             });
 

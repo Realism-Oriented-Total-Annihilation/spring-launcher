@@ -1,7 +1,7 @@
 //
 //
 //
-import { WidgetBase } from "../../widgets/base";
+import { WidgetBase } from "../widgets/base";
 
 
 export class BattleRoom extends WidgetBase

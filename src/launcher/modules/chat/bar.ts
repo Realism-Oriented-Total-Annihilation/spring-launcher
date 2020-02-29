@@ -6,7 +6,9 @@ import * as path from "path";
 
 import { sl } from "../../../launcher";
 
-import { WidgetBase } from "../../../widgets/base";
+import { Event } from "../../events/keys";
+
+import { WidgetBase } from "../../widgets/base";
 
 
 export class ChatBar extends WidgetBase
@@ -32,11 +34,11 @@ export class ChatBar extends WidgetBase
 
     private setup_wiring()
     {
-        sl.events.on("chat.show", (btn: ChatButton) => {
+        sl.events.on(Event.CHAT_SHOW, (btn: ChatButton) => {
             this.container.style.right = "0px"
         });
 
-        sl.events.on("chat.hide", (btn: ChatButton) => {
+        sl.events.on(Event.CHAT_HIDE, (btn: ChatButton) => {
             this.container.style.right = "-192px"
         });
     }
@@ -84,9 +86,9 @@ export class ChatButton
         this.container.addEventListener("click", () =>
         {
             if (this.active) {
-                sl.events.emit("chat.hide", this);
+                sl.events.emit(Event.CHAT_HIDE, this);
             } else {
-                sl.events.emit("chat.show", this);
+                sl.events.emit(Event.CHAT_SHOW, this);
             }
 
             this.active = !this.active;
@@ -147,7 +149,7 @@ export class ChatInput
 
                         if (text != "")
                         {
-                            sl.events.emit("msg.sent", text);
+                            sl.events.emit(Event.MSG_SENT, text);
                             this.textarea.value = "";
                         }
 

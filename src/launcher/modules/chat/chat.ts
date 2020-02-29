@@ -3,7 +3,9 @@
 //
 import { sl } from "../../../launcher";
 
-import { WidgetBase } from "../../../widgets/base";
+import { WidgetBase } from "../../widgets/base";
+
+import { Event } from "../../events/keys";
 
 import { ChatButton } from "./bar";
 
@@ -50,15 +52,15 @@ export class Chat extends WidgetBase
 
     private setup_wiring()
     {
-        sl.events.on("chat.show", (btn: ChatButton) => {
+        sl.events.on(Event.CHAT_SHOW, (btn: ChatButton) => {
             this.container.style.right = "0px";
         });
 
-        sl.events.on("chat.hide", (btn: ChatButton) => {
+        sl.events.on(Event.CHAT_HIDE, (btn: ChatButton) => {
             this.container.style.right = "-250px";
         });
 
-        sl.events.on("msg.sent", (msg: string) => {
+        sl.events.on(Event.MSG_SENT, (msg: string) => {
             this.display_msg(msg, "Me");
         });
     }
