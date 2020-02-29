@@ -39,6 +39,8 @@ export class Login extends WidgetBase
 
         this.form_selector.show();
         this.form_login.show();
+
+        this.setup_events();
     }
 
     private toggle_mode()
@@ -91,6 +93,11 @@ export class Login extends WidgetBase
             this.form_login.hide();
             this.form_register.show();
         });
+    }
+
+    private setup_events()
+    {
+        // TODO
     }
 }
 

@@ -10,6 +10,9 @@ import { LoginCredentials }    from "./auth";
 import { RegisterCredentials } from "./auth";
 import { LocalCredentials }    from "./auth";
 
+import { PtclAccepted } from "../backend/ptcl";
+import { PtctRegistrationAccepted } from "../backend/ptcl";
+
 
 export class EventSubsystem
 {
@@ -33,6 +36,13 @@ export class EventSubsystem
     public emit(event: "msg.sent", msg: string): EventSubsystem;
     public emit(event: "msg.recieved", msg: string): EventSubsystem;
 
+    public emit(event: "server.sock.ready"):  EventSubsystem;
+    public emit(event: "server.sock.closed"): EventSubsystem;
+    public emit(event: "server.sock.failed"): EventSubsystem;
+
+    public emit(event: "server.msg.accepted",   msg: PtclAccepted): EventSubsystem;
+    public emit(event: "server.msg.registered", msg: PtctRegistrationAccepted): EventSubsystem;
+
     public emit(event: string, ...args: any[]): EventSubsystem
     {
         this._bus.emit(event, ...args);
@@ -51,6 +61,13 @@ export class EventSubsystem
 
     public on(event: "msg.sent", listener: (msg: string) => void): EventSubsystem;
     public on(event: "msg.recieved", listener: (msg: string) => void): EventSubsystem;
+
+    public on(event: "server.sock.ready",  listener: () => void): EventSubsystem;
+    public on(event: "server.sock.closed", listener: () => void): EventSubsystem;
+    public on(event: "server.sock.failed", listener: () => void): EventSubsystem;
+
+    public on(event: "server.msg.accepted",   listener: (msg: PtclAccepted) => void): EventSubsystem;
+    public on(event: "server.msg.registered", listener: (msg: PtctRegistrationAccepted) => void): EventSubsystem;
 
     public on(event: string, listener: (...args: any[]) => void): EventSubsystem
     {
