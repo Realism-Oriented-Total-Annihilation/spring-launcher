@@ -1,14 +1,14 @@
 //
 //
 //
-import { Workbench } from "./launcher/workbench";
+import { Launcher } from "./launcher/launcher";
 
 
-export let sl: Workbench;
+export let sl: Launcher;
 
 
 window.addEventListener("DOMContentLoaded", () => {
-    sl = new Workbench();
+    sl = new Launcher();
     sl.init();
     sl.authenticate();
 });

@@ -3,13 +3,25 @@
 //
 
 
-export interface PtclAccepted
+export interface PtclLoginOk
 {
     username: string
 }
 
 
-export interface PtctRegistrationAccepted
+export interface PtclLoginErr
+{
+    reason: string
+}
+
+
+export interface PtctRegistrationOk
 {
 
+}
+
+
+export interface PtctRegistrationErr
+{
+    reason: string;
 }

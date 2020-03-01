@@ -1,7 +1,7 @@
 //
 //  Login screen dialog
 //
-import { sl } from "../../../launcher";
+import { sl } from "../../../renderer";
 
 import { WidgetBase } from "../../widgets/base";
 import { InputField } from "../../widgets/input";
@@ -146,6 +146,8 @@ class FormSelector extends WidgetBase
         this.lbl_login.style.display    = "inline-block";
         this.lbl_register.style.display = "inline-block";
         this.lbl_offline.style.display  = "none";
+
+        sl.events.emit(Event.MODE_ONLINE, {host: "localhost", port: 8200});
     }
 
     public show_offline()
@@ -153,6 +155,8 @@ class FormSelector extends WidgetBase
         this.lbl_login.style.display    = "none";
         this.lbl_register.style.display = "none";
         this.lbl_offline.style.display  = "inline-block";
+
+        sl.events.emit(Event.MODE_LOCAL);
     }
 
     public on_login(listener: () => void)

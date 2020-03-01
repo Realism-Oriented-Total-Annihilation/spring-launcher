@@ -1,7 +1,7 @@
 //
 // Chat window // Maybe change it to rightbarcontainer and make it general
 //
-import { sl } from "../../../launcher";
+import { sl } from "../../../renderer";
 
 import { WidgetBase } from "../../widgets/base";
 

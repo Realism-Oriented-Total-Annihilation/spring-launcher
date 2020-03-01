@@ -15,9 +15,10 @@ import { BattleList } from "./modules/battlelist";
 import { BattleRoom } from "./modules/battleroom";
 import { Download }   from "./modules/download";
 import { Settings }   from "./modules/settings";
+import { Backend }    from "./backend/backend";
 
 
-export class Workbench
+export class Launcher
 {
     public events: EventSubsystem;
 
@@ -32,6 +33,8 @@ export class Workbench
     private module_profile:    Profile;
     private module_settings:   Settings;
 
+    private backend: Backend;
+
     private window: HTMLDivElement;
 
     constructor()
@@ -39,6 +42,8 @@ export class Workbench
         this.window = <HTMLDivElement>document.getElementById("window");
 
         this.events = new EventSubsystem();
+
+        this.backend = <any>null;
 
         this.menu    = <any>null;
         this.chatbar = <any>null;
@@ -56,6 +61,8 @@ export class Workbench
 
     public init()
     {
+        this.backend = new Backend();
+
         this.menu = new Menu(this.window);
 
         this.chatbar = new ChatBar(this.window);

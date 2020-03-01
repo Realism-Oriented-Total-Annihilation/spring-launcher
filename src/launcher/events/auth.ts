@@ -3,14 +3,14 @@
 //!
 
 
-export interface LoginCredentials
+export interface EvLoginCredentials
 {
     user:     string;
     password: string;
 }
 
 
-export interface RegisterCredentials
+export interface EvRegisterCredentials
 {
     user:     string;
     password: string;
@@ -18,7 +18,7 @@ export interface RegisterCredentials
 }
 
 
-export interface LocalCredentials
+export interface EvLocalCredentials
 {
     user: string;
 }

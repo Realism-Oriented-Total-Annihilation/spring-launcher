@@ -3,22 +3,27 @@
 //
 import { Socket } from "net";
 
-import { sl } from "../../../launcher";
+import * as crypto from "crypto-js";
+
+var md5    = crypto.MD5;
+var base64 = crypto.enc.Base64;
+
+import { sl } from "../../../renderer";
 
 import { Event }               from "../../events/keys";
-import { LoginCredentials }    from "../../events/auth";
-import { RegisterCredentials } from "../../events/auth";
+import { EvLoginCredentials }    from "../../events/auth";
+import { EvRegisterCredentials } from "../../events/auth";
 
 import * as cmd from "./cmds";
 
 import { Message }     from "./msg";
 import { MessageType } from "./cmds";
 
-import { PtclAccepted }             from "./ptcl";
-import { PtctRegistrationAccepted } from "./ptcl";
+import { PtclLoginOk }        from "./ptcl";
+import { PtctRegistrationOk } from "./ptcl";
 
 
-export class Server
+export class UberServer
 {
     private sock: Socket;
 
@@ -32,7 +37,7 @@ export class Server
         this.sock.connect(port, host);
     }
 
-    public login(creds: LoginCredentials)
+    public login(creds: EvLoginCredentials)
     {
         this.send(MessageType.LOGIN,
             [creds.user, creds.password, "0", this.sock.localAddress],
@@ -40,16 +45,16 @@ export class Server
         );
     }
 
-    public register(creds: RegisterCredentials)
+    public register(creds: EvRegisterCredentials)
     {
         this.send(MessageType.REGISTER,
-            [creds.user, creds.password, creds.email]
+            [creds.user, base64.stringify(md5(creds.password)), creds.email]
         );
     }
 
     private send(cmd: MessageType, words?: string[], sentences?: string[])
     {
-        let raw = `${cmd}`;
+        let raw = `${MessageType[cmd]}`;
 
         if (words) {
             raw += ` ${words.join(" ")}`;
@@ -74,11 +79,13 @@ export class Server
 
         switch (msg.command)
         {
-            case MessageType.ACCEPTED:             sl.events.emit(Event.RESPONSE_ACCEPTED,   msg.into_accepted()); break;
-            case MessageType.REGISTRATIONACCEPTED: sl.events.emit(Event.RESPONSE_REGISTERED, msg.into_registered()); break;
+            case MessageType.ACCEPTED:             sl.events.emit(Event.RESPONSE_LOGIN_OK,           msg.into_login_ok()); break;
+            case MessageType.DENIED:               sl.events.emit(Event.RESPONSE_LOGIN_ERROR,        msg.into_login_error()); break;
+            case MessageType.REGISTRATIONACCEPTED: sl.events.emit(Event.RESPONSE_REGISTRATION_OK,    msg.into_registration_ok()); break;
+            case MessageType.REGISTRATIONDENIED:   sl.events.emit(Event.RESPONSE_REGISTRATION_ERROR, msg.into_registration_error()); break;
 
             default:
-                console.warn(`Protocol message not yet implemented for: ${msg}`);
+                console.warn(`Protocol handling not yet implemented for: ${MessageType[msg.command]}`);
         }
     }
 
@@ -109,6 +116,6 @@ export class Server
         });
 
         sl.events.on(Event.REQUEST_LOGIN,    (creds) => { this.login(creds); })
-        sl.events.on(Event.REQUEST_REGISTER, (creds) => { this.login(creds); })
+        sl.events.on(Event.REQUEST_REGISTER, (creds) => { this.register(creds); })
     }
 }

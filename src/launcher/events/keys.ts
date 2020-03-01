@@ -7,22 +7,27 @@ export type EventKeys = keyof typeof Event;
 
 export enum Event
 {
-    TAB_SELECTED,    // = "tab.selected",
+    TAB_SELECTED,
 
-    CHAT_SHOW,    // = "chat.show",
-    CHAT_HIDE,    // = "chat.hide",
+    CHAT_SHOW,
+    CHAT_HIDE,
 
-    MSG_SENT,        // = "msg.sent",
-    MSG_RECEIVED,    // = "msg.recieved",
+    MSG_SENT,
+    MSG_RECEIVED,
 
-    SERVER_READY,     // = "server.ready",
-    SERVER_CLOSED,    // = "server.closed",
-    SERVER_FAILED,    // = "server.failed",
+    MODE_ONLINE,
+    MODE_LOCAL,
 
-    REQUEST_LOGIN,       // = "request.login",
-    REQUEST_REGISTER,    // = "request.register",
-    REQUEST_OFFLINE,     // = "request.offline",
+    SERVER_READY,
+    SERVER_CLOSED,
+    SERVER_FAILED,
 
-    RESPONSE_ACCEPTED,      // = "response.accepted",
-    RESPONSE_REGISTERED,    // = "response.registered",
+    REQUEST_LOGIN,
+    REQUEST_REGISTER,
+    REQUEST_OFFLINE,
+
+    RESPONSE_LOGIN_OK,
+    RESPONSE_LOGIN_ERROR,
+    RESPONSE_REGISTRATION_OK,
+    RESPONSE_REGISTRATION_ERROR,
 }

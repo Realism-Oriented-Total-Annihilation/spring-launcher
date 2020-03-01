@@ -4,7 +4,7 @@
 import * as fs   from "fs";
 import * as path from "path";
 
-import { sl } from "../../launcher";
+import { sl } from "../../renderer";
 
 import { Event } from "../events/keys";
 

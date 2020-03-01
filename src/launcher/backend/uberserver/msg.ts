@@ -4,43 +4,87 @@
 import { MessageType }     from "./cmds";
 import { MessageTypeKeys } from "./cmds";
 
-import { PtclAccepted }             from "./ptcl";
-import { PtctRegistrationAccepted } from "./ptcl";
+import { PtclLoginOk }         from "./ptcl";
+import { PtclLoginErr }        from "./ptcl";
+import { PtctRegistrationOk }  from "./ptcl";
+import { PtctRegistrationErr } from "./ptcl";
 
 
 export class Message
 {
-    public readonly raw:       string;
-    public readonly command:   MessageType;
-    public readonly words:     string[];
-    public readonly sentences: string[];
+    public readonly command: MessageType;
+
+    private reader: MsgReader;
 
     constructor(raw: string)
     {
-        this.raw = raw;
+        this.reader = new MsgReader(raw);
 
-        let args = raw.split("\t", 1);
-
-        this.words     = args[0].split("\n");
-        this.sentences = args[1].split("\t");
-
-        let cmd = <MessageTypeKeys>this.words[0]
-        this.command = MessageType[cmd];
+        this.command = MessageType[<MessageTypeKeys>this.reader.word()];
 
         if (! this.command) {
-            throw `Unknown incoming command from server: ${cmd}`;
+            throw `Unable to parse command from incoming server message: ${raw}`;
         }
-
-        this.words.splice(0, 1);  // remove command from top
     }
 
-    public into_accepted(): PtclAccepted
+    public into_login_ok(): PtclLoginOk
     {
-        return {username: this.words[0]};
+        return {username: this.reader.word()};
     }
 
-    public into_registered(): PtctRegistrationAccepted
+    public into_login_error(): PtclLoginErr
+    {
+        return {reason: this.reader.sentence()};
+    }
+
+    public into_registration_ok(): PtctRegistrationOk
     {
         return {}
+    }
+
+    public into_registration_error(): PtctRegistrationErr
+    {
+        return {reason: this.reader.sentence()}
+    }
+}
+
+
+class MsgReader
+{
+    private raw: string;
+
+    constructor(raw: string)
+    {
+        this.raw = raw.trim();
+    }
+
+    public word(): string
+    {
+        let parts = this.raw.split(" ", 1);
+
+        if (parts.length > 1) {
+            this.raw = parts[1].trim();
+        }
+
+        if (parts.length > 0) {
+            return parts[0];
+        }
+
+        throw "Error while parsing incoming message while expecting a word argument"
+    }
+
+    public sentence(): string
+    {
+        let parts = this.raw.split("\t", 1);
+
+        if (parts.length > 1) {
+            this.raw = parts[1].trim();
+        }
+
+        if (parts.length > 0) {
+            return parts[0];
+        }
+
+        throw "Error while parsing incoming message while expecting a word argument"
     }
 }
