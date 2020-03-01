@@ -17,6 +17,7 @@ function createWindow()
             nodeIntegration: true,
             // devTools: false
         },
+        frame: false,
     });
 
     // win.setResizable(false);
