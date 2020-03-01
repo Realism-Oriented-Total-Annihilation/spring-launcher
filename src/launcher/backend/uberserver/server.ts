@@ -10,9 +10,11 @@ var base64 = crypto.enc.Base64;
 
 import { sl } from "../../../renderer";
 
-import { Event }               from "../../events/keys";
-import { EvLoginCredentials }    from "../../events/auth";
-import { EvRegisterCredentials } from "../../events/auth";
+import { Event }  from "../../events/keys";
+
+import { EvLoginCredentials }        from "../../events/auth";
+import { EvRegistrationCode }        from "../../events/auth";
+import { EvRegistrationCredentials } from "../../events/auth";
 
 import * as cmd from "./cmds";
 
@@ -40,16 +42,21 @@ export class UberServer
     public login(creds: EvLoginCredentials)
     {
         this.send(MessageType.LOGIN,
-            [creds.user, creds.password, "0", this.sock.localAddress],
+            [creds.user, base64.stringify(md5(creds.password)), "0", this.sock.localAddress],
             ["Spring Launcher"]
         );
     }
 
-    public register(creds: EvRegisterCredentials)
+    public register(creds: EvRegistrationCredentials)
     {
         this.send(MessageType.REGISTER,
             [creds.user, base64.stringify(md5(creds.password)), creds.email]
         );
+    }
+
+    public agree(code?: EvRegistrationCode)
+    {
+        this.send(MessageType.CONFIRMAGREEMENT, code ? [code.code] : []);
     }
 
     private send(cmd: MessageType, words?: string[], sentences?: string[])
@@ -115,7 +122,8 @@ export class UberServer
             sl.events.emit(Event.SERVER_FAILED);
         });
 
-        sl.events.on(Event.REQUEST_LOGIN,    (creds) => { this.login(creds); })
-        sl.events.on(Event.REQUEST_REGISTER, (creds) => { this.register(creds); })
+        sl.events.on(Event.REQUEST_LOGIN,        (creds) => { this.login(creds); })
+        sl.events.on(Event.REQUEST_REGISTRATION, (creds) => { this.register(creds); })
+        sl.events.on(Event.REQUEST_AGREE_TERMS,  (code)  => { this.agree(code); })
     }
 }

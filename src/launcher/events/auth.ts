@@ -10,7 +10,7 @@ export interface EvLoginCredentials
 }
 
 
-export interface EvRegisterCredentials
+export interface EvRegistrationCredentials
 {
     user:     string;
     password: string;
@@ -21,4 +21,10 @@ export interface EvRegisterCredentials
 export interface EvLocalCredentials
 {
     user: string;
+}
+
+
+export interface EvRegistrationCode
+{
+    code: string
 }

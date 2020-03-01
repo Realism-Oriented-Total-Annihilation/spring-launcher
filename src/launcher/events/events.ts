@@ -6,9 +6,10 @@ import { EventEmitter } from "events";
 import { Tab }        from "../menu/tab";
 import { ChatButton } from "../modules/chat/bar";
 
-import { EvLoginCredentials }    from "./auth";
-import { EvRegisterCredentials } from "./auth";
-import { EvLocalCredentials }    from "./auth";
+import { EvLoginCredentials }        from "./auth";
+import { EvRegistrationCode }        from "./auth";
+import { EvRegistrationCredentials } from "./auth";
+import { EvLocalCredentials }        from "./auth";
 
 import { PtclLoginOk }         from "../backend/uberserver/ptcl";
 import { PtclLoginErr }        from "../backend/uberserver/ptcl";
@@ -44,9 +45,10 @@ export class EventSubsystem
     public emit(event: Event.SERVER_CLOSED): EventSubsystem;
     public emit(event: Event.SERVER_FAILED): EventSubsystem;
 
-    public emit(event: Event.REQUEST_LOGIN,    creds: EvLoginCredentials): EventSubsystem;
-    public emit(event: Event.REQUEST_REGISTER, creds: EvRegisterCredentials): EventSubsystem;
-    public emit(event: Event.REQUEST_OFFLINE,  creds: EvLocalCredentials): EventSubsystem;
+    public emit(event: Event.REQUEST_LOGIN,        creds: EvLoginCredentials): EventSubsystem;
+    public emit(event: Event.REQUEST_REGISTRATION, creds: EvRegistrationCredentials): EventSubsystem;
+    public emit(event: Event.REQUEST_OFFLINE,      creds: EvLocalCredentials): EventSubsystem;
+    public emit(event: Event.REQUEST_AGREE_TERMS,  code:  EvRegistrationCode): EventSubsystem;
 
     public emit(event: Event.RESPONSE_LOGIN_OK,           msg: PtclLoginOk): EventSubsystem;
     public emit(event: Event.RESPONSE_LOGIN_ERROR,        msg: PtclLoginErr): EventSubsystem;
@@ -75,9 +77,10 @@ export class EventSubsystem
     public on(event: Event.SERVER_CLOSED, listener: () => void): EventSubsystem;
     public on(event: Event.SERVER_FAILED, listener: () => void): EventSubsystem;
 
-    public on(event: Event.REQUEST_LOGIN,    listener: (creds: EvLoginCredentials) => void): EventSubsystem;
-    public on(event: Event.REQUEST_REGISTER, listener: (creds: EvRegisterCredentials) => void): EventSubsystem;
-    public on(event: Event.REQUEST_OFFLINE,  listener: (creds: EvLocalCredentials) => void): EventSubsystem;
+    public on(event: Event.REQUEST_LOGIN,        listener: (creds: EvLoginCredentials) => void): EventSubsystem;
+    public on(event: Event.REQUEST_REGISTRATION, listener: (creds: EvRegistrationCredentials) => void): EventSubsystem;
+    public on(event: Event.REQUEST_OFFLINE,      listener: (creds: EvLocalCredentials) => void): EventSubsystem;
+    public on(event: Event.REQUEST_AGREE_TERMS,  listener: (code:  EvRegistrationCode) => void): EventSubsystem;
 
     public on(event: Event.RESPONSE_LOGIN_OK,           listener: (msg: PtclLoginOk) => void): EventSubsystem;
     public on(event: Event.RESPONSE_LOGIN_ERROR,        listener: (msg: PtclLoginErr) => void): EventSubsystem;

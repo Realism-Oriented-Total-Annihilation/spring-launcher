@@ -3,9 +3,10 @@
 //
 import { sl } from "../../../renderer";
 
+import { Event } from "../../events/keys";
+
 import { WidgetBase } from "../../widgets/base";
 import { InputField } from "../../widgets/input";
-import { Event } from "../../events/keys";
 
 
 export class Login extends WidgetBase
@@ -298,7 +299,17 @@ class FormRegister extends WidgetBase
             if (passwd != confirm) {
                 // TODO error out
             } else {
-                sl.events.emit(Event.REQUEST_REGISTER, {
+                // Once registration succeeded, we want to login
+                sl.events.on(Event.RESPONSE_REGISTRATION_OK, () => {
+                    // sl.login.
+                    sl.events.emit(Event.REQUEST_LOGIN, {
+                        user:     user,
+                        password: passwd,
+                    })
+                });
+
+                // Request registration
+                sl.events.emit(Event.REQUEST_REGISTRATION, {
                     user:     user,
                     password: passwd,
                     email:    email
