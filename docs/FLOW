@@ -1,7 +1,7 @@
 # Main Client Flows
-- Online (WAN): (Registration) -> Login                        -> Battle List -> Create Battle -> Battle Room -> Parametrize? -> Play
-- Local (LAN):                 -> Pick Name -> [Spawns Server] -> Battle List -> Create Battle -> Battle Room -> Parametrize? -> Play
-- Offline:                     -> Pick Name                    ->             -> Create Battle -> Battle Room -> Parametrize? -> Play
+- Online (WAN): (Registration) -> Login                        -> Select Game -> Battle List   -> Create Battle -> Battle Room  -> Parametrize? -> Play
+- Local (LAN):                 -> Pick Name -> [Spawns Server] -> Battle List -> Create Battle -> Battle Room   -> Parametrize? -> Play
+- Offline:                     -> Pick Name                    ->             -> Create Battle -> Battle Room   -> Parametrize? -> Play
 
 # Side Flows
 - Spring Config

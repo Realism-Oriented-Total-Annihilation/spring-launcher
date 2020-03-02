@@ -15,13 +15,19 @@ export interface PtclLoginErr
 }
 
 
-export interface PtctRegistrationOk
+export interface PtclRegistrationOk
 {
 
 }
 
 
-export interface PtctRegistrationErr
+export interface PtclRegistrationErr
 {
     reason: string;
+}
+
+
+export interface PtclAgreement
+{
+    terms: string
 }

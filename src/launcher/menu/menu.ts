@@ -6,7 +6,7 @@ import { WidgetBase } from "../widgets/base";
 import { TabContainer } from "./container";
 
 
-export class Menu extends WidgetBase
+export class Menu extends WidgetBase<HTMLDivElement>
 {
     private top:    TabContainer;
     private center: TabContainer;
@@ -14,7 +14,7 @@ export class Menu extends WidgetBase
 
     constructor(parent: HTMLDivElement)
     {
-        super(parent);
+        super(parent, document.createElement("div"));
 
         // ORDER IS IMPORTANT!! FLEX PROPERTY...
         this.top    = new TabContainer(this.container, "top");

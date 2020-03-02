@@ -4,10 +4,11 @@
 import { WidgetBase } from "../widgets/base";
 
 
-export class BattleList extends WidgetBase
+// Not sure if it has to be a div
+export class BattleList extends WidgetBase<HTMLDivElement>
 {
     constructor(parent: HTMLDivElement)
     {
-        super(parent);
+        super(parent, document.createElement("div"));
     }
 }

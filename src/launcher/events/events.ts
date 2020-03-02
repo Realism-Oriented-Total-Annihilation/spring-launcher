@@ -7,17 +7,18 @@ import { Tab }        from "../menu/tab";
 import { ChatButton } from "../modules/chat/bar";
 
 import { EvLoginCredentials }        from "./auth";
-import { EvRegistrationCode }        from "./auth";
+import { EvVerificationCode }        from "./auth";
 import { EvRegistrationCredentials } from "./auth";
 import { EvLocalCredentials }        from "./auth";
 
-import { PtclLoginOk }         from "../backend/uberserver/ptcl";
+import { PtclLoginOk, PtclAgreement }         from "../backend/uberserver/ptcl";
 import { PtclLoginErr }        from "../backend/uberserver/ptcl";
-import { PtctRegistrationOk }  from "../backend/uberserver/ptcl";
-import { PtctRegistrationErr } from "../backend/uberserver/ptcl";
+import { PtclRegistrationOk }  from "../backend/uberserver/ptcl";
+import { PtclRegistrationErr } from "../backend/uberserver/ptcl";
 
 import { Event } from "./keys";
 import { EvServerSettings } from "./server";
+import { GameBase } from "../modules/login/games";
 
 
 export class EventSubsystem
@@ -41,6 +42,8 @@ export class EventSubsystem
     public emit(event: Event.MODE_ONLINE, cfg: EvServerSettings): EventSubsystem;
     public emit(event: Event.MODE_LOCAL): EventSubsystem;
 
+    public emit(event: Event.GAME_SELECTED, game: GameBase): EventSubsystem;
+
     public emit(event: Event.SERVER_READY):  EventSubsystem;
     public emit(event: Event.SERVER_CLOSED): EventSubsystem;
     public emit(event: Event.SERVER_FAILED): EventSubsystem;
@@ -48,12 +51,14 @@ export class EventSubsystem
     public emit(event: Event.REQUEST_LOGIN,        creds: EvLoginCredentials): EventSubsystem;
     public emit(event: Event.REQUEST_REGISTRATION, creds: EvRegistrationCredentials): EventSubsystem;
     public emit(event: Event.REQUEST_OFFLINE,      creds: EvLocalCredentials): EventSubsystem;
-    public emit(event: Event.REQUEST_AGREE_TERMS,  code:  EvRegistrationCode): EventSubsystem;
+    public emit(event: Event.REQUEST_AGREE_TERMS,  code:  EvVerificationCode): EventSubsystem;
 
     public emit(event: Event.RESPONSE_LOGIN_OK,           msg: PtclLoginOk): EventSubsystem;
     public emit(event: Event.RESPONSE_LOGIN_ERROR,        msg: PtclLoginErr): EventSubsystem;
-    public emit(event: Event.RESPONSE_REGISTRATION_OK,    msg: PtctRegistrationOk): EventSubsystem;
-    public emit(event: Event.RESPONSE_REGISTRATION_ERROR, msg: PtctRegistrationErr): EventSubsystem;
+    public emit(event: Event.RESPONSE_LOGIN_AGREEMENT,    msg: PtclAgreement): EventSubsystem;
+    public emit(event: Event.RESPONSE_REGISTRATION_OK,    msg: PtclRegistrationOk): EventSubsystem;
+    public emit(event: Event.RESPONSE_REGISTRATION_ERROR, msg: PtclRegistrationErr): EventSubsystem;
+    public emit(event: Event.RESPONSE_PONG): EventSubsystem;
 
     public emit(event: Event, ...args: any[]): EventSubsystem
     {
@@ -73,6 +78,8 @@ export class EventSubsystem
     public on(event: Event.MODE_ONLINE, listener: (cfg: EvServerSettings) => void): EventSubsystem;
     public on(event: Event.MODE_LOCAL,  listener: () => void): EventSubsystem;
 
+    public on(event: Event.GAME_SELECTED,  listener: (game: GameBase) => void): EventSubsystem;
+
     public on(event: Event.SERVER_READY,  listener: () => void): EventSubsystem;
     public on(event: Event.SERVER_CLOSED, listener: () => void): EventSubsystem;
     public on(event: Event.SERVER_FAILED, listener: () => void): EventSubsystem;
@@ -80,12 +87,14 @@ export class EventSubsystem
     public on(event: Event.REQUEST_LOGIN,        listener: (creds: EvLoginCredentials) => void): EventSubsystem;
     public on(event: Event.REQUEST_REGISTRATION, listener: (creds: EvRegistrationCredentials) => void): EventSubsystem;
     public on(event: Event.REQUEST_OFFLINE,      listener: (creds: EvLocalCredentials) => void): EventSubsystem;
-    public on(event: Event.REQUEST_AGREE_TERMS,  listener: (code:  EvRegistrationCode) => void): EventSubsystem;
+    public on(event: Event.REQUEST_AGREE_TERMS,  listener: (code:  EvVerificationCode) => void): EventSubsystem;
 
     public on(event: Event.RESPONSE_LOGIN_OK,           listener: (msg: PtclLoginOk) => void): EventSubsystem;
     public on(event: Event.RESPONSE_LOGIN_ERROR,        listener: (msg: PtclLoginErr) => void): EventSubsystem;
-    public on(event: Event.RESPONSE_REGISTRATION_OK,    listener: (msg: PtctRegistrationOk) => void): EventSubsystem;
-    public on(event: Event.RESPONSE_REGISTRATION_ERROR, listener: (msg: PtctRegistrationErr) => void): EventSubsystem;
+    public on(event: Event.RESPONSE_LOGIN_AGREEMENT,    listener: (msg: PtclAgreement) => void): EventSubsystem;
+    public on(event: Event.RESPONSE_REGISTRATION_OK,    listener: (msg: PtclRegistrationOk) => void): EventSubsystem;
+    public on(event: Event.RESPONSE_REGISTRATION_ERROR, listener: (msg: PtclRegistrationErr) => void): EventSubsystem;
+    public on(event: Event.RESPONSE_PONG,               listener: () => void): EventSubsystem;
 
     public on(event: Event, listener: (...args: any[]) => void): EventSubsystem
     {

@@ -24,7 +24,7 @@ export interface EvLocalCredentials
 }
 
 
-export interface EvRegistrationCode
+export interface EvVerificationCode
 {
     code: string
 }

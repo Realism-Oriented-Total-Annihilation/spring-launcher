@@ -10,13 +10,13 @@ import { Event } from "../../events/keys";
 import { ChatButton } from "./bar";
 
 
-export class Chat extends WidgetBase
+export class Chat extends WidgetBase<HTMLDivElement>
 {
     private messages: HTMLParagraphElement[];
 
     constructor(parent: HTMLDivElement)
     {
-        super(parent);
+        super(parent, document.createElement("div"));
 
         this.messages = [];
 

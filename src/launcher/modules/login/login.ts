@@ -9,7 +9,7 @@ import { WidgetBase } from "../../widgets/base";
 import { InputField } from "../../widgets/input";
 
 
-export class Login extends WidgetBase
+export class Login extends WidgetBase<HTMLDivElement>
 {
     private springlogo: HTMLDivElement;
 
@@ -22,7 +22,7 @@ export class Login extends WidgetBase
 
     constructor(parent: HTMLDivElement)
     {
-        super(parent);
+        super(parent, document.createElement("div"));
 
         this.springlogo   = document.createElement("div");
         this.changebutton = document.createElement("button");
@@ -104,7 +104,7 @@ export class Login extends WidgetBase
 }
 
 
-class FormSelector extends WidgetBase
+class FormSelector extends WidgetBase<HTMLDivElement>
 {
     private lbl_login:    HTMLLabelElement;
     private lbl_register: HTMLLabelElement;
@@ -112,7 +112,7 @@ class FormSelector extends WidgetBase
 
     constructor(parent: HTMLElement)
     {
-        super(parent, {mode: "flex"});
+        super(parent, document.createElement("div") , {mode: "flex"});
 
         this.lbl_login    = document.createElement("label");
         this.lbl_register = document.createElement("label");
@@ -185,7 +185,7 @@ class FormSelector extends WidgetBase
 }
 
 
-class FormLogin extends WidgetBase
+class FormLogin extends WidgetBase<HTMLFormElement>
 {
     private field_user:   InputField;
     private field_passwd: InputField;
@@ -193,7 +193,7 @@ class FormLogin extends WidgetBase
 
     constructor(parent: HTMLElement)
     {
-        super(parent, {type: "form"});
+        super(parent, document.createElement("form"));
 
         this.container.className = "login-form";
 
@@ -231,25 +231,52 @@ class FormLogin extends WidgetBase
                 password: passwd
             });
 
+            // Pass the ball to game selector
+            sl.events.on(Event.RESPONSE_LOGIN_OK, () => {
+                sl.select_game();
+            })
+
+            this.loading();
+            this.container.reset();
             ev.preventDefault();
         }
+
+        sl.events.on(Event.RESPONSE_LOGIN_AGREEMENT, (agreement) => {
+            let text = document.createElement("label");
+
+            text.innerText = agreement.terms;
+
+            this.container.appendChild(text);
+        });
+    }
+
+    private loading()
+    {
+        let loader = document.createElement("div");
+        loader.className = "loader";
+        loader.style.position = "fixed";
+        loader.style.right = "5px";
+        loader.style.bottom = "288px";
+        this.container.appendChild(loader);
     }
 }
 
 
-class FormRegister extends WidgetBase
+class FormRegister extends WidgetBase<HTMLFormElement>
 {
     private field_user:    InputField;
     private field_passwd:  InputField;
     private field_confirm: InputField;
     private field_email:   InputField;
     private field_button:  InputField;
+    private verify:        FormAgreeTerms;
 
     constructor(parent: HTMLElement)
     {
-        super(parent, {type: "form"});
+        super(parent, document.createElement("form"));
 
         this.container.className = "login-form";
+        this.container.id = "register-form";
 
         this.field_user = new InputField(this.container, {
             class:       "login-input",
@@ -285,6 +312,8 @@ class FormRegister extends WidgetBase
             value: "Register"
         });
 
+        this.verify = new FormAgreeTerms(parent);
+
         this.setup_wiring();
     }
 
@@ -302,10 +331,13 @@ class FormRegister extends WidgetBase
                 // Once registration succeeded, we want to login
                 sl.events.on(Event.RESPONSE_REGISTRATION_OK, () => {
                     // sl.login.
-                    sl.events.emit(Event.REQUEST_LOGIN, {
-                        user:     user,
-                        password: passwd,
-                    })
+                    this.hide();
+                    this.verify.show();
+
+                    // sl.events.emit(Event.REQUEST_LOGIN, {
+                    //     user:     user,
+                    //     password: passwd,
+                    // })
                 });
 
                 // Request registration
@@ -316,20 +348,32 @@ class FormRegister extends WidgetBase
                 });
             }
 
+            this.loading();
+            this.container.reset();
             ev.preventDefault();
         }
+    }
+
+    private loading()
+    {
+        let loader = document.createElement("div");
+        loader.className = "loader";
+        loader.style.position = "fixed";
+        loader.style.right = "4px";
+        loader.style.bottom = "159px";
+        this.container.appendChild(loader);
     }
 }
 
 
-class FormLocal extends WidgetBase
+class FormLocal extends WidgetBase<HTMLFormElement>
 {
     private field_user:   InputField;
     private field_button: InputField;
 
     constructor(parent: HTMLElement)
     {
-        super(parent, {type: "form"});
+        super(parent, document.createElement("form")); // {type: "form"}
 
         this.container.className = "login-form";
 
@@ -356,6 +400,76 @@ class FormLocal extends WidgetBase
 
             sl.events.emit(Event.REQUEST_OFFLINE, {
                 user: user,
+            });
+
+            this.loading();
+            this.container.reset();
+            ev.preventDefault();
+        }
+    }
+
+    private loading()
+    {
+        let loader = document.createElement("div");
+
+        loader.className = "loader";
+
+        loader.style.position = "fixed";
+        loader.style.right    = "4px";
+        loader.style.top      = "320px";
+
+        this.container.appendChild(loader);
+    }
+}
+
+export class FormAgreeTerms extends WidgetBase<HTMLFormElement>
+{
+    private label_info: HTMLDivElement;
+
+    private field_code:   InputField;
+    private field_button: InputField;
+
+    constructor(parent: HTMLElement)
+    {
+        super(parent, document.createElement("form"), {mode: "inline-block"}); // {type: "form"}
+
+        this.label_info = document.createElement("div");
+
+        this.setup_dom();
+
+        this.field_code = new InputField(this.container, {
+            class:       "login-input",
+            type:        "text",
+            placeholder: "Verification code",
+            required:    false
+        });
+
+        this.field_button = new InputField(this.container, {
+            class: "login-button",
+            type:  "submit",
+            value: "Done"
+        });
+
+        this.setup_wiring();
+        this.hide();
+    }
+
+    private setup_dom()
+    {
+        this.container.className = "login-form";
+        this.label_info.id = "verification-info";
+        this.label_info.innerHTML = "We have sent you a verification code, please check your e-mail!"
+
+        this.container.appendChild(this.label_info);
+    }
+
+    private setup_wiring()
+    {
+        this.container.onsubmit = (ev) => {
+            let code = this.field_code.value;
+
+            sl.events.emit(Event.REQUEST_AGREE_TERMS, {
+                code: code,
             });
 
             ev.preventDefault();

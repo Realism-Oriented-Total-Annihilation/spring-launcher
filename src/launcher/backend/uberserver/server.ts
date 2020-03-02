@@ -13,7 +13,7 @@ import { sl } from "../../../renderer";
 import { Event }  from "../../events/keys";
 
 import { EvLoginCredentials }        from "../../events/auth";
-import { EvRegistrationCode }        from "../../events/auth";
+import { EvVerificationCode }        from "../../events/auth";
 import { EvRegistrationCredentials } from "../../events/auth";
 
 import * as cmd from "./cmds";
@@ -22,12 +22,13 @@ import { Message }     from "./msg";
 import { MessageType } from "./cmds";
 
 import { PtclLoginOk }        from "./ptcl";
-import { PtctRegistrationOk } from "./ptcl";
+import { PtclRegistrationOk } from "./ptcl";
 
 
 export class UberServer
 {
-    private sock: Socket;
+    private sock:  Socket;
+    private timer: NodeJS.Timeout;
 
     constructor(host: string, port: number)
     {
@@ -37,6 +38,8 @@ export class UberServer
         this.setup_wiring();
 
         this.sock.connect(port, host);
+
+        this.timer = this.reset_timer();
     }
 
     public login(creds: EvLoginCredentials)
@@ -54,9 +57,14 @@ export class UberServer
         );
     }
 
-    public agree(code?: EvRegistrationCode)
+    public agree(code?: EvVerificationCode)
     {
         this.send(MessageType.CONFIRMAGREEMENT, code ? [code.code] : []);
+    }
+
+    public ping()
+    {
+        this.send(MessageType.PING);
     }
 
     private send(cmd: MessageType, words?: string[], sentences?: string[])
@@ -76,6 +84,7 @@ export class UberServer
         console.debug(`[server][>] ${raw}`);
 
         this.sock.write(raw);
+        this.reset_timer();
     }
 
     private recv(raw: string)
@@ -88,8 +97,10 @@ export class UberServer
         {
             case MessageType.ACCEPTED:             sl.events.emit(Event.RESPONSE_LOGIN_OK,           msg.into_login_ok()); break;
             case MessageType.DENIED:               sl.events.emit(Event.RESPONSE_LOGIN_ERROR,        msg.into_login_error()); break;
+            case MessageType.AGREEMENT:            sl.events.emit(Event.RESPONSE_LOGIN_AGREEMENT,    msg.into_login_agreement()); break;
             case MessageType.REGISTRATIONACCEPTED: sl.events.emit(Event.RESPONSE_REGISTRATION_OK,    msg.into_registration_ok()); break;
             case MessageType.REGISTRATIONDENIED:   sl.events.emit(Event.RESPONSE_REGISTRATION_ERROR, msg.into_registration_error()); break;
+            case MessageType.PONG:                 sl.events.emit(Event.RESPONSE_PONG); break;
 
             default:
                 console.warn(`Protocol handling not yet implemented for: ${MessageType[msg.command]}`);
@@ -114,16 +125,23 @@ export class UberServer
 
     private setup_events()
     {
-        this.sock.addListener("close", () => {
-            sl.events.emit(Event.SERVER_CLOSED);
-        });
-
-        this.sock.addListener("error", () => {
-            sl.events.emit(Event.SERVER_FAILED);
-        });
+        this.sock.addListener("close", () => { sl.events.emit(Event.SERVER_CLOSED); });
+        this.sock.addListener("error", () => { sl.events.emit(Event.SERVER_FAILED); });
 
         sl.events.on(Event.REQUEST_LOGIN,        (creds) => { this.login(creds); })
         sl.events.on(Event.REQUEST_REGISTRATION, (creds) => { this.register(creds); })
         sl.events.on(Event.REQUEST_AGREE_TERMS,  (code)  => { this.agree(code); })
+    }
+
+    private reset_timer(): NodeJS.Timeout
+    {
+        clearInterval(this.timer);
+
+        this.timer = setInterval(
+            () => { this.ping(); },
+            30000
+        );
+
+        return this.timer;
     }
 }

@@ -1,0 +1,87 @@
+/*
+*
+* Game selector screen styling
+*
+*/
+
+#all /* Parent div */
+{
+    display: flex;
+    flex-direction: row;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: rgb(37, 37, 38);
+}
+
+#game-selector
+{
+    display: flex;
+    flex-direction: column;
+
+    flex-shrink: 1;
+
+    background-color: rgb(51, 51, 51);
+}
+
+#game-info
+{
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    width: 65%;
+}
+
+#game-legend
+{
+    flex-grow: 1;
+
+    width: 100%;
+    height: 30%;
+
+    background-color: rgb(37, 37, 38);
+
+    /* TODO the same non showing scroll bar trick as in chat */
+    overflow: auto;
+}
+
+#game-image
+{
+    height: 70%;
+    width: 100%;
+}
+
+.game
+{
+    height: 35px;
+    width:  90px;
+
+    color: white;
+}
+
+#launch-button
+{
+    height: 90px;
+    width:  150px;
+
+    border-radius: 7px;
+    font-size:     30px;
+    color: white;
+}
+
+.game-button
+{
+    height: 35px;
+    width:  90px;
+
+    border-radius: 7px;
+    font-size:     18px;
+    /* margin-left:   10%; */
+
+    color: white;
+}
+
+
+

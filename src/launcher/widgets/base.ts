@@ -5,26 +5,27 @@
 
 interface WidgetBaseOptions
 {
-    type?: "div" | "form";
+    // type?: "div" | "form";
     mode?: "flex" | "block" | "inline-block";
 }
 
-export class WidgetBase
+export class WidgetBase<E extends HTMLElement>
 {
     private parent: HTMLElement;
     private mode:   string;
 
-    protected container: HTMLElement;
+    protected container: E;
 
-    constructor(parent: HTMLElement, options?: WidgetBaseOptions)
+    constructor(parent: HTMLElement, self: E, options?: WidgetBaseOptions)
     {
-        this.parent = parent;
+        this.parent    = parent;
+        this.container = self;
 
-        if (options?.type) {
-            this.container = document.createElement(options?.type);
-        } else {
-            this.container = document.createElement("div");
-        }
+        // if (options?.type) {
+        //     this.container = document.createElement(options?.type);
+        // } else {
+        //     this.container = document.createElement("div");
+        // }
 
         if (options?.mode) {
             this.mode = options?.mode;

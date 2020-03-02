@@ -11,14 +11,14 @@ import { Event } from "../../events/keys";
 import { WidgetBase } from "../../widgets/base";
 
 
-export class ChatBar extends WidgetBase
+export class ChatBar extends WidgetBase<HTMLDivElement>
 {
     private chtbtn:   ChatButton;
     private chtinput: ChatInput;
 
     constructor(parent: HTMLElement)
     {
-        super(parent);
+        super(parent, document.createElement("div"));
 
         this.chtbtn   = new ChatButton(this.container);
         this.chtinput = new ChatInput(this.container);
