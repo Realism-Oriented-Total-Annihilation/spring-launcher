@@ -26,21 +26,12 @@ export class Launcher
 {
     public events: EventSubsystem;
 
-    // Login
-    public logincontent: HTMLDivElement;
-    public login:        LoginModule;
-
-    // Game Selection
-    public gameselectioncontent: HTMLDivElement;
-    public games:         GameSelector;
-
-    // Lobby
-    public lobbycontent: HTMLDivElement;
-
     public menu:    Menu;
     public chatbar: ChatBar;
     public chat:    Chat;
 
+    public login:      LoginModule;
+    public games:      GameSelector;
     public battlelist: BattleList;
     public battleroom: BattleRoom;
     public download:   Download;
@@ -53,25 +44,17 @@ export class Launcher
 
     constructor()
     {
-        this.window  = <HTMLDivElement>document.getElementById("window");
+        this.window = <HTMLDivElement>document.getElementById("window");
+
         this.events  = new EventSubsystem();
         this.backend = <any>null;
-
-        // Login
-        this.logincontent = document.createElement("div");
-        this.login        = <any>null;
-
-        // Game Selection
-        this.gameselectioncontent = document.createElement("div");
-        this.games = <any> null;
-
-        // Lobby
-        this.lobbycontent = document.createElement("div");
 
         this.menu    = <any>null;
         this.chatbar = <any>null;
         this.chat    = <any>null;
 
+        this.login      = <any>null;
+        this.games      = <any>null;
         this.battlelist = <any>null;
         this.battleroom = <any>null;
         this.download   = <any>null;
@@ -81,46 +64,14 @@ export class Launcher
         this.setup_dom();
     }
 
-    public init()
+    public run()
     {
-        this.backend = new Backend();
-
-        // Login
-        this.login = new LoginModule(this.logincontent);
-
-        // Game Selection
-        this.games = new GameSelector(this.gameselectioncontent);
-
-        // Lobby
-        this.menu       = new Menu(this.lobbycontent);
-        this.chatbar    = new ChatBar(this.lobbycontent);
-        this.chat       = new Chat(this.lobbycontent);
-        this.battlelist = new BattleList(this.lobbycontent);
-        this.battleroom = new BattleRoom(this.lobbycontent);
-        this.download   = new Download(this.lobbycontent);
-        this.profile    = new Profile(this.lobbycontent);
-        this.settings   = new Settings(this.lobbycontent);
+        this.backend  = new Backend();
+        this.download = new Download(this.window);
 
         this.setup_events();
 
         sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_ONLINE);
-    }
-
-    public authenticate()
-    {
-        this.window.appendChild(this.logincontent);
-    }
-
-    public select_game()
-    {
-        this.window.removeChild(this.logincontent);
-        this.window.appendChild(this.gameselectioncontent);
-    }
-
-    public launch_lobby()
-    {
-        this.window.removeChild(this.gameselectioncontent);
-        this.window.appendChild(this.lobbycontent);
     }
 
     private setup_dom()
@@ -130,6 +81,74 @@ export class Launcher
 
     private setup_events()
     {
-        // NOOP
+        // lazy loading of sections
+        sl.events.on(Event.SELECT_MODE, (mode) =>
+        {
+            switch (mode)
+            {
+                case EvGuiMode.LOGIN_ONLINE:
+                    if (this.login == null) {
+                        this.login = new LoginModule(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_ONLINE);
+                    }
+                    break;
+
+                case EvGuiMode.LOGIN_REGISTER:
+                    if (this.login == null) {
+                        this.login = new LoginModule(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_REGISTER);
+                    }
+                    break;
+
+                case EvGuiMode.LOGIN_OFFLINE:
+                    if (this.login == null) {
+                        this.login = new LoginModule(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_OFFLINE);
+                    }
+                    break;
+
+                case EvGuiMode.LOGIN_TERMS:
+                    if (this.login == null) {
+                        this.login = new LoginModule(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_TERMS);
+                    }
+                    break;
+
+                case EvGuiMode.GAME_SELECT:
+                    if (this.games == null) {
+                        this.games = new GameSelector(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.GAME_SELECT);
+                    }
+                    break;
+
+                case EvGuiMode.BATTLE_LIST:
+                    if (this.battlelist == null) {
+                        this.battlelist = new BattleList(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.BATTLE_LIST);
+                    }
+                    break;
+
+                case EvGuiMode.BATTLE_ROOM:
+                    if (this.battleroom == null) {
+                        this.battleroom = new BattleRoom(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.BATTLE_ROOM);
+                    }
+                    break;
+
+                case EvGuiMode.PROFILE:
+                    if (this.profile == null) {
+                        this.profile = new Profile(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.PROFILE);
+                    }
+                    break;
+
+                case EvGuiMode.SETTINGS:
+                    if (this.settings == null) {
+                        this.settings = new Settings(this.window);
+                        sl.events.emit(Event.SELECT_MODE, EvGuiMode.SETTINGS);
+                    }
+                    break;
+            }
+        });
     }
 }

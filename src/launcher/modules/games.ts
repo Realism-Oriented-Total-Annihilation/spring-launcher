@@ -6,16 +6,17 @@ import { sl } from "../../renderer";
 import { Event } from "../events/keys";
 
 import { WidgetBase } from "../widgets/base";
+import { EvGuiMode } from "../events/gui";
 
 
 export class GameSelector extends WidgetBase<HTMLDivElement>
 {
-
     constructor(parent: HTMLElement)
     {
         super(parent, document.createElement("div"));
 
         this.setup_dom();
+        this.setup_events();
     }
 
     private setup_dom()
@@ -28,13 +29,29 @@ export class GameSelector extends WidgetBase<HTMLDivElement>
         let game = new GameBase(this.container, name, imgpth);
         this.container.appendChild(game.container);
     }
+
+    private setup_events()
+    {
+        sl.events.on(Event.SELECT_MODE, (mode) =>
+        {
+            switch (mode)
+            {
+                case EvGuiMode.GAME_SELECT:
+                    this.show();
+                    break;
+
+                default:
+                    this.hide();
+            }
+        });
+    }
 }
 
 
 export class GameInfo extends WidgetBase<HTMLDivElement>
 {
-    private gamelegend: HTMLDivElement; // Text information about the mod
-    private gameimg: HTMLDivElement;
+    private gamelegend: HTMLDivElement;  // Text information about the mod
+    private gameimg:    HTMLDivElement;
 
     private launchbtn: HTMLButtonElement;
 
