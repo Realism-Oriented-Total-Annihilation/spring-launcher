@@ -18,7 +18,9 @@ import { PtclRegistrationErr } from "../backend/uberserver/ptcl";
 
 import { Event } from "./keys";
 import { EvServerSettings } from "./server";
-import { GameBase } from "../modules/login/games";
+import { EvGuiMode } from "./gui";
+
+import { GameBase } from "../modules/games";
 
 
 export class EventSubsystem
@@ -31,6 +33,8 @@ export class EventSubsystem
     }
 
     // signals emittance
+    public emit(event: Event.SELECT_MODE, mode: EvGuiMode): EventSubsystem;
+
     public emit(event: Event.TAB_SELECTED, tab: Tab): EventSubsystem;
 
     public emit(event: Event.CHAT_SHOW, chtbtn: ChatButton): EventSubsystem;
@@ -39,8 +43,8 @@ export class EventSubsystem
     public emit(event: Event.MSG_SENT,     msg: string): EventSubsystem;
     public emit(event: Event.MSG_RECEIVED, msg: string): EventSubsystem;
 
-    public emit(event: Event.MODE_ONLINE, cfg: EvServerSettings): EventSubsystem;
-    public emit(event: Event.MODE_LOCAL): EventSubsystem;
+    // public emit(event: Event.MODE_ONLINE, cfg: EvServerSettings): EventSubsystem;
+    // public emit(event: Event.MODE_LOCAL): EventSubsystem;
 
     public emit(event: Event.GAME_SELECTED, game: GameBase): EventSubsystem;
 
@@ -67,6 +71,8 @@ export class EventSubsystem
     }
 
     // listener registration
+    public on(event: Event.SELECT_MODE, listener: (mode: EvGuiMode) => void): EventSubsystem;
+
     public on(event: Event.TAB_SELECTED, listener: (tab: Tab) => void): EventSubsystem;
 
     public on(event: Event.CHAT_SHOW, listener: (chtbtn: ChatButton) => void): EventSubsystem;
@@ -75,8 +81,8 @@ export class EventSubsystem
     public on(event: Event.MSG_SENT,     listener: (msg: string) => void): EventSubsystem;
     public on(event: Event.MSG_RECEIVED, listener: (msg: string) => void): EventSubsystem;
 
-    public on(event: Event.MODE_ONLINE, listener: (cfg: EvServerSettings) => void): EventSubsystem;
-    public on(event: Event.MODE_LOCAL,  listener: () => void): EventSubsystem;
+    // public on(event: Event.MODE_ONLINE, listener: (cfg: EvServerSettings) => void): EventSubsystem;
+    // public on(event: Event.MODE_LOCAL,  listener: () => void): EventSubsystem;
 
     public on(event: Event.GAME_SELECTED,  listener: (game: GameBase) => void): EventSubsystem;
 

@@ -10,15 +10,14 @@ import { InputField } from "../../widgets/input";
 import { EvGuiMode } from "../../events/gui";
 
 
-export class FormLogin extends WidgetBase<HTMLFormElement>
+export class FormLocal extends WidgetBase<HTMLFormElement>
 {
     private field_user:   InputField;
-    private field_passwd: InputField;
     private field_button: InputField;
 
     constructor(parent: HTMLElement)
     {
-        super(parent, document.createElement("form"));
+        super(parent, document.createElement("form")); // {type: "form"}
 
         this.container.className = "login-form";
 
@@ -29,17 +28,10 @@ export class FormLogin extends WidgetBase<HTMLFormElement>
             required:    true
         });
 
-        this.field_passwd = new InputField(this.container, {
-            class:       "login-input",
-            type:        "password",
-            placeholder: "Password",
-            required:    true
-        });
-
         this.field_button = new InputField(this.container, {
             class: "login-button",
             type:  "submit",
-            value: "Login"
+            value: "Done"
         });
 
         this.setup_wiring();
@@ -48,29 +40,17 @@ export class FormLogin extends WidgetBase<HTMLFormElement>
 
     private setup_wiring()
     {
-        this.container.onsubmit = (ev) =>
-        {
-            let user   = this.field_user.value;
-            let passwd = this.field_passwd.value;
+        this.container.onsubmit = (ev) => {
+            let user = this.field_user.value;
 
-            sl.events.on(Event.RESPONSE_LOGIN_OK, () => {
-                sl.events.emit(Event.SELECT_MODE, EvGuiMode.GAME_SELECT);
-            })
-
-            sl.events.on(Event.RESPONSE_LOGIN_AGREEMENT, () => {
-                sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_TERMS);
-            })
-
-            sl.events.emit(Event.REQUEST_LOGIN, {
-                user:     user,
-                password: passwd
+            sl.events.emit(Event.REQUEST_OFFLINE, {
+                user: user,
             });
 
             this.loading();
-
-            ev.preventDefault();
             this.container.reset();
-        };
+            ev.preventDefault();
+        }
     }
 
     private setup_events()
@@ -79,14 +59,14 @@ export class FormLogin extends WidgetBase<HTMLFormElement>
         {
             switch (mode)
             {
-                case EvGuiMode.LOGIN_ONLINE:
+                case EvGuiMode.LOGIN_OFFLINE:
                     this.show();
                     break;
 
                 default:
                     this.hide();
             }
-        })
+        });
     }
 
     private loading()
@@ -96,8 +76,8 @@ export class FormLogin extends WidgetBase<HTMLFormElement>
         loader.className = "loader";
 
         loader.style.position = "fixed";
-        loader.style.right    = "5px";
-        loader.style.bottom   = "288px";
+        loader.style.right    = "4px";
+        loader.style.top      = "320px";
 
         this.container.appendChild(loader);
     }

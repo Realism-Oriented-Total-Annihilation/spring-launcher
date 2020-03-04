@@ -9,16 +9,17 @@ import { Chat }    from "./modules/chat/chat";
 import { ChatBar } from "./modules/chat/bar";
 
 // modules
-import { Profile }    from "./modules/profile";
-import { Login }      from "./modules/login/login";
-import { BattleList } from "./modules/battlelist";
-import { BattleRoom } from "./modules/battleroom";
-import { Download }   from "./modules/download";
-import { Settings }   from "./modules/settings";
-import { Backend }    from "./backend/backend";
+import { Profile }     from "./modules/profile";
+import { LoginModule } from "./modules/login/mod";
+import { BattleList }  from "./modules/battlelist";
+import { BattleRoom }  from "./modules/battleroom";
+import { Download }    from "./modules/download";
+import { Settings }    from "./modules/settings";
+import { Backend }     from "./backend/backend";
 import { sl } from "../renderer";
 import { Event } from "./events/keys";
-import { GameSelector } from "./modules/login/games";
+import { GameSelector } from "./modules/games";
+import { EvGuiMode } from "./events/gui";
 
 
 export class Launcher
@@ -27,11 +28,11 @@ export class Launcher
 
     // Login
     public logincontent: HTMLDivElement;
-    public login:        Login;
+    public login:        LoginModule;
 
     // Game Selection
     public gameselectioncontent: HTMLDivElement;
-    public gameselector:         GameSelector;
+    public games:         GameSelector;
 
     // Lobby
     public lobbycontent: HTMLDivElement;
@@ -52,12 +53,9 @@ export class Launcher
 
     constructor()
     {
-        this.window = <HTMLDivElement>document.getElementById("window");
-
-        this.events = new EventSubsystem();
-
+        this.window  = <HTMLDivElement>document.getElementById("window");
+        this.events  = new EventSubsystem();
         this.backend = <any>null;
-
 
         // Login
         this.logincontent = document.createElement("div");
@@ -65,8 +63,7 @@ export class Launcher
 
         // Game Selection
         this.gameselectioncontent = document.createElement("div");
-        this.gameselector = <any> null;
-
+        this.games = <any> null;
 
         // Lobby
         this.lobbycontent = document.createElement("div");
@@ -89,10 +86,10 @@ export class Launcher
         this.backend = new Backend();
 
         // Login
-        this.login = new Login(this.logincontent);
+        this.login = new LoginModule(this.logincontent);
 
         // Game Selection
-        this.gameselector = new GameSelector(this.gameselectioncontent);
+        this.games = new GameSelector(this.gameselectioncontent);
 
         // Lobby
         this.menu       = new Menu(this.lobbycontent);
@@ -106,7 +103,7 @@ export class Launcher
 
         this.setup_events();
 
-        this.login.show();
+        sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_ONLINE);
     }
 
     public authenticate()
@@ -133,8 +130,6 @@ export class Launcher
 
     private setup_events()
     {
-        sl.events.on(Event.RESPONSE_LOGIN_OK, () => {
-            this.login.hide();
-        })
+        // NOOP
     }
 }

@@ -7,6 +7,8 @@ export type EventKeys = keyof typeof Event;
 
 export enum Event
 {
+    SELECT_MODE,
+
     TAB_SELECTED,
 
     CHAT_SHOW,

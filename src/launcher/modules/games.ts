@@ -1,11 +1,11 @@
 //
 // Spring mod selector
 //
+import { sl } from "../../renderer";
 
-import { sl } from "../../../renderer";
-import { Event } from "../../events/keys";
+import { Event } from "../events/keys";
 
-import { WidgetBase } from "../../widgets/base";
+import { WidgetBase } from "../widgets/base";
 
 
 export class GameSelector extends WidgetBase<HTMLDivElement>
@@ -92,9 +92,9 @@ export class GameBase
         this.container = document.createElement("div");
         this.imgpth    = imgpth;
 
-        this.button    = document.createElement("button");
+        this.button = document.createElement("button");
 
-        this.name      = name;
+        this.name = name;
 
         this.setup_dom();
         this.setup_wiring();

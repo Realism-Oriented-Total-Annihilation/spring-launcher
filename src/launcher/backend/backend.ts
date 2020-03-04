@@ -9,6 +9,7 @@ import { Event } from "../events/keys";
 
 import { UberServer }  from "./uberserver/server";
 import { LocalServer } from "./local/server";
+import { EvGuiMode } from "../events/gui";
 
 
 export class Backend
@@ -24,12 +25,21 @@ export class Backend
 
     private setup_events()
     {
-        sl.events.on(Event.MODE_LOCAL, () => {
-            this.server = new LocalServer();
-        });
+        sl.events.on(Event.SELECT_MODE, (mode) =>
+        {
+            switch (mode)
+            {
+                case EvGuiMode.LOGIN_ONLINE:
+                    this.server = new UberServer("localhost", 8200);
+                    break;
 
-        sl.events.on(Event.MODE_ONLINE, (cfg) => {
-            this.server = new UberServer(cfg.host, cfg.port);
+                case EvGuiMode.LOGIN_OFFLINE:
+                    this.server = new LocalServer();
+                    break;
+
+                default:
+                    break;
+            }
         });
     }
 }
