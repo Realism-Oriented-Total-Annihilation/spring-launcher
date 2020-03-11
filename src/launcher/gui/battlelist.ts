@@ -36,6 +36,7 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.head.appendChild(h);
     }
 
+    // In the future will have to be public and called by backend
     private add_battle(name: string, players: number, max: number, game: string, map: string)
     {
         let battle = document.createElement("tr");

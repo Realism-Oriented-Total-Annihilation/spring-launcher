@@ -3,6 +3,7 @@
 //
 import { WidgetBase } from "../../widgets/base";
 import { InputField } from "../../widgets/input";
+import { sl } from "../../../renderer";
 
 
 export class FormRegister extends WidgetBase<HTMLFormElement>
@@ -71,26 +72,7 @@ export class FormRegister extends WidgetBase<HTMLFormElement>
             if (passwd != confirm) {
                 // TODO error out with native required error message
             } else {
-                // sl.events.on(Event.RESPONSE_REGISTRATION_OK, () =>
-                // {
-                //     sl.events.emit(Event.REQUEST_LOGIN, {
-                //         user:     user,
-                //         password: passwd,
-                //     });
-                // });
-
-                // sl.events.on(Event.RESPONSE, (rep) =>
-                // {
-                //     if (rep.command == PtclCommand.REGISTRATIONACCEPTED) {
-                //         sl.events.emit(Event.REQUEST, new RequestLogin(user, passwd));
-                //     }
-                // });
-
-                // sl.events.emit(Event.REQUEST_REGISTRATION, {
-                //     user:     user,
-                //     password: passwd,
-                //     email:    email
-                // });
+                sl.gui.on_register(user, passwd, email);
             }
 
             this.loading(true);

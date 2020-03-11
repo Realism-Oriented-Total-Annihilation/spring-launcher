@@ -3,6 +3,7 @@
 //
 import { WidgetBase } from "../../widgets/base";
 import { InputField } from "../../widgets/input";
+import { sl } from "../../../renderer";
 
 
 export class FormTerms extends WidgetBase<HTMLFormElement>
@@ -36,7 +37,6 @@ export class FormTerms extends WidgetBase<HTMLFormElement>
         });
 
         this.setup_wiring();
-        // this.setup_events();
     }
 
     private setup_dom()
@@ -51,34 +51,13 @@ export class FormTerms extends WidgetBase<HTMLFormElement>
 
     private setup_wiring()
     {
-        this.container.onsubmit = (ev) => {
+        this.container.onsubmit = (ev) =>
+        {
             let code = this.field_code.value;
 
-            // sl.events.emit(Event.REQUEST_AGREE_TERMS, {
-            //     code: code,
-            // });
+            sl.gui.on_acceptterms(code.length > 0 ? code : undefined);
 
             ev.preventDefault();
         }
     }
-
-    // private setup_events()
-    // {
-    //     sl.events.on(Event.RESPONSE_LOGIN_AGREEMENT, (terms) => {
-    //         sl.events.emit(Event.SELECT_MODE, EvGuiMode.LOGIN_TERMS);
-    //     });
-
-    //     sl.events.on(Event.SELECT_MODE, (mode) =>
-    //     {
-    //         switch (mode)
-    //         {
-    //             case EvGuiMode.LOGIN_TERMS:
-    //                 this.show();
-    //                 break;
-
-    //             default:
-    //                 this.hide();
-    //         }
-    //     });
-    // }
 }

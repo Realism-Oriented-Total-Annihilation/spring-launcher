@@ -4,7 +4,7 @@
 //
 import { EventEmitter } from "events";
 
-import { Command } from "./ptcl/cmds";
+import { Command } from "./cmds";
 
 
 export class UberEvents
@@ -23,17 +23,13 @@ export class UberEvents
         return this;
     }
 
-    public on(cmds: Command[], listener: (...args: any[]) => void)
+    public on(cmd: Command, listener: (...args: any[]) => void)
     {
-        for (let cmd of cmds) {
-            this._bus.on(Command[cmd], listener);
-        }
+        this._bus.on(Command[cmd], listener);
     }
 
-    public once(cmds: Command[], listener: (...args: any[]) => void)
+    public once(cmd: Command, listener: (...args: any[]) => void)
     {
-        for (let cmd of cmds) {
-            this._bus.once(Command[cmd], listener);
-        }
+        this._bus.once(Command[cmd], listener);
     }
 }

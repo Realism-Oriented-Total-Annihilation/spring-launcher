@@ -53,16 +53,11 @@ export class FormLogin extends WidgetBase<HTMLFormElement>
         let user   = this.field_user.value;
         let passwd = this.field_passwd.value;
 
-        let reply = sl.backend.login(user, passwd);
-
-        this.show_loading(true);  // loading animation
-
-        await reply;
-
-        this.show_loading(false);
+        this.show_loading(true);
+        sl.gui.on_login(user, passwd);
 
         ev.preventDefault();
-        this.container.reset();
+        this.container.reset();  // DELME
     }
 
     private show_loading(active: boolean)

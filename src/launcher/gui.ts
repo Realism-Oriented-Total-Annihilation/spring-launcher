@@ -16,7 +16,10 @@ import { Settings }     from "./gui/settings";
 
 export enum GuiMode
 {
-    Start,
+    StartLogin,
+    StartRegister,
+    StartLocal,
+    StartTerms,
     GamesWindow,
     BattleList,
     BattleRoom,
@@ -28,19 +31,25 @@ export enum GuiMode
 
 export class Gui
 {
-    public start:       StartModule;
-    public gameswindow: GameSelector;
-    public battlelist:  BattleList;
-    public battleroom:  BattleRoom;
-    public download:    Download;
-    public profile:     Profile;
-    public settings:    Settings;
+    private _mode: GuiMode;
+
+    private start:       StartModule;
+    private gameswindow: GameSelector;
+    private battlelist:  BattleList;
+    private battleroom:  BattleRoom;
+    private download:    Download;
+    private profile:     Profile;
+    private settings:    Settings;
 
     private menu:    Menu;
     private chatbar: ChatBar;
     private chat:    Chat;
 
     private window: HTMLDivElement;
+
+    public on_login:       (user: string, passwd: string)                => void = () => {};
+    public on_register:    (user: string, passwd: string, email: string) => void = () => {};
+    public on_acceptterms: (code?: string)                               => void = () => {};
 
     constructor()
     {
@@ -57,10 +66,30 @@ export class Gui
         this.menu    = <any>null;
         this.chatbar = <any>null;
         this.chat    = <any>null;
+
+        this._mode = GuiMode.StartLogin;
+    }
+
+    public error(msg: string)
+    {
+        switch (this._mode)
+        {
+            case GuiMode.StartLogin:
+            case GuiMode.StartRegister:
+            case GuiMode.StartLocal:
+            case GuiMode.StartTerms:
+                this.start.error(msg);
+                break;
+
+            default:
+                console.error(msg);
+        }
     }
 
     public mode(mode: GuiMode)
     {
+        this._mode = mode;
+
         this.start?.hide();
         this.gameswindow?.hide();
         this.battlelist?.hide();
@@ -73,60 +102,64 @@ export class Gui
 
         switch (mode)
         {
-            case GuiMode.Start:
+            case GuiMode.StartLogin:
+            case GuiMode.StartRegister:
+            case GuiMode.StartLocal:
+            case GuiMode.StartTerms:
                 if (this.start == null) {
                     this.start = new StartModule(this.window);
-                    this.start.show();
-                    show_menus = false;
                 }
+                this.start.mode(mode);
+                this.start.show();
+                show_menus = false;
                 break;
 
             case GuiMode.GamesWindow:
                 if (this.gameswindow == null) {
                     this.gameswindow = new GameSelector(this.window);
-                    this.gameswindow.show();
-                    show_menus = false;
                 }
+                this.gameswindow.show();
+                show_menus = false;
                 break;
 
             case GuiMode.BattleList:
                 if (this.battlelist == null) {
                     this.battlelist = new BattleList(this.window);
-                    this.battlelist.show();
-                    show_menus = true;
                 }
+                this.battlelist.show();
+                show_menus = true;
                 break;
 
             case GuiMode.BattleRoom:
                 if (this.battleroom == null) {
                     this.battleroom = new BattleRoom(this.window);
-                    this.battleroom.show();
-                    show_menus = true;
                 }
+                this.battleroom.show();
+                show_menus = true;
                 break;
 
             case GuiMode.Download:
                 if (this.download == null) {
                     this.download = new Download(this.window);
-                    this.download.show();
-                    show_menus = true;
                 }
+                this.download.show();
+                show_menus = true;
                 break;
 
             case GuiMode.Profile:
                 if (this.profile == null) {
                     this.profile = new Profile(this.window);
-                    this.profile.show();
-                    show_menus = true;
                 }
+                this.profile.show();
+                show_menus = true;
                 break;
 
             case GuiMode.Settings:
                 if (this.settings == null) {
                     this.settings = new Settings(this.window);
-                    this.settings.show();
-                    show_menus = true;
                 }
+                this.settings.show();
+                show_menus = true;
                 break;
         }
 

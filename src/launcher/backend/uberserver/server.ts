@@ -7,21 +7,31 @@ import { UberEvents } from "./events";
 
 import { PtclBuffer } from "./handling/buffer";
 
+import { IRequest }  from "./reqs/request";
+import { parse }     from "./reps/response";
+import { Response }  from "./reps/response";
+
+import { Command }  from "./cmds";
+
+import { ReqPing } from "./reqs/misc";
 
 
 export class UberServer
 {
-    private sock:    Socket;
-    private timer:   NodeJS.Timeout;
-    private buffer:  PtclBuffer;
-    private timeout: number;
-    private commands: UberEvents;
+    public on_incoming: (rep: Response) => void = () => {};
+
+    private sock:   Socket;
+    private timer:  NodeJS.Timeout;
+    private buffer: PtclBuffer;
+
+    // protected commands: UberEvents;
+    protected timeout:  number;
 
     public constructor(host: string, port: number, timeout?: number)
     {
         this.sock     = new Socket();
         this.buffer   = new PtclBuffer();
-        this.commands = new UberEvents();
+        // this.commands = new UberEvents();
 
         this.timeout = timeout ? timeout : 5000;
 
@@ -33,23 +43,14 @@ export class UberServer
         this.timer = this.reset_timer();
     }
 
-    // public static instance()
-    // {
-    //     if (!this._instance) {
-    //         throw "Accessing UberServer singleton instance before being built!";
-    //     }
-
-    //     return this._instance;
-    // }
-
     public addr_local(): string
     {
         return this.sock.localAddress;
     }
 
-    protected send(cmd: Request)
+    public request(cmd: IRequest)
     {
-        let raw = PtclCommand[cmd.command];
+        let raw = Command[cmd.command];
 
         if (cmd.words()) {
             raw += ` ${cmd.words().join(" ")}`;
@@ -63,11 +64,11 @@ export class UberServer
 
         raw += "\n";
 
-        this.reset_timer();
         this.sock.write(raw);
+        this.reset_timer();
     }
 
-    protected recv(data: string)
+    private recv(data: string)
     {
         this.buffer.append(data);
 
@@ -75,40 +76,14 @@ export class UberServer
 
         for (let line of lines)
         {
-            let cmd = PtclRespMsg.from_line(line);
+            let rep = parse(line);
 
-            if (cmd) {
-                this.commands.emit(PtclCommand[cmd.command], cmd);
+            if (rep)
+            {
+                console.info(`[server][<] ${Command[rep.command]}`);
+                this.on_incoming(rep);
             }
         }
-    }
-
-    protected async query<C extends PtclResponse>(req: PtclRequest, timeout?: number): Promise<C>
-    {
-        let tout = timeout ? timeout : this.timeout;
-
-        return new Promise((resolve, reject) =>
-        {
-            if (req.response_ok)
-            {
-                this.commands.once(PtclCommand[req.response_ok], (rep) =>
-                {
-                    setTimeout(() => { reject(); }, timeout);
-                    resolve(rep);
-                });
-            }
-
-            if (req.response_err)
-            {
-                this.commands.once(PtclCommand[req.response_err], (rep) =>
-                {
-                    setTimeout(() => { reject(); }, timeout);
-                    reject(rep);
-                });
-            }
-
-            this.send(req);
-        });
     }
 
     private setup_socket()
@@ -119,7 +94,8 @@ export class UberServer
     private setup_wiring()
     {
         this.sock.addListener("ready", () => {
-            // this.setup_events(); this.events.emit(Event.SERVER_READY);
+            this.setup_events();
+            this.reset_timer();
         });
 
         this.sock.addListener("data", (data: string) => {
@@ -129,10 +105,8 @@ export class UberServer
 
     private setup_events()
     {
-        // this.sock.addListener("close", () => { this.events.emit(Event.SERVER_CLOSED); });
-        // this.sock.addListener("error", () => { this.events.emit(Event.SERVER_FAILED); });
-
-        // this.events.on(Event.REQUEST, (cmd) => { this.send(cmd); });
+        this.sock.addListener("close", () => { /* NOOP */ });
+        this.sock.addListener("error", () => { /* NOOP */ });
     }
 
     private reset_timer(): NodeJS.Timeout
@@ -140,7 +114,7 @@ export class UberServer
         clearInterval(this.timer);
 
         this.timer = setInterval(
-            () => { this.send(new RequestPing()); },
+            () => { this.request(new ReqPing()); },
             30000
         );
 

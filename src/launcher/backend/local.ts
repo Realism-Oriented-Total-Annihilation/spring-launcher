@@ -1,7 +1,6 @@
 //
-// Local Server Instance (Offline and LAN Games)
 //
-import { IBackend } from "./iface";
+//
 
 
 export class LocalBackend

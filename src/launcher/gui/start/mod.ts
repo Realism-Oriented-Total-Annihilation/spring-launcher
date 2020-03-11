@@ -3,6 +3,8 @@
 //
 import { WidgetBase } from "../../widgets/base";
 
+import { GuiMode } from "../../gui";
+
 import { FormSelector } from "./selector";
 import { FormLogin }    from "./login";
 import { FormRegister } from "./register";
@@ -42,10 +44,20 @@ export class StartModule extends WidgetBase<HTMLDivElement>
         this.setup_dom();
         this.setup_wiring();
 
-        this.mode(StartMode.Login);
+        this.mode(GuiMode.StartLogin);
     }
 
-    public mode(mode: StartMode)
+    public error(msg: string)
+    {
+        // FIXME
+
+        let p = document.createElement("p");
+        p.innerText = msg;
+
+        this.container.append(p);
+    }
+
+    public mode(mode: GuiMode)
     {
         this.form_login.hide();
         this.form_register.hide();
@@ -54,20 +66,20 @@ export class StartModule extends WidgetBase<HTMLDivElement>
 
         switch (mode)
         {
-            case StartMode.Login:
+            case GuiMode.StartLogin:
                 this.form_login.show();
                 break;
 
-            case StartMode.Register:
+            case GuiMode.StartRegister:
                 this.form_register.show();
                 break;
 
-            case StartMode.Local:
-                this.form_terms.show();
+            case GuiMode.StartLocal:
+                this.form_local.show();
                 break;
 
-            case StartMode.Terms:
-                this.form_local.show();
+            case GuiMode.StartTerms:
+                this.form_terms.show();
                 break;
         }
     }
@@ -100,15 +112,15 @@ export class StartModule extends WidgetBase<HTMLDivElement>
         });
 
         this.form_selector.on_online(() => {
-            this.mode(StartMode.Login);
+            this.mode(GuiMode.StartLogin);
         });
 
         this.form_selector.on_register(() => {
-            this.mode(StartMode.Register);
+            this.mode(GuiMode.StartRegister);
         });
 
         this.form_selector.on_local(() => {
-            this.mode(StartMode.Local);
+            this.mode(GuiMode.StartLocal);
         });
     }
 
@@ -137,13 +149,4 @@ export class StartModule extends WidgetBase<HTMLDivElement>
 
         this.form_selector.select_local();
     }
-}
-
-
-export enum StartMode
-{
-    Login,
-    Register,
-    Local,
-    Terms,
 }
