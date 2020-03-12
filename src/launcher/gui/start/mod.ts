@@ -12,7 +12,7 @@ import { FormLocal }    from "./local";
 import { FormTerms }    from "./terms";
 
 
-export class StartModule extends WidgetBase<HTMLDivElement>
+export class StartWindow extends WidgetBase<HTMLDivElement>
 {
     private springlogo: HTMLDivElement;
 

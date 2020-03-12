@@ -1,7 +1,7 @@
 //
 // Chat Window
 //
-import { WidgetBase } from "../../widgets/base";
+import { WidgetBase } from "../../../widgets/base";
 
 
 export class Chat extends WidgetBase<HTMLDivElement>

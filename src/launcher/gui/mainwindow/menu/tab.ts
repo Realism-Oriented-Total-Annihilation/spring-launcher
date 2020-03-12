@@ -3,11 +3,15 @@
 //
 import * as fs   from "fs";
 import * as path from "path";
+import { sl } from "../../../../renderer";
+import { GuiMode } from "../../../gui";
 
 
 export class Tab
 {
     public readonly name: string
+
+    public on_select: (tab: Tab) => void = () => {};
 
     private tab:     HTMLDivElement;
     private light:   HTMLDivElement;
@@ -58,18 +62,15 @@ export class Tab
         this.tab.appendChild(this.logodiv);
     }
 
+    public inner(): HTMLDivElement
+    {
+        return this.tab;
+    }
+
     private setup_wiring()
     {
-        // sl.events.on(Event.TAB_SELECTED, (tab: Tab) => {
-        //     if (tab === this) {
-        //         this.select();
-        //     } else {
-        //         this.unselect();
-        //     }
-        // });
-
         this.tab.addEventListener("click", () => {
-            // sl.events.emit(Event.TAB_SELECTED, this);
+            this.on_select(this);
         })
     }
 }

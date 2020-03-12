@@ -15,6 +15,7 @@ import { ReqLogin }      from "./uberserver/reqs/login";
 import { ReqRegister }   from "./uberserver/reqs/login";
 import { ReqConfirmAgreement } from "./uberserver/reqs/login";
 
+// import { B } from "electron";
 
 export class UberBackend
 {
@@ -52,7 +53,8 @@ export class UberBackend
 
     private handle_accepted(username: string)
     {
-        sl.gui.mode(GuiMode.BattleList);
+        sl.gui.mode(GuiMode.MainBattleList);
+        require('electron').remote.getCurrentWindow().maximize();
     }
 
     private handle_denied(username: string)
@@ -67,8 +69,6 @@ export class UberBackend
         {
             this.server.request(new ReqLogin(this.tmp_creds.user, this.tmp_creds.passwd));
             delete this.tmp_creds;
-        } else {
-            sl.gui.mode(GuiMode.BattleList);
         }
     }
 

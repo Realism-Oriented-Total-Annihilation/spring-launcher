@@ -1,7 +1,7 @@
 //
 //
 //
-import { WidgetBase } from "../widgets/base";
+import { WidgetBase } from "../../../../widgets/base";
 
 
 // Not sure if it has to be a div
