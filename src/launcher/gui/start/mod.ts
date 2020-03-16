@@ -1,7 +1,7 @@
 //
 //  Login screen dialog
 //
-import { WidgetBase } from "../../widgets/base";
+import { WidgetBase } from "../../common/widget";
 
 import { GuiMode } from "../../gui";
 

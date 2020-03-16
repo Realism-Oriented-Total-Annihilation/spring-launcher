@@ -11,6 +11,7 @@ body
 #window
 {
     display: flex;
+    flex-direction: row;
 
     position: fixed;
 
@@ -27,4 +28,9 @@ body
     flex: auto;
 
     background-color: rgb(37, 37, 38);
+}
+
+::-webkit-scrollbar
+{
+    width: 0;
 }

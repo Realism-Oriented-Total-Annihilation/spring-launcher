@@ -3,8 +3,6 @@
 //
 import * as fs   from "fs";
 import * as path from "path";
-import { sl } from "../../../../renderer";
-import { GuiMode } from "../../../gui";
 
 
 export class Tab
@@ -28,7 +26,7 @@ export class Tab
         this.logodiv = document.createElement("div");
 
         this.logodiv.innerHTML = fs.readFileSync(
-            path.join(__dirname, `../../icons/${this.name}.svg`),
+            path.join(__dirname, `../../../../icons/${this.name}.svg`),
             {encoding: "UTF8"}
         );
 

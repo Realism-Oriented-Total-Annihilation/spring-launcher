@@ -4,26 +4,52 @@
  *
  */
 
-
 #chat
 {
-    position: fixed;
-    top: 0;
-    right: -250px;
+    flex: auto;
+    flex-direction: row;
+    height: 100%;
+}
+
+#chatdiv
+{
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    flex-grow: 1;
+}
+
+#playersdiv
+{
+    flex-shrink: 1;
+    flex-direction: column;
+
+    height: 100%;
+    width: 250px;
+
+    background-color: rgb(51, 51, 51);
+}
+
+#chatfield
+{
+    /* flex: auto; */
     display: flex;
     flex-direction: column;
 
-    height: calc(100% - 58px);
-    width: 250px;
+    flex-grow: 1;
+    flex-shrink: 0;
+
     overflow: auto;
 
-    background-color: rgb(51, 51, 51);
+    background-color: rgb(37, 37, 38);
 
     /* Transition not yet implemented, wont work so easily */
     /* transition: 1s; */
 }
 
-#chat > .msg
+#chatfield > .msg
 {
     margin: 0px;
 
@@ -34,7 +60,7 @@
     font-size:   16px;
 }
 
-#chat > .msg.right
+#chatfield > .msg.right
 {
     color: rgba(255, 255, 255, 1);
 
@@ -43,7 +69,7 @@
     text-align: right;
 }
 
-#chat > .msg.left
+#chatfield > .msg.left
 {
     color: rgba(255, 255, 255, .4);
 
@@ -54,19 +80,20 @@
 
 #chatbar
 {
-    position: fixed;
-    right: -192px;
-    bottom: 0;
-    flex: auto;
     display: flex;
+
+    flex-grow: 0;
+    flex-shrink: 1;
+
+    height: 38px;
 
     background-color: rgb(51, 51, 51);
 }
 
 .chatbutton
 {
-    height: 58px;
-    width: 58px;
+    height: 100%;
+    width: 150px;
     background-color: rgb(22, 130, 93);
 
     border-top-left-radius: 5px;
@@ -110,7 +137,7 @@
 
 #chatinput
 {
-    width: 192px;
+    flex: auto;
 
     /* background-color: rgb(51, 51, 51); */
     background-color: white;
@@ -131,7 +158,7 @@
     font-size: 16px;
 }
 
-::-webkit-scrollbar
+#textarea:focus
 {
-    width: 0;
+    outline: none;
 }

@@ -57,7 +57,7 @@ export class UberServer
         }
 
         if (cmd.sentences()) {
-            raw += `\t${cmd.sentences().join("\t")}`
+            raw += ` ${cmd.sentences().join("\t")}`
         }
 
         console.debug(`[server][>] ${raw}`);

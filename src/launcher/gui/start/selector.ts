@@ -1,7 +1,7 @@
 //
 //
 //
-import { WidgetBase } from "../../widgets/base";
+import { WidgetBase } from "../../common/widget";
 
 
 export class FormSelector extends WidgetBase<HTMLDivElement>

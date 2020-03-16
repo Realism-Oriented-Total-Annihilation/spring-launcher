@@ -3,8 +3,8 @@
 //
 import { sl } from "../../../renderer";
 
-import { WidgetBase } from "../../widgets/base";
-import { InputField } from "../../widgets/input";
+import { WidgetBase } from "../../common/widget";
+import { InputField } from "../../common/input";
 
 
 export class FormLogin extends WidgetBase<HTMLFormElement>

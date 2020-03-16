@@ -14,6 +14,7 @@ import { ReqPing }       from "./uberserver/reqs/misc";
 import { ReqLogin }      from "./uberserver/reqs/login";
 import { ReqRegister }   from "./uberserver/reqs/login";
 import { ReqConfirmAgreement } from "./uberserver/reqs/login";
+import { RepAddUser } from "./uberserver/reps/misc";
 
 // import { B } from "electron";
 
@@ -88,6 +89,12 @@ export class UberBackend
         // NOOP
     }
 
+    private handle_add_user(user: RepAddUser)
+    {
+        sl.backend.users.push(user);
+        sl.gui.display_user(user.username, user.country, user.lobbyid);
+    }
+
     private handle(rep: Response): void
     {
         switch (rep.command)
@@ -98,6 +105,7 @@ export class UberBackend
             case Command.REGISTRATIONDENIED:   this.handle_registration_denied(rep.reason); break;
             case Command.AGREEMENT:            this.handle_confirm_agreement(rep.terms); break;
             case Command.PONG:                 this.handle_pong(); break;
+            case Command.ADDUSER:              this.handle_add_user(rep); break;
         }
     }
 

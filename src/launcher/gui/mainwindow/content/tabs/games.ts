@@ -1,7 +1,7 @@
 //
 // Spring Game/Mod Selector
 //
-import { WidgetBase } from "../../../../widgets/base";
+import { WidgetBase } from "../../../../common/widget";
 
 
 export class GameSelector extends WidgetBase<HTMLDivElement>

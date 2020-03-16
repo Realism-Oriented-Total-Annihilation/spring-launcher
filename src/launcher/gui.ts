@@ -4,6 +4,7 @@
 
 import { StartWindow }  from "./gui/start/mod";
 import { MainWindow } from "./gui/mainwindow/mainwindow";
+import { RepAddUser } from "./backend/uberserver/reps/misc";
 
 
 export enum GuiMode
@@ -19,6 +20,7 @@ export enum GuiMode
     MainDownload,
     MainProfile,
     MainSettings,
+    MainChat,
 }
 
 
@@ -34,15 +36,22 @@ export class Gui
     public on_login:       (user: string, passwd: string)                => void = () => {};
     public on_register:    (user: string, passwd: string, email: string) => void = () => {};
     public on_acceptterms: (code?: string)                               => void = () => {};
+    public on_msgsend:     (msg: string)                                 => void = () => {};
+    // public on_newuser:     (username: string, country: string)           => void = () => {};
 
     constructor()
     {
         this.window = <HTMLDivElement>document.getElementById("content");
 
-        this.start = <any>null;
-        this.main  = <any>null;
+        this.start = new StartWindow(this.window);
+        this.main  = new MainWindow(this.window);
 
         this._mode = GuiMode.StartLogin;
+    }
+
+    public display_user(name: string, country: string, client: string)
+    {
+        this.main.content.chat.players.add_player(name, country, client);
     }
 
     public error(msg: string)
@@ -71,8 +80,7 @@ export class Gui
             case GuiMode.StartRegister:
             case GuiMode.StartLocal:
             case GuiMode.StartTerms:
-                if (this.start == null) { this.start = new StartWindow(this.window); }
-                // this.main.hide();
+                this.main.hide();
                 this.start.mode(mode);
                 this.start.show();
                 break;
@@ -82,8 +90,8 @@ export class Gui
             case GuiMode.MainDownload:
             case GuiMode.MainProfile:
             case GuiMode.MainSettings:
-                if (this.main == null) { this.main = new MainWindow(this.window); }
-                // this.start.hide();
+            case GuiMode.MainChat:
+                this.start.hide();
                 this.main.show();
                 this.main.mode(mode);
                 break;

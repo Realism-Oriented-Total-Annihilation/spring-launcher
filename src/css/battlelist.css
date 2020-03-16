@@ -7,9 +7,11 @@
 #battlelist
 {
     flex: auto;
+    height: 100%;
 }
 
 #battletable
 {
     flex: auto;
+
 }

@@ -1,7 +1,7 @@
 //
 //  Leftbar in which you can select tabs or play
 //
-import { WidgetBase } from "../../../widgets/base";
+import { WidgetBase } from "../../../common/widget";
 
 import { TabContainer } from "./container";
 import { Tab } from "./tab";
@@ -20,7 +20,7 @@ export class Menu extends WidgetBase<HTMLDivElement>
 
     constructor(parent: HTMLDivElement)
     {
-        super(parent, document.createElement("div"));
+        super(parent, document.createElement("div"), { mode: "flex"});
 
         // ORDER IS IMPORTANT!! FLEX PROPERTY...
         this.top    = new TabContainer(this.container, "top");
@@ -39,8 +39,9 @@ export class Menu extends WidgetBase<HTMLDivElement>
 
         this.top.create_tab("profile", this.tabs)
 
-        this.center.create_tab("battles", this.tabs);
+        this.center.create_tab("battles",  this.tabs);
         this.center.create_tab("download", this.tabs);
+        this.center.create_tab("chat",     this.tabs);
 
         this.bottom.create_tab("settings", this.tabs);
     }
@@ -56,7 +57,7 @@ export class Menu extends WidgetBase<HTMLDivElement>
                     if (clicked.name == tab.name) {
                         clicked.select();
                     } else {
-                        clicked.unselect();
+                        tab.unselect();
                     }
                 }
 
@@ -77,6 +78,10 @@ export class Menu extends WidgetBase<HTMLDivElement>
 
                     case "settings":
                         this.on_select(GuiMode.MainSettings)
+                        break;
+
+                    case "chat":
+                        this.on_select(GuiMode.MainChat)
                         break;
 
                     default:

@@ -1,36 +1,39 @@
 //
 // Content middle container
 //
-import { WidgetBase } from "../../../widgets/base";
+import { WidgetBase } from "../../../common/widget";
 import { BattleList } from "./tabs/battlelist";
 import { BattleRoom } from "./tabs/battleroom";
 import { Download } from "./tabs/download";
 import { Profile } from "./tabs/profile";
 import { Settings } from "./tabs/settings";
+import { Chat } from "./tabs/chat/chat";
 
 
 export class Content extends WidgetBase<HTMLDivElement>
 {
-    parent: HTMLElement;
+    private parent: HTMLElement;
 
-    private battlelist:  BattleList;
-    private battleroom:  BattleRoom;
-    private download:    Download;
-    private profile:     Profile;
-    private settings:    Settings;
+    public battlelist:  BattleList;
+    public battleroom:  BattleRoom;
+    public download:    Download;
+    public profile:     Profile;
+    public settings:    Settings;
+    public chat:        Chat;
 
     constructor(parent: HTMLElement)
     {
-        super(parent, document.createElement("div"))
+        super(parent, document.createElement("div"), { mode: "flex" })
         this.parent = parent;
 
-        this.setup_dom();
+        this.battlelist  = new BattleList(this.container);
+        this.battleroom  = new BattleRoom(this.container);
+        this.download    = new Download(this.container);
+        this.profile     = new Profile(this.container);
+        this.settings    = new Settings(this.container);
+        this.chat        = new Chat(this.container);
 
-        this.battlelist  = <any>null;
-        this.battleroom  = <any>null;
-        this.download    = <any>null;
-        this.profile     = <any>null;
-        this.settings    = <any>null;
+        this.setup_dom();
     }
 
     private setup_dom()
@@ -46,55 +49,42 @@ export class Content extends WidgetBase<HTMLDivElement>
         this.download.hide();
         this.profile.hide();
         this.settings.hide();
+        this.chat.hide();
     }
 
     public show_battlelist()
     {
-        if (this.battlelist == null) {
-            this.battlelist = new BattleList(this.container);
-        } else {
-            this.hideall();
-            this.battlelist.show();
-        }
+        this.hideall();
+        this.battlelist.show();
     }
 
     public show_battleroom()
     {
-        if (this.battleroom == null) {
-            this.battleroom = new BattleRoom(this.container);
-        } else {
-            this.hideall();
-            this.battleroom.show();
-        }
+        this.hideall();
+        this.battleroom.show();
     }
 
     public show_download()
     {
-        if (this.download == null) {
-            this.download = new Download(this.container);
-        } else {
-            this.hideall();
-            this.download.show();
-        }
+        this.hideall();
+        this.download.show();
     }
 
     public show_profile()
     {
-        if (this.profile == null) {
-            this.profile = new Profile(this.container);
-        } else {
-            this.hideall();
-            this.profile.show();
-        }
+        this.hideall();
+        this.profile.show();
     }
 
     public show_settings()
     {
-        if (this.settings == null) {
-            this.settings = new Settings(this.container);
-        } else {
-            this.hideall();
-            this.settings.show();
-        }
+        this.hideall();
+        this.settings.show();
+    }
+
+    public show_chat()
+    {
+        this.hideall();
+        this.chat.show();
     }
 }

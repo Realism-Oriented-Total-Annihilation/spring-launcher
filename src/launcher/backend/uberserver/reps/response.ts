@@ -12,7 +12,7 @@ import { RepRegistrationAccepted } from "./login";
 import { RepRegistrationDenied }   from "./login";
 import { RepAgreement }            from "./login";
 
-import { RepPong } from "./misc";
+import { RepPong, RepAddUser } from "./misc";
 
 
 export type Response =
@@ -22,6 +22,7 @@ export type Response =
     | RepRegistrationDenied
     | RepAgreement
     | RepPong
+    | RepAddUser
 ;
 
 
@@ -43,6 +44,7 @@ export function parse(line: PtclLine): Response | undefined
         case "REGISTRATIONDENIED":   return new RepRegistrationDenied(line);
         case "AGREEMENT":            return new RepAgreement(line);
         case "PONG":                 return new RepPong();
+        case "ADDUSER":              return new RepAddUser(line);
 
         default:
             console.warn(`Uberserver protocol message not yet implemented for: ${name}`);
