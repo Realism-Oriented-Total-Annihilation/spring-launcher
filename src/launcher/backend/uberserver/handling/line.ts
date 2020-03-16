@@ -39,17 +39,26 @@ export class PtclLine
 
     public sentence(): string
     {
-        let parts = this.raw.split("\t", 1);
+        let idx = this.raw.search("\t");
 
-        if (parts.length > 1) {
-            this.raw = parts[1].trim();
+        if (idx < 0 && this.raw.length > 0)
+        {
+            let head = this.raw;
+            this.raw = "";
+
+            return head;
         }
+        else if (idx >= 0)
+        {
+            let head = this.raw.slice(0, idx);
+            let tail = this.raw.slice(idx + 1, this.raw.length);
 
-        if (parts.length > 0) {
-            return parts[0];
+            this.raw = tail;
+            return head;
         }
-
-        throw "Error while parsing incoming message while expecting a word argument"
+        else {
+            throw "Error while parsing incoming message while expecting a sentence argument"
+        }
     }
 
     public is_empty(): boolean

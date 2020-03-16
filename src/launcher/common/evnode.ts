@@ -3,24 +3,24 @@
 //
 
 
-export class EventNode<T extends unknown[]>
+export class EventNode<T>
 {
-    private listeners: Array<(...args: T) => void>;
+    private listeners: Array<(args: T) => void>;
 
     constructor()
     {
         this.listeners = [];
     }
 
-    public listen(listener: (...args: T) => void)
+    public listen(listener: (args: T) => void)
     {
         this.listeners.push(listener);
     }
 
-    public emit(...args: T): void
+    public emit(args: T): void
     {
         for (let listener of this.listeners) {
-            listener(...args);
+            listener(args);
         }
     }
 }

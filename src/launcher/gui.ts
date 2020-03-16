@@ -4,7 +4,9 @@
 
 import { StartWindow }  from "./gui/start/mod";
 import { MainWindow } from "./gui/mainwindow/mainwindow";
-import { RepAddUser } from "./backend/uberserver/reps/misc";
+import { Battle } from "./model/battle";
+import { User } from "./model/user";
+import { BattleWidget } from "./gui/mainwindow/content/tabs/battlelist";
 
 
 export enum GuiMode
@@ -37,7 +39,6 @@ export class Gui
     public on_register:    (user: string, passwd: string, email: string) => void = () => {};
     public on_acceptterms: (code?: string)                               => void = () => {};
     public on_msgsend:     (msg: string)                                 => void = () => {};
-    // public on_newuser:     (username: string, country: string)           => void = () => {};
 
     constructor()
     {
@@ -49,9 +50,14 @@ export class Gui
         this._mode = GuiMode.StartLogin;
     }
 
-    public display_user(name: string, country: string, client: string)
+    public display_user(user: User)
     {
-        this.main.content.chat.players.add_player(name, country, client);
+        this.main.content.chat.players.add_player(user);
+    }
+
+    public create_battle(): BattleWidget
+    {
+        return this.main.content.battlelist.create_battle();
     }
 
     public error(msg: string)

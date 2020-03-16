@@ -5,7 +5,7 @@
 
 interface WidgetBaseOptions
 {
-    mode?: "flex" | "block" | "inline-block";
+    mode?: "flex" | "block" | "inline-block" | "table-row";
 }
 
 

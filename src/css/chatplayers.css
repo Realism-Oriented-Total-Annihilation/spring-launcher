@@ -8,6 +8,8 @@
 {
     width: 100%;
     height: 100%;
+
+    overflow: auto;
 }
 
 #playerstable
@@ -20,10 +22,10 @@
 #playerstable > tr
 {
 
-    color: white;
+    height: 20px;
     width: 70%;
 
-    height: 20px;
+    color: white;
 }
 
 #playerstable > td

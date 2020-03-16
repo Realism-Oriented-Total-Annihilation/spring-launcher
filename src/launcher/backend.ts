@@ -5,7 +5,9 @@
 //
 import { UberBackend }  from "./backend/uber";
 import { LocalBackend } from "./backend/local";
-import { RepAddUser } from "./backend/uberserver/reps/misc";
+
+import { User }   from "./model/user";
+import { Battle } from "./model/battle";
 
 
 export enum BackendMode
@@ -14,17 +16,22 @@ export enum BackendMode
     Local,
 }
 
+type UserId   = string;
+type BattleId = string;
 
 export class Backend
 {
-    private backend: UberBackend | LocalBackend;
+    private server: UberBackend | LocalBackend;
 
-    public users: Array<RepAddUser>;
+    public players: Map<UserId,   User>;
+    public battles: Map<BattleId, Battle>;
 
     constructor()
     {
-        this.backend = <any>null;
-        this.users = [];
+        this.server = <any>null;
+
+        this.players   = new Map();
+        this.battles = new Map();
     }
 
     public mode(mode: BackendMode)
@@ -32,12 +39,12 @@ export class Backend
         switch (mode)
         {
             case BackendMode.Online:
-                this.backend = new UberBackend("localhost", 8256);
-                // this.backend = new UberBackend("78.46.100.157", 8200);
+                // this.server = new UberBackend("localhost", 8200);
+                this.server = new UberBackend("78.46.100.157", 8200);
                 break;
 
             case BackendMode.Local:
-                this.backend = new LocalBackend();
+                this.server = new LocalBackend();
                 break;
         }
     }

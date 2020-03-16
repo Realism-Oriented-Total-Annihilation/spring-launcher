@@ -2,6 +2,7 @@
 // Online players Display
 //
 import { WidgetBase } from "../../../../../common/widget";
+import { User }       from "../../../../../model/user";
 
 
 
@@ -10,7 +11,7 @@ export class ChatPlayers extends WidgetBase<HTMLDivElement>
     public on_newuser: (username: string, country: string) => void = () => {};
 
     private table: HTMLTableElement;
-    private head: HTMLTableRowElement;
+    private head:  HTMLTableRowElement;
 
     constructor(parent: HTMLElement)
     {
@@ -34,16 +35,16 @@ export class ChatPlayers extends WidgetBase<HTMLDivElement>
         this.container.appendChild(this.table);
     }
 
-    public add_player(name: string, country: string, client: string)
+    public add_player(user: User)
     {
-        let uri = `./flags/${country.toLowerCase()}.png`;
+        let uri = `./flags/${user.country.toLowerCase()}.png`;
 
         let player = document.createElement("tr");
 
         let td_name    = document.createElement("td");
         let td_country = document.createElement("td");
 
-        td_name.innerText    = `${name}`;
+        td_name.innerText = user.name;
 
         td_country.style.width = "60px";
         td_country.style.background = `url(${uri})`;

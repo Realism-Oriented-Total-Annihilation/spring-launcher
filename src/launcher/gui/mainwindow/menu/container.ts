@@ -17,11 +17,13 @@ export class TabContainer
         parent.appendChild(this.container);
     }
 
-    public create_tab(name: string, tabs: Array<Tab>)
+    public create_tab(name: string, tabs: Array<Tab>): Tab
     {
         let tab = new Tab(this.container, name);
 
         tabs.push(tab);
+
+        return tab;
     }
 
     private setup_dom(pos: string)

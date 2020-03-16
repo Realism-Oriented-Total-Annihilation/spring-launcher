@@ -14,9 +14,10 @@ import { ReqPing }       from "./uberserver/reqs/misc";
 import { ReqLogin }      from "./uberserver/reqs/login";
 import { ReqRegister }   from "./uberserver/reqs/login";
 import { ReqConfirmAgreement } from "./uberserver/reqs/login";
-import { RepAddUser } from "./uberserver/reps/misc";
+import { RepAddUser, RepBattleOpened, RepJoinedBattle } from "./uberserver/reps/misc";
+import { User } from "../model/user";
+import { Battle } from "../model/battle";
 
-// import { B } from "electron";
 
 export class UberBackend
 {
@@ -89,10 +90,47 @@ export class UberBackend
         // NOOP
     }
 
-    private handle_add_user(user: RepAddUser)
+    private handle_add_user(_user: RepAddUser)
     {
-        sl.backend.users.push(user);
-        sl.gui.display_user(user.username, user.country, user.lobbyid);
+        let user = new User(
+            _user.userid,
+            _user.username,
+            _user.country,
+            _user.lobbyid,
+        );
+
+        sl.backend.players.set(user.name, user);
+
+        user.display();
+    }
+
+    private handle_add_battle(_battle: RepBattleOpened)
+    {
+        let battle = new Battle(
+            _battle.title,
+            _battle.battleid,
+            _battle.founder,
+            _battle.maxplayers,
+            _battle.passworded,
+            _battle.rank,
+            _battle.map,
+            _battle.gamename,
+        );
+
+        sl.backend.battles.set(_battle.battleid, battle);
+    }
+
+    private handle_joined_battle(info: RepJoinedBattle)
+    {
+        let battle = sl.backend.battles.get(info.battleid);
+        let user   = sl.backend.players.get(info.username);
+
+        if (!battle || !user) {
+            console.error();
+            return;
+        }
+
+        battle.join(user);
     }
 
     private handle(rep: Response): void
@@ -106,6 +144,8 @@ export class UberBackend
             case Command.AGREEMENT:            this.handle_confirm_agreement(rep.terms); break;
             case Command.PONG:                 this.handle_pong(); break;
             case Command.ADDUSER:              this.handle_add_user(rep); break;
+            case Command.BATTLEOPENED:         this.handle_add_battle(rep); break;
+            case Command.JOINEDBATTLE:         this.handle_joined_battle(rep); break;
         }
     }
 

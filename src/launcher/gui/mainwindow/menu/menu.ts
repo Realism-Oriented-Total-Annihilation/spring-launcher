@@ -39,7 +39,9 @@ export class Menu extends WidgetBase<HTMLDivElement>
 
         this.top.create_tab("profile", this.tabs)
 
-        this.center.create_tab("battles",  this.tabs);
+        let battles = this.center.create_tab("battles",  this.tabs);
+        battles.select();
+
         this.center.create_tab("download", this.tabs);
         this.center.create_tab("chat",     this.tabs);
 
