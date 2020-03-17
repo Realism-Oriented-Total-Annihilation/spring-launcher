@@ -67,13 +67,19 @@ export class BattleWidget extends WidgetBase<HTMLTableRowElement>
 
 export class BattleList extends WidgetBase<HTMLDivElement>
 {
-    private table: HTMLTableElement;
+
+    private space: HTMLDivElement;
     private head:  HTMLTableRowElement;
+    private tablediv: HTMLDivElement;
+    private table: HTMLTableElement;
+
 
     constructor(parent: HTMLDivElement)
     {
         super(parent, document.createElement("div"));
 
+        this.space = document.createElement("div");
+        this.tablediv = document.createElement("div");
         this.table = document.createElement("table");
         this.head  = document.createElement("tr");
 
@@ -83,6 +89,8 @@ export class BattleList extends WidgetBase<HTMLDivElement>
     private setup_dom()
     {
         this.container.id = "battlelist";
+        this.space.id     = "space";
+        this.tablediv.id  = "tablediv";
         this.table.id     = "battletable";
 
         this.add_header("Battle Name");
@@ -92,14 +100,17 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.add_header("Host");
         this.add_header("Country");
 
+        this.container.appendChild(this.space);
         this.table.appendChild(this.head);
-        this.container.appendChild(this.table);
+        this.tablediv.appendChild(this.table);
+        this.container.appendChild(this.tablediv);
     }
 
     private add_header(name: string)
     {
         let h = document.createElement("th");
         h.innerText = name;
+        this.head.id = "battleheader";
         this.head.appendChild(h);
     }
 
