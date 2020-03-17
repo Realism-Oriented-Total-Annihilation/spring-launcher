@@ -38,8 +38,6 @@ export class Battle
 
         this.widget = sl.gui.create_battle();
 
-        sl.backend.battles.set(this.id, this);
-
         this.update();
     }
 
@@ -49,13 +47,13 @@ export class Battle
         sl.backend.battles.delete(this.id);
     }
 
-    public join(user: User)
+    public joined(user: User)
     {
         this.players.set(user.name, user);
         this.update();
     }
 
-    public leave(user: User)
+    public left(user: User)
     {
         this.update()
     }

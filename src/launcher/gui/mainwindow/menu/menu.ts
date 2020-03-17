@@ -39,9 +39,10 @@ export class Menu extends WidgetBase<HTMLDivElement>
 
         this.top.create_tab("profile", this.tabs)
 
-        let battles = this.center.create_tab("battles",  this.tabs);
-        battles.select();
+        let battlelist = this.center.create_tab("battlelist",  this.tabs);
+        battlelist.select();
 
+        this.center.create_tab("battleroom", this.tabs);
         this.center.create_tab("download", this.tabs);
         this.center.create_tab("chat",     this.tabs);
 
@@ -70,8 +71,12 @@ export class Menu extends WidgetBase<HTMLDivElement>
                         this.on_select(GuiMode.MainProfile)
                         break;
 
-                    case "battles":
+                    case "battlelist":
                         this.on_select(GuiMode.MainBattleList)
+                        break;
+
+                    case "battleroom":
+                        this.on_select(GuiMode.MainBattleRoom)
                         break;
 
                     case "download":

@@ -14,7 +14,7 @@ import { ReqPing }       from "./uberserver/reqs/misc";
 import { ReqLogin }      from "./uberserver/reqs/login";
 import { ReqRegister }   from "./uberserver/reqs/login";
 import { ReqConfirmAgreement } from "./uberserver/reqs/login";
-import { RepAddUser, RepBattleOpened, RepJoinedBattle } from "./uberserver/reps/misc";
+import { RepAddUser, RepBattleOpened, RepJoinedBattle, RepLeftBattle, RepClientStatus } from "./uberserver/reps/misc";
 import { User } from "../model/user";
 import { Battle } from "../model/battle";
 
@@ -100,8 +100,6 @@ export class UberBackend
         );
 
         sl.backend.players.set(user.name, user);
-
-        user.display();
     }
 
     private handle_add_battle(_battle: RepBattleOpened)
@@ -125,12 +123,54 @@ export class UberBackend
         let battle = sl.backend.battles.get(info.battleid);
         let user   = sl.backend.players.get(info.username);
 
-        if (!battle || !user) {
-            console.error();
+        if (!battle) {
+            console.debug(`No battle with respective id ${info.battleid}`);
             return;
         }
 
-        battle.join(user);
+        if (!user) {
+            console.debug(`No user with respective name ${info.username}`);
+            return;
+        }
+
+        battle.joined(user);
+    }
+
+    private handle_left_battle(info: RepLeftBattle)
+    {
+        let battle = sl.backend.battles.get(info.battleid);
+        let user   = sl.backend.players.get(info.username);
+
+        if (!battle) {
+            console.debug(`No battle with respective id ${info.battleid}`);
+            return;
+        }
+
+        if (!user) {
+            console.debug(`No user with respective name ${info.username}`);
+            return;
+        }
+
+        battle.left(user);
+    }
+
+    private handle_client_status(status: RepClientStatus)
+    {
+        let user = sl.backend.players.get(status.username);
+
+        if (!user) {
+            console.error(`No user with name ${status.username} found`);
+            return;
+        }
+
+        // Update
+        user.ingame       = status.ingame;
+        user.afk          = status.afk;
+        user.rank         = status.rank;
+        user.moderator    = status.access_level;
+        user.bot          = status.bot;
+
+        user.update();
     }
 
     private handle(rep: Response): void
@@ -146,6 +186,8 @@ export class UberBackend
             case Command.ADDUSER:              this.handle_add_user(rep); break;
             case Command.BATTLEOPENED:         this.handle_add_battle(rep); break;
             case Command.JOINEDBATTLE:         this.handle_joined_battle(rep); break;
+            case Command.LEFTBATTLE:           this.handle_left_battle(rep); break;
+            case Command.CLIENTSTATUS:         this.handle_client_status(rep); break;
         }
     }
 

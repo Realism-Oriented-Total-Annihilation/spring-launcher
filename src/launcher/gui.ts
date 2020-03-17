@@ -7,6 +7,7 @@ import { MainWindow } from "./gui/mainwindow/mainwindow";
 import { Battle } from "./model/battle";
 import { User } from "./model/user";
 import { BattleWidget } from "./gui/mainwindow/content/tabs/battlelist";
+import { UserWidget } from "./gui/mainwindow/content/tabs/chat/players";
 
 
 export enum GuiMode
@@ -50,9 +51,9 @@ export class Gui
         this._mode = GuiMode.StartLogin;
     }
 
-    public display_user(user: User)
+    public create_user(): UserWidget
     {
-        this.main.content.chat.players.add_player(user);
+        return this.main.content.chat.players.create_user();
     }
 
     public create_battle(): BattleWidget

@@ -12,7 +12,12 @@ import { RepRegistrationAccepted } from "./login";
 import { RepRegistrationDenied }   from "./login";
 import { RepAgreement }            from "./login";
 
-import { RepPong, RepAddUser, RepBattleOpened, RepJoinedBattle } from "./misc";
+import { RepPong }         from "./misc";
+import { RepAddUser }      from "./misc";
+import { RepBattleOpened } from "./misc";
+import { RepJoinedBattle } from "./misc";
+import { RepLeftBattle }   from "./misc";
+import { RepClientStatus } from "./misc";
 
 
 export type Response =
@@ -25,6 +30,8 @@ export type Response =
     | RepAddUser
     | RepBattleOpened
     | RepJoinedBattle
+    | RepLeftBattle
+    | RepClientStatus
 ;
 
 
@@ -49,6 +56,8 @@ export function parse(line: PtclLine): Response | undefined
         case "ADDUSER":              return new RepAddUser(line);
         case "BATTLEOPENED":         return new RepBattleOpened(line);
         case "JOINEDBATTLE":         return new RepJoinedBattle(line);
+        case "LEFTBATTLE":           return new RepLeftBattle(line);
+        case "CLIENTSTATUS":         return new RepLeftBattle(line);
 
         default:
             console.warn(`Uberserver protocol message not yet implemented for: ${name}`);

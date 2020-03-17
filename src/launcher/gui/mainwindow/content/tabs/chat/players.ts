@@ -2,9 +2,52 @@
 // Online players Display
 //
 import { WidgetBase } from "../../../../../common/widget";
-import { User }       from "../../../../../model/user";
 
 
+export class UserWidget extends WidgetBase<HTMLTableRowElement>
+{
+    private column_rank:    HTMLTableDataCellElement;
+    private column_name:    HTMLTableDataCellElement;
+    private column_country: HTMLTableDataCellElement;
+
+    constructor(parent: HTMLTableElement)
+    {
+        super(parent, document.createElement("tr"), { mode: "table-row" })
+
+        this.column_rank    = document.createElement("td");
+        this.column_name    = document.createElement("td");
+        this.column_country = document.createElement("td");
+
+        this.container.appendChild(this.column_rank);
+        this.container.appendChild(this.column_name);
+        this.container.appendChild(this.column_country);
+
+        this.show();
+    }
+
+    public set rank(_rank: number | undefined)
+    {
+        let rank = `${_rank}`
+
+        let uri = `./ranks/${rank.toLowerCase()}.png`;
+
+        this.column_rank.style.width          = "20px";
+        this.column_rank.style.background     = `url(${uri})`;
+        this.column_rank.style.backgroundSize = `100% 100%`;
+    }
+
+    public set name(name: string) {
+        this.column_name.innerText = name;
+    }
+
+    public set country(country: string | undefined) {
+        let uri = `./flags/${country?.toLowerCase()}.png`;
+
+        this.column_country.style.width          = "60px";
+        this.column_country.style.background     = `url(${uri})`;
+        this.column_country.style.backgroundSize = `100% 100%`;
+    }
+}
 
 export class ChatPlayers extends WidgetBase<HTMLDivElement>
 {
@@ -28,6 +71,10 @@ export class ChatPlayers extends WidgetBase<HTMLDivElement>
         this.container.id = "chatplayers";
         this.table.id     = "playerstable";
 
+
+        let rank =  this.add_header("");
+        rank.style.width = "20px";
+
         this.add_header("Username");
         this.add_header("Country");
 
@@ -35,36 +82,47 @@ export class ChatPlayers extends WidgetBase<HTMLDivElement>
         this.container.appendChild(this.table);
     }
 
-    public add_player(user: User)
+    public create_user(): UserWidget
     {
-        let uri = `./flags/${user.country.toLowerCase()}.png`;
+        let user = new UserWidget(this.table);
 
-        let player = document.createElement("tr");
+        this.update();
 
-        let td_name    = document.createElement("td");
-        let td_country = document.createElement("td");
-
-        td_name.innerText = user.name;
-
-        td_country.style.width = "60px";
-        td_country.style.background = `url(${uri})`;
-        td_country.style.backgroundSize = `100% 100%`;
-
-        player.appendChild(td_name);
-        player.appendChild(td_country);
-
-        this.table.appendChild(player);
+        return user;
     }
 
-    private add_header(name: string)
+    private add_header(name: string): HTMLTableHeaderCellElement
     {
         let h = document.createElement("th");
         h.innerText = name;
+
         this.head.appendChild(h);
+
+        return h;
     }
 
     public inner(): HTMLDivElement
     {
         return this.container;
+    }
+
+    private update()
+    {
+        let idx = 0;
+
+        for (let row of this.table.rows)
+        {
+            if (row.style.display == "none") {
+                continue;
+            }
+
+            if (idx % 2 == 0) {
+                row.className = "tr-even";
+            } else {
+                row.className = "tr-odd";
+            }
+
+            idx++;
+        }
     }
 }

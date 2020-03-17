@@ -10,7 +10,18 @@ export class ReqPing extends IRequest
 {
     public readonly command = Command.PING;
 
-    constructor() {
+    constructor()
+    {
+        super();
+    }
+}
+
+export class ReqMyStatus extends IRequest
+{
+    public readonly command = Command.MYSTATUS;
+
+    constructor()
+    {
         super();
     }
 }
