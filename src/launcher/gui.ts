@@ -4,8 +4,6 @@
 
 import { StartWindow }  from "./gui/start/mod";
 import { MainWindow } from "./gui/mainwindow/mainwindow";
-import { Battle } from "./model/battle";
-import { User } from "./model/user";
 import { BattleWidget } from "./gui/mainwindow/content/tabs/battlelist";
 import { UserWidget } from "./gui/mainwindow/content/tabs/chat/players";
 

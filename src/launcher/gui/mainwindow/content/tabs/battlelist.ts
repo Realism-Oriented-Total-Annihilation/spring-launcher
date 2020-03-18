@@ -62,15 +62,24 @@ export class BattleWidget extends WidgetBase<HTMLTableRowElement>
         this.column_country.style.background     = `url(${uri})`;
         this.column_country.style.backgroundSize = `100% 100%`;
     }
+
+    public inner(): HTMLTableRowElement
+    {
+        return this.container;
+    }
 }
 
 
 export class BattleList extends WidgetBase<HTMLDivElement>
 {
 
-    private space: HTMLDivElement;
-    private head:  HTMLTableRowElement;
+    private space:    HTMLDivElement;
     private tablediv: HTMLDivElement;
+
+    private thead:  HTMLTableSectionElement;
+    private header: HTMLTableRowElement;
+
+    private tbody: HTMLTableSectionElement;
     private table: HTMLTableElement;
 
 
@@ -78,10 +87,14 @@ export class BattleList extends WidgetBase<HTMLDivElement>
     {
         super(parent, document.createElement("div"));
 
-        this.space = document.createElement("div");
+        this.space    = document.createElement("div");
         this.tablediv = document.createElement("div");
+
+        this.thead = document.createElement("thead");
         this.table = document.createElement("table");
-        this.head  = document.createElement("tr");
+
+        this.tbody  = document.createElement("tbody");
+        this.header = document.createElement("tr");
 
         this.setup_dom();
     }
@@ -92,6 +105,7 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.space.id     = "space";
         this.tablediv.id  = "tablediv";
         this.table.id     = "battletable";
+        this.header.id    = "battleheader";
 
         this.add_header("Battle Name");
         this.add_header("Players");
@@ -101,17 +115,21 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.add_header("Country");
 
         this.container.appendChild(this.space);
-        this.table.appendChild(this.head);
+
+        this.thead.appendChild(this.header);
+        this.table.appendChild(this.thead);
+        this.table.appendChild(this.tbody);
+
         this.tablediv.appendChild(this.table);
         this.container.appendChild(this.tablediv);
     }
 
     private add_header(name: string)
     {
-        let h = document.createElement("th");
-        h.innerText = name;
-        this.head.id = "battleheader";
-        this.head.appendChild(h);
+        let h          = document.createElement("th");
+        h.innerText    = name;
+
+        this.header.appendChild(h);
     }
 
     public create_battle(): BattleWidget
@@ -119,6 +137,7 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         let battle = new BattleWidget(this.table);
 
         this.update();
+        this.tbody.appendChild(battle.inner());
 
         return battle;
     }

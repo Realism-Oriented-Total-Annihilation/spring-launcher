@@ -18,54 +18,6 @@
     background-color: rgb(37, 37, 38);
 }
 
-#battletable
-{
-    width: 100%;
-    background-color: rgb(37, 37, 38);
-    margin-bottom: 40px;
-}
-
-.tr-even
-{
-    color: white;
-    width: 70%;
-
-    height: 20px;
-
-    background-color: rgb(24, 24, 24);
-
-}
-
-.tr-odd
-{
-    color: white;
-    width: 70%;
-
-    height: 20px;
-
-    /* background-color: rgba(22, 130, 92, 0.459); */
-    background-color: rgb(37, 37, 38);
-}
-
-#battletable > td
-{
-    height: 20px;
-}
-
-#battleheader
-{
-    position: absolute;
-    top: 40px;
-    width: 92.87%;
-    display: flex;
-
-}
-
-#battleheader > th
-{
-    flex: auto;
-}
-
 #space
 {
     height: 60px;
@@ -80,4 +32,55 @@
     width: 100%;
     background-color: rgb(37, 37, 38);
     margin-top: 60px;
+}
+
+#battletable
+{
+    width: 100%;
+    background-color: rgb(37, 37, 38);
+    margin-bottom: 60px;
+}
+
+#battletable > thead
+{
+    display: table-header-group;
+}
+
+#battletable > tbody
+{
+    overflow-y: auto;
+    width: 100%;
+    display: table-row-group    ;
+}
+
+#battletable > thead > tr > th
+{
+    position:         sticky;
+    top:              60px;
+    background-color: rgb(14, 119, 82);
+
+    padding-bottom: 0;
+    padding-top:    0;
+}
+
+.tr-even
+{
+    color: white;
+    width: 70%;
+
+    height: 24px;
+
+    background-color: rgb(24, 24, 24);
+
+}
+
+.tr-odd
+{
+    color: white;
+    width: 70%;
+
+    height: 24px;
+
+    /* background-color: rgba(22, 130, 92, 0.459); */
+    background-color: rgb(37, 37, 38);
 }

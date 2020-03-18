@@ -29,8 +29,10 @@ body
 {
     display: flex;
 
-    flex: auto;
     height: 100%;
+    width: 100%;
+
+    position: fixed;
 
     background-color: rgb(37, 37, 38);
 }

@@ -4,6 +4,8 @@
 import { Gui }     from "./gui";
 import { GuiMode } from "./gui";
 
+// import { Chat } from "./chat";
+
 import { Backend }     from "./backend";
 import { BackendMode } from "./backend";
 
@@ -11,6 +13,7 @@ import { BackendMode } from "./backend";
 export class Launcher
 {
     public gui:     Gui;
+    // public chat:    Chat;
     public backend: Backend;
 
     constructor()
