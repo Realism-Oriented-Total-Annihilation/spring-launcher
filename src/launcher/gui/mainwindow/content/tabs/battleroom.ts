@@ -4,10 +4,8 @@
 import { WidgetBase } from "../../../../common/widget";
 
 
-// Not sure if it has to be a div
 export class BattleRoom extends WidgetBase<HTMLDivElement>
 {
-
     private players_chat:  HTMLDivElement;
     private matchplayers: MatchPlayers;
     private matchchat:    MatchChat;
@@ -44,6 +42,7 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
     }
 }
 
+
 class PlayerWidget extends WidgetBase<HTMLTableRowElement>
 {
     public td_ready:    HTMLTableDataCellElement;
@@ -75,6 +74,7 @@ class PlayerWidget extends WidgetBase<HTMLTableRowElement>
         this.container.appendChild(this.td_country);
 
         this.setup_dom();
+        this.setup_wiring();
         this.show();
     }
 
@@ -83,18 +83,67 @@ class PlayerWidget extends WidgetBase<HTMLTableRowElement>
         this.container.className = "battleplayer";
     }
 
-    public set name(name: string) {
+    private setup_wiring()
+    {
+        let team = 0;
+
+        this.td_team.onmousedown = (ev) => {
+            let team = parseInt(this.td_team.innerText);
+
+            switch (ev.button)
+            {
+                case 0: // Left Button
+                    team++;
+                    break;
+
+                case 2: // Right Button
+                    team--;
+                    break;
+            }
+
+            team = team % 11;
+
+            this.td_team.innerText = `${team}`;
+        }
+
+        this.td_color.addEventListener("click", () => {
+            // Open color pallete
+        })
+
+        this.td_faction.addEventListener("click", () => {
+            switch (this.td_faction.id) {
+                case "armpic":
+                    // set faction
+                    break;
+                case "corepic":
+                    // set faction
+                    break;
+                case "":
+                    // set faction
+
+                    break;
+                default:
+                    break;
+            }
+        })
+    }
+
+    public set name(name: string)
+    {
         this.td_username.innerText = name;
     }
 
-    public set country(country: string | undefined) {
+    public set country(country: string | undefined)
+    {
         let uri = `./flags/${country?.toLowerCase()}.png`;
 
         this.td_country.style.width          = "60px";
         this.td_country.style.background     = `url(${uri})`;
         this.td_country.style.backgroundSize = `100% 100%`;
     }
-    public set rank(rank: string | undefined) {
+
+    public set rank(rank: string | undefined)
+    {
         let uri = `./flags/${rank?.toLowerCase()}.png`;
 
         this.td_rank.style.width          = "60px";
@@ -102,8 +151,46 @@ class PlayerWidget extends WidgetBase<HTMLTableRowElement>
         this.td_rank.style.backgroundSize = `100% 100%`;
     }
 
+    public set ready(ready: boolean)
+    {
+        if (ready) {
+            this.td_ready.id = "readypic";
+        }
+    }
 
+    public set color(color: string)
+    {
+        this.td_color.style.backgroundColor = `${color}`;
+    }
+
+    public set faction(fac: "arm" | "noe" | "?")
+    {
+        switch (fac) {
+            case "arm":
+                this.td_faction.id = "armpic";
+                break;
+
+            case "noe":
+                this.td_faction.id = "armpic";
+                break;
+
+            case "?":
+                this.td_faction.innerText = "?";
+                this.td_faction.id = "";
+
+            default:
+                this.td_faction.innerText = "?";
+                this.td_faction.id = "";
+                break;
+        }
+    }
+
+    public set team(team: number)
+    {
+        this.td_team.innerText = `${team}`
+    }
 }
+
 
 class MatchPlayers extends WidgetBase<HTMLTableElement>
 {
@@ -122,11 +209,13 @@ class MatchPlayers extends WidgetBase<HTMLTableElement>
         this.container.appendChild(this.tbody);
 
         this.setup_dom();
+        this.update();
     }
 
     public create_player()
     {
         new PlayerWidget(this.tbody);
+        this.update();
     }
 
     private setup_dom()
@@ -136,30 +225,59 @@ class MatchPlayers extends WidgetBase<HTMLTableElement>
 
     private load_headers()
     {
-        let th_ready    = document.createElement("th");
-        th_ready.innerText    = "Ready";
-        this.thead.appendChild(th_ready);
-        let th_color    = document.createElement("th");
-        th_color.innerText    = "Color";
-        this.thead.appendChild(th_color);
-        let th_rank     = document.createElement("th");
-        th_rank.innerText     = "Rank";
-        this.thead.appendChild(th_rank);
-        let th_username = document.createElement("th");
-        th_username.innerText = "Username";
-        this.thead.appendChild(th_username);
-        let th_faction  = document.createElement("th");
-        th_faction.innerText  = "Faction";
-        this.thead.appendChild(th_faction);
-        let th_team     = document.createElement("th");
-        th_team.innerText     = "Team";
-        this.thead.appendChild(th_team);
-        let th_country  = document.createElement("th");
-        th_country.innerText  = "Country";
-        this.thead.appendChild(th_country);
+        let header = document.createElement("tr");
 
+        header.id = "matchheader";
+
+        let th_ready    = document.createElement("th");
+        let th_color    = document.createElement("th");
+        let th_rank     = document.createElement("th");
+        let th_username = document.createElement("th");
+        let th_faction  = document.createElement("th");
+        let th_team     = document.createElement("th");
+        let th_country  = document.createElement("th");
+
+        th_ready.innerText    = "Ready";
+        th_color.innerText    = "Color";
+        th_rank.innerText     = "Rank";
+        th_username.innerText = "Username";
+        th_faction.innerText  = "Faction";
+        th_team.innerText     = "Team";
+        th_country.innerText  = "Country";
+
+        header.appendChild(th_ready);
+        header.appendChild(th_color);
+        header.appendChild(th_rank);
+        header.appendChild(th_username);
+        header.appendChild(th_faction);
+        header.appendChild(th_team);
+        header.appendChild(th_country);
+
+        this.thead.appendChild(header);
+    }
+
+    private update()
+    {
+        let idx = 0;
+
+        for (let row of this.container.rows)
+        {
+            if (row.style.display == "none") {
+                continue;
+            }
+
+            if (idx % 2 == 0) {
+                row.className = "tr-even";
+            } else {
+                row.className = "tr-odd";
+            }
+
+            idx++;
+        }
     }
 }
+
+
 class MatchInfo extends WidgetBase<HTMLDivElement>
 {
     private map:        HTMLDivElement;
@@ -185,6 +303,7 @@ class MatchInfo extends WidgetBase<HTMLDivElement>
         this.container.id  = "matchinfodiv";
     }
 }
+
 
 export class MatchChat extends WidgetBase<HTMLDivElement>
 {

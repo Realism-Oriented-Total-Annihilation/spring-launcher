@@ -24,8 +24,8 @@
 #matchinfodiv
 {
     flex-direction: column;
-
     flex-shrink: 1;
+
     width: 25%;
     height: 100%;
 }
@@ -34,7 +34,33 @@
 {
     flex-grow: 1;
     height: 55%;
+    width: calc(100% - 80px);
+    margin: 40px;
+
+    background-color: rgb(24, 24, 24);
+    color: white;
+}
+
+#matchtable > thead
+{
+    display: table-header-group;
+}
+
+#matchtable > tbody
+{
+    overflow-y: auto;
     width: 100%;
+    display: table-row-group    ;
+}
+
+#matchtable > thead > tr > th
+{
+    position:         sticky;
+    top:              40px;
+    background-color: rgb(14, 119, 82);
+
+    padding-bottom: 0;
+    padding-top:    0;
 }
 
 #matchchat

@@ -13,12 +13,11 @@
     display: flex;
     flex-direction: column;
 
-    padding: 2%;
     padding-top: 0;
     background-color: rgb(37, 37, 38);
 }
 
-#space
+#battletopspace
 {
     height: 60px;
     width: 100%;
@@ -27,18 +26,22 @@
     top: 0;
 }
 
-#tablediv
+#battletablediv
 {
     width: 100%;
     background-color: rgb(37, 37, 38);
     margin-top: 60px;
+    margin-bottom: 268px;
 }
 
 #battletable
 {
     width: 100%;
+
+    padding-left:  2%;
+    padding-right: 2%;
+
     background-color: rgb(37, 37, 38);
-    margin-bottom: 60px;
 }
 
 #battletable > thead
@@ -71,7 +74,6 @@
     height: 24px;
 
     background-color: rgb(24, 24, 24);
-
 }
 
 .tr-odd
@@ -83,4 +85,57 @@
 
     /* background-color: rgba(22, 130, 92, 0.459); */
     background-color: rgb(37, 37, 38);
+}
+
+#battlecontrollerdiv
+{
+    height: 200px;
+    width: 100%;
+    background-color: rgb(24, 24, 24);
+    position: fixed;
+    bottom: 0;
+}
+
+#battlecontroller
+{
+    height: 100%;
+    width: 100%;
+}
+
+#battlelowerspace
+{
+    height: 68px;
+    width: 100%;
+    background-color: rgb(37, 37, 38);
+    position: fixed;
+    bottom: 200px;
+}
+
+.controllerbtn
+{
+    height: 35px;
+    width:  80%;
+
+    border-radius: 7px;
+    font-size:     18px;
+    margin-left:   10%;
+
+    color: white;
+
+    background-color: rgb(22, 130, 93);
+    border-color:     rgb(22, 130, 93);
+}
+
+#nothingimg
+{
+    background-image: url(../icons/spring.svg);
+    background-size:  100% 100%;
+    width:            100px;
+    height:           100px;
+    position:         fixed;
+    bottom:           50px;
+    left:             calc(50% - 50px);
+
+    fill:   rgba(255, 255, 255, .4);
+    stroke: rgba(255, 255, 255, .4);
 }
