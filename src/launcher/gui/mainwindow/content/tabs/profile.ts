@@ -8,7 +8,7 @@ import { User } from "../../../../model/user";
 
 export class Profile extends WidgetBase<HTMLDivElement>
 {
-    // private widget: ProfileWidget;
+    private widget: ProfileWidget;
     // private user: User
 
     constructor(parent: HTMLDivElement)
@@ -20,7 +20,9 @@ export class Profile extends WidgetBase<HTMLDivElement>
         // Algo asá
         // this.user = sl.backend.players.get(this.user.name);
 
+        this.widget = new ProfileWidget(this.container);
         this.setup_dom();
+
     }
 
     private setup_dom()
@@ -29,14 +31,14 @@ export class Profile extends WidgetBase<HTMLDivElement>
         this.container.style.height = "100%";
     }
 
-    public create_profile()
-    {
-        let profile = new ProfileWidget(this.container);
+    // public create_profile()
+    // {
+    //     let profile = new ProfileWidget(this.container);
 
-        this.update();
+    //     this.update();
 
-        return profile
-    }
+    //     return profile
+    // }
 
     private update()
     {

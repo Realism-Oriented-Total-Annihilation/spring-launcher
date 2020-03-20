@@ -79,6 +79,7 @@
 .tr-even:hover
 {
     background-color: rgb(14, 119, 82);
+    cursor: pointer;
 }
 
 .tr-odd
@@ -142,6 +143,16 @@
 
     right:  2%;
     bottom: 215px;
+}
+
+#createbutton:focus
+{
+    outline: none;
+}
+
+#createbutton:hover
+{
+    cursor: pointer;
 }
 
 #nothingimgdiv

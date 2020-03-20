@@ -14,8 +14,11 @@
 
 #settingstop
 {
-    height: 4%;
+    height: 10%;
     width: 100%;
+    background-color: rgb(14, 119, 82);
+
+    display: inline-flex;
 }
 
 #settingsbot
@@ -23,7 +26,7 @@
     display: flex;
 
     width: 100%;
-    height: 96%;
+    height: 90%;
 
     flex-direction: row;
 }
@@ -34,6 +37,7 @@
     width: 15%;
 
     background-color: rgb(24, 24, 24);
+    overflow: auto;
 }
 
 #maincontainer
@@ -53,12 +57,15 @@
     height: 30px;
     font-size: 28px;
 
-    margin-top: 5%;
+    margin-bottom: 17%;
+
+    width: fit-content;
 }
 
 .settingscat:hover
 {
     color: rgb(14, 119, 82);
+    cursor: pointer;
 }
 
 .settingsheader
@@ -66,15 +73,37 @@
     position: relative;
     color: rgba(255, 255, 255, 0.253);
 
+    width: fit-content;
     left: 18%;
     height: 30px;
-    /* width: 100%; */
     font-size: 28px;
-    margin-top: 5%;
+    margin-top: 10%;
+    margin-bottom: 17%;
 }
 
-.settingsheader:hover
+#settingspath
 {
+    position: relative;
+
     color: white;
-    /* color: rgb(14, 119, 82); */
+    font-size: 35px;
+
+    left: 5%;
+
+    align-self: center;
+    font-style: italic;
+}
+
+.catactive
+{
+    position: relative;
+    color: rgb(14, 119, 82);
+
+    left: 8%;
+    height: 30px;
+    font-size: 28px;
+
+    margin-bottom: 17%;
+
+    width: fit-content;
 }
