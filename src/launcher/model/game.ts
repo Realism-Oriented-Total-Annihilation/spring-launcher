@@ -4,25 +4,25 @@
 
 
 
-export class EngineGame
-{
-    public options: Option;
+// export class EngineGame
+// {
+//     public options: Option;
 
-    private path: string;
+//     private path: string;
 
-    private lua_options: any;
+//     private lua_options: any;
 
-    constructor(path: string)
-    {
-        this.path = path;
-        this.zfh =
+//     constructor(path: string)
+//     {
+//         this.path = path;
+//         this.zfh =
 
-        this.lua_options =
-    }
-}
+//         this.lua_options =
+//     }
+// }
 
 
-class Option
-{
+// class Option
+// {
 
-}
+// }

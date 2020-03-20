@@ -6,6 +6,7 @@ import { StartWindow }  from "./gui/start/mod";
 import { MainWindow } from "./gui/mainwindow/mainwindow";
 import { BattleListRowWidget } from "./gui/mainwindow/content/tabs/battlelist";
 import { UserWidget } from "./gui/mainwindow/content/tabs/chat/players";
+import { ProfileWidget } from "./gui/mainwindow/content/tabs/profile";
 
 
 export enum GuiMode
@@ -57,6 +58,11 @@ export class Gui
     public create_battle(): BattleListRowWidget
     {
         return this.main.content.battlelist.create_battle();
+    }
+
+    public create_profile(): ProfileWidget
+    {
+        return this.main.content.profile.create_profile();
     }
 
     public error(msg: string)
