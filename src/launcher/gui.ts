@@ -4,7 +4,7 @@
 
 import { StartWindow }  from "./gui/start/mod";
 import { MainWindow } from "./gui/mainwindow/mainwindow";
-import { BattleWidget } from "./gui/mainwindow/content/tabs/battlelist";
+import { BattleListRowWidget } from "./gui/mainwindow/content/tabs/battlelist";
 import { UserWidget } from "./gui/mainwindow/content/tabs/chat/players";
 
 
@@ -54,7 +54,7 @@ export class Gui
         return this.main.content.chat.players.create_user();
     }
 
-    public create_battle(): BattleWidget
+    public create_battle(): BattleListRowWidget
     {
         return this.main.content.battlelist.create_battle();
     }

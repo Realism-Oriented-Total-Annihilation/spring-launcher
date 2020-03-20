@@ -72,6 +72,7 @@ export class RepBattleOpened implements IResponse
     }
 }
 
+
 export class RepJoinedBattle implements IResponse
 {
     public readonly command = Command.JOINEDBATTLE;
@@ -87,6 +88,7 @@ export class RepJoinedBattle implements IResponse
         // this.scriptpwd = line.sentence();
     }
 }
+
 
 export class RepLeftBattle implements IResponse
 {

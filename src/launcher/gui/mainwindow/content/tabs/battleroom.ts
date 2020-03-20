@@ -42,6 +42,22 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
     }
 }
 
+export class BattleroomSettingsWidget extends WidgetBase<HTMLDivElement>
+{
+    // private max_units: HTMLDivElement;
+
+    constructor(parent: HTMLDivElement)
+    {
+        super(parent, document.createElement("div"))
+
+        this.setup_dom();
+    }
+
+    private setup_dom()
+    {
+        this.container.id = "battleroomsettingsdiv";  // FIXME
+    }
+}
 
 class PlayerWidget extends WidgetBase<HTMLTableRowElement>
 {

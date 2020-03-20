@@ -1,8 +1,8 @@
 //
 // User (player) model
 //
-
 import { sl } from "../../renderer";
+
 import { UserWidget } from "../gui/mainwindow/content/tabs/chat/players";
 
 

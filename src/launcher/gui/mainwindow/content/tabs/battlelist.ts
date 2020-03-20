@@ -1,11 +1,16 @@
 //
 // Battlelist tab classes
 //
+import * as fs   from "fs";
+import * as path from "path";
+
 import { WidgetBase } from "../../../../common/widget";
 
 
-export class BattleWidget extends WidgetBase<HTMLTableRowElement>
+export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
 {
+    public on_battle_selected: (battle: BattleListRowWidget) => void = () => {};
+
     private column_name:    HTMLTableDataCellElement;
     private column_players: HTMLTableDataCellElement;
     private column_game:    HTMLTableDataCellElement;
@@ -32,6 +37,7 @@ export class BattleWidget extends WidgetBase<HTMLTableRowElement>
         this.container.appendChild(this.column_country);
 
         this.show();
+        this.setup_dom();
     }
 
     public set title(title: string) {
@@ -67,6 +73,13 @@ export class BattleWidget extends WidgetBase<HTMLTableRowElement>
     {
         return this.container;
     }
+
+    private setup_dom()
+    {
+        this.container.addEventListener("click", () => {
+            this.on_battle_selected(this);
+        })
+    }
 }
 
 
@@ -82,6 +95,8 @@ export class BattleList extends WidgetBase<HTMLDivElement>
     private table: HTMLTableElement;
 
     private lowerspace: HTMLDivElement;
+
+    private createbtn: HTMLButtonElement;
 
     private controllerdiv: HTMLDivElement;
     private controller: BattleController;
@@ -100,6 +115,8 @@ export class BattleList extends WidgetBase<HTMLDivElement>
 
         this.lowerspace = document.createElement("div");
 
+        this.createbtn = document.createElement("button");
+
         this.controllerdiv = document.createElement("div");
         this.controller = new BattleController(this.controllerdiv);
 
@@ -108,13 +125,17 @@ export class BattleList extends WidgetBase<HTMLDivElement>
 
     private setup_dom()
     {
-        this.container.id  = "battlelist";
-        this.topspace.id   = "battletopspace";
-        this.tablediv.id   = "battletablediv";
-        this.table.id      = "battletable";
-        this.header.id     = "battleheader";
-        this.lowerspace.id = "battlelowerspace";
-        this.controllerdiv.id = "battlecontrollerdiv";
+        this.container.id        = "battlelist";
+        this.topspace.id         = "battletopspace";
+        this.tablediv.id         = "battletablediv";
+        this.table.id            = "battletable";
+        this.header.id           = "battleheader";
+        this.lowerspace.id       = "battlelowerspace";
+        this.createbtn.className = "controllerbtn";
+        this.createbtn.id        = "createbutton";
+        this.controllerdiv.id    = "battlecontrollerdiv";
+
+        this.createbtn.innerHTML = "Host Battle"
 
         this.add_header("Battle Name");
         this.add_header("Players");
@@ -131,7 +152,8 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.tablediv.appendChild(this.table);
         this.container.appendChild(this.tablediv);
 
-        this.container.appendChild(this.lowerspace)
+        this.container.appendChild(this.lowerspace);
+        this.container.appendChild(this.createbtn);
         this.container.appendChild(this.controllerdiv);
     }
 
@@ -143,9 +165,9 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.header.appendChild(h);
     }
 
-    public create_battle(): BattleWidget
+    public create_battle(): BattleListRowWidget
     {
-        let battle = new BattleWidget(this.table);
+        let battle = new BattleListRowWidget(this.table);
 
         this.update();
         this.tbody.appendChild(battle.inner());
@@ -172,19 +194,36 @@ export class BattleList extends WidgetBase<HTMLDivElement>
             idx++;
         }
     }
+
+    private setup_wiring()
+    {
+        for (let row in this.table.rows)
+        {
+
+        }
+    }
 }
 
 class BattleController extends WidgetBase<HTMLDivElement>
 {
-    private nothing_img: HTMLDivElement;
-    private join_btn: HTMLButtonElement;
+    private logodiv: HTMLDivElement;
+    private logo: SVGSVGElement;
+
+    private widget: BattleListInfoWidget;
+
 
     constructor(parent: HTMLDivElement)
     {
         super(parent, document.createElement("div"));
-        this.nothing_img = document.createElement("div");
 
-        this.join_btn = document.createElement("button");
+        this.logodiv = document.createElement("div");
+        this.logodiv.innerHTML = fs.readFileSync(
+            path.join(__dirname, `../../../../../icons/spring.svg`),
+            {encoding: "UTF8"}
+        );
+        this.logo = this.logodiv.getElementsByTagName("svg")[0];
+
+        this.widget = new BattleListInfoWidget(this.container);
 
         this.setup_dom();
         this.show();
@@ -192,11 +231,68 @@ class BattleController extends WidgetBase<HTMLDivElement>
 
     private setup_dom()
     {
-        this.join_btn.className = "controllerbtn";
-        this.join_btn.innerHTML = "Join";
-        this.container.id = "battlecontroller";
-        this.nothing_img.id = "nothingimg";
 
-        this.container.appendChild(this.nothing_img);
+        this.container.id = "battlecontroller";
+        this.logodiv.id = "nothingimgdiv";
+
+        this.container.appendChild(this.logodiv);
+    }
+
+    public display_battle()
+    {
+
     }
 }
+
+export class BattleListInfoWidget extends WidgetBase<HTMLDivElement>
+{
+    private infodiv: HTMLDivElement
+    private mappreview: HTMLDivElement;
+    private info: HTMLDivElement;
+
+    private join_btn: HTMLButtonElement;
+
+    constructor(parent: HTMLDivElement)
+    {
+        super(parent, document.createElement("div"), { mode: "flex" })
+
+        this.infodiv    = document.createElement("div");
+        this.mappreview = document.createElement("div");
+        this.info       = document.createElement("div");
+
+        this.join_btn = document.createElement("button");
+
+        this.setup_dom();
+    }
+
+    private setup_dom()
+    {
+        this.infodiv.id = "infowidgetinfodiv";
+        this.info.id = "infowidgetinfo";
+        this.mappreview.id = "infowidgetmap";
+
+        this.join_btn.className = "controllerbtn";
+        this.join_btn.innerHTML = "Join";
+
+        this.infodiv.appendChild(this.info);
+        this.infodiv.appendChild(this.mappreview);
+
+        this.container.appendChild(this.infodiv);
+        this.container.appendChild(this.join_btn);
+    }
+
+    public set map(path: string) {
+        let uri = `./maps/${path?.toLowerCase()}.png`;
+
+        this.mappreview.style.backgroundImage = uri;
+        this.mappreview.style.backgroundSize = `100% 100%`;
+    }
+}
+
+
+// mapname
+// winning condition
+// language?
+// unit cap
+// description
+// rank

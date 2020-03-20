@@ -80,7 +80,7 @@ export class UberServer
 
             if (rep)
             {
-                console.info(`[server][<] ${Command[rep.command]}`);
+                console.debug(`[server][<] ${Command[rep.command]}`);
                 this.on_incoming(rep);
             }
         }

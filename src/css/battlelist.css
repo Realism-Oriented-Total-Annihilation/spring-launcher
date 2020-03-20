@@ -76,6 +76,11 @@
     background-color: rgb(24, 24, 24);
 }
 
+.tr-even:hover
+{
+    background-color: rgb(14, 119, 82);
+}
+
 .tr-odd
 {
     color: white;
@@ -85,6 +90,11 @@
 
     /* background-color: rgba(22, 130, 92, 0.459); */
     background-color: rgb(37, 37, 38);
+}
+
+.tr-odd:hover
+{
+    background-color: rgb(14, 119, 82);
 }
 
 #battlecontrollerdiv
@@ -114,11 +124,11 @@
 .controllerbtn
 {
     height: 35px;
-    width:  80%;
+    width:  120px;
 
     border-radius: 7px;
     font-size:     18px;
-    margin-left:   10%;
+    /* margin-left:   10%; */
 
     color: white;
 
@@ -126,16 +136,57 @@
     border-color:     rgb(22, 130, 93);
 }
 
-#nothingimg
+#createbutton
 {
-    background-image: url(../icons/spring.svg);
-    background-size:  100% 100%;
+    position: fixed;
+
+    right:  2%;
+    bottom: 215px;
+}
+
+#nothingimgdiv
+{
     width:            100px;
     height:           100px;
     position:         fixed;
     bottom:           50px;
     left:             calc(50% - 50px);
 
-    fill:   rgba(255, 255, 255, .4);
-    stroke: rgba(255, 255, 255, .4);
+    stroke: rgba(255, 255, 255, 0.199);
+    fill: none;
 }
+
+#nothingimgdiv > svg
+{
+    flex: auto;
+
+    width:  100%;
+    height: 100%;
+}
+
+#infowidgetinfodiv
+{
+    overflow: auto;
+}
+
+#infowidgetinfo
+{
+    height: 80%;
+    width: 65%;
+    right: 2%;
+    bottom: 10%;
+
+    background-color: rgb(37, 37, 38);
+}
+
+#infowidgetmap
+{
+    height: 80%;
+    width:  25%;
+
+    left: 2%;
+    bottom: 10%;
+}
+
+
+

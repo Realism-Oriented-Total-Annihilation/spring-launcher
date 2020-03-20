@@ -4,7 +4,8 @@
 import { sl } from "../../renderer";
 
 import { User } from "./user";
-import { BattleWidget } from "../gui/mainwindow/content/tabs/battlelist";
+
+import { BattleListRowWidget } from "../gui/mainwindow/content/tabs/battlelist";
 
 
 export class Battle
@@ -21,7 +22,12 @@ export class Battle
 
     public readonly players: Map<string, User>;
 
-    private widget: BattleWidget;
+    private battlelist_row:  BattleListRowWidget;
+    // private battlelist_info: BattleListInfoWidget;
+
+    // private battleroom_widget: BattleRoomWidget;
+    // private battleroom_map:      BattleRoomMapWidget;
+    // private battleroom_settings: BattleRoomSettingsWidget;
 
     public constructor(title: string, id: string, founder: string, maxplayers: string, passworded: string, rank: string, map: string, game: string)
     {
@@ -36,7 +42,7 @@ export class Battle
 
         this.players = new Map();
 
-        this.widget = sl.gui.create_battle();
+        this.battlelist_row = sl.gui.create_battle();
 
         this.update();
     }
@@ -60,11 +66,11 @@ export class Battle
 
     private update()
     {
-        this.widget.title   = this.title;
-        this.widget.players = `${this.players.size}/${this.maxplayers}`;
-        this.widget.game    = this.game;
-        this.widget.map     = this.map;
-        this.widget.founder = this.founder;
-        this.widget.country = sl.backend.players.get(this.founder)?.country;
+        this.battlelist_row.title   = this.title;
+        this.battlelist_row.players = `${this.players.size}/${this.maxplayers}`;
+        this.battlelist_row.game    = this.game;
+        this.battlelist_row.map     = this.map;
+        this.battlelist_row.founder = this.founder;
+        this.battlelist_row.country = sl.backend.players.get(this.founder)?.country;
     }
 }
