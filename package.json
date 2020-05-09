@@ -9,12 +9,12 @@
     "watch": "gulp watch"
   },
   "devDependencies": {
-    "@types/crypto-js": "^3.1.43",
-    "electron": "~8",
+    "@types/crypto-js": "^3.1.45",
+    "electron": "^8.2.5",
     "gulp": "~4",
     "gulp-sourcemaps": "~2",
     "gulp-typescript": "~5",
-    "typescript": "~3"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
     "crypto-js": "^4.0.0"
