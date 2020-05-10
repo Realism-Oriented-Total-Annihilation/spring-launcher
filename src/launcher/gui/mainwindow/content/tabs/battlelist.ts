@@ -5,6 +5,7 @@ import * as fs   from "fs";
 import * as path from "path";
 
 import { WidgetBase } from "../../../../common/widget";
+import { VizEvents } from "../../../../backend/uberserver/events";
 
 
 export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
@@ -61,7 +62,8 @@ export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
         this.column_founder.innerText = founder;
     }
 
-    public set country(country: string | undefined) {
+    public set country(country: string | undefined)
+    {
         let uri = `./flags/${country?.toLowerCase()}.png`;
 
         this.column_country.style.width          = "60px";
@@ -85,7 +87,6 @@ export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
 
 export class BattleList extends WidgetBase<HTMLDivElement>
 {
-
     private topspace: HTMLDivElement;
 
     private tablediv: HTMLDivElement;
@@ -101,17 +102,19 @@ export class BattleList extends WidgetBase<HTMLDivElement>
     private controllerdiv: HTMLDivElement;
     private controller: BattleController;
 
+    private events = VizEvents.instance();
+
     constructor(parent: HTMLDivElement)
     {
         super(parent, document.createElement("div"));
 
-        this.topspace   = document.createElement("div");
+        this.topspace = document.createElement("div");
 
-        this.tablediv   = document.createElement("div");
-        this.thead = document.createElement("thead");
-        this.table = document.createElement("table");
-        this.tbody  = document.createElement("tbody");
-        this.header = document.createElement("tr");
+        this.tablediv = document.createElement("div");
+        this.thead    = document.createElement("thead");
+        this.table    = document.createElement("table");
+        this.tbody    = document.createElement("tbody");
+        this.header   = document.createElement("tr");
 
         this.lowerspace = document.createElement("div");
 
@@ -155,12 +158,14 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.container.appendChild(this.lowerspace);
         this.container.appendChild(this.createbtn);
         this.container.appendChild(this.controllerdiv);
+
+        this.setup_wiring();
     }
 
     private add_header(name: string)
     {
-        let h          = document.createElement("th");
-        h.innerText    = name;
+        let h       = document.createElement("th");
+        h.innerText = name;
 
         this.header.appendChild(h);
     }
@@ -197,6 +202,10 @@ export class BattleList extends WidgetBase<HTMLDivElement>
 
     private setup_wiring()
     {
+        this.createbtn.addEventListener("click", () => {
+            this.events.emit("newbattle", {})
+        })
+
         for (let row in this.table.rows)
         {
 
@@ -231,9 +240,8 @@ class BattleController extends WidgetBase<HTMLDivElement>
 
     private setup_dom()
     {
-
         this.container.id = "battlecontroller";
-        this.logodiv.id = "nothingimgdiv";
+        this.logodiv.id   = "nothingimgdiv";
 
         this.container.appendChild(this.logodiv);
     }
@@ -267,8 +275,8 @@ export class BattleListInfoWidget extends WidgetBase<HTMLDivElement>
 
     private setup_dom()
     {
-        this.infodiv.id = "infowidgetinfodiv";
-        this.info.id = "infowidgetinfo";
+        this.infodiv.id    = "infowidgetinfodiv";
+        this.info.id       = "infowidgetinfo";
         this.mappreview.id = "infowidgetmap";
 
         this.join_btn.className = "controllerbtn";
@@ -285,7 +293,7 @@ export class BattleListInfoWidget extends WidgetBase<HTMLDivElement>
         let uri = `./maps/${path?.toLowerCase()}.png`;
 
         this.mappreview.style.backgroundImage = uri;
-        this.mappreview.style.backgroundSize = `100% 100%`;
+        this.mappreview.style.backgroundSize  = `100% 100%`;
     }
 }
 

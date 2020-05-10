@@ -3,7 +3,8 @@
 //
 import { Socket } from "net";
 
-import { UberEvents } from "./events";
+// import { UberEvents } from "./events";
+
 
 import { PtclBuffer } from "./handling/buffer";
 

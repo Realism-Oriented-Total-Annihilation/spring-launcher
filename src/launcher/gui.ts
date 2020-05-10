@@ -40,7 +40,9 @@ export class Gui
     public on_acceptterms: (code?: string)                               => void = () => {};
     public on_msgsend:     (msg: string)                                 => void = () => {};
 
-    constructor()
+    private static _instance: Gui;
+
+    private constructor()
     {
         this.window = <HTMLDivElement>document.getElementById("content");
 
@@ -48,6 +50,15 @@ export class Gui
         this.main  = new MainWindow(this.window);
 
         this._mode = GuiMode.StartLogin;
+    }
+
+    public static instance(): Gui
+    {
+        if (!Gui._instance) {
+            Gui._instance = new Gui();
+        }
+
+        return Gui._instance;
     }
 
     public create_user(): UserWidget

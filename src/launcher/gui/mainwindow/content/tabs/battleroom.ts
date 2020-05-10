@@ -2,6 +2,7 @@
 //
 //
 import { WidgetBase } from "../../../../common/widget";
+import { VizEvents, ListenerHandle } from "../../../../backend/uberserver/events";
 
 
 export class BattleRoom extends WidgetBase<HTMLDivElement>
@@ -11,6 +12,10 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
     private matchchat:    MatchChat;
 
     private matchinfo:    MatchInfo;
+
+    private events = VizEvents.instance();
+
+    private handle_add_battle: ListenerHandle;
 
     constructor(parent: HTMLDivElement)
     {
@@ -24,6 +29,8 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
 
         this.matchinfo = new MatchInfo(this.container);
 
+        this.handle_add_battle = <any>null;
+
         this.setup_dom();
     }
 
@@ -32,6 +39,19 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
         this.players_chat.id = "battleroom_leftdiv";
         this.container.id    = "battleroom";
     }
+
+    private setup_registring()
+    {
+        this.handle_add_battle = this.events.register("newbattle", ({}) => {
+            // functionality
+        })
+    }
+
+    private setup_listening()
+    {
+        this.handle_add_battle.listen();
+    }
+
 
     public show()
     {

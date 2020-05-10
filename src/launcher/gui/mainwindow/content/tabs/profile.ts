@@ -31,14 +31,14 @@ export class Profile extends WidgetBase<HTMLDivElement>
         this.container.style.height = "100%";
     }
 
-    // public create_profile()
-    // {
-    //     let profile = new ProfileWidget(this.container);
+    public create_profile()
+    {
+        let profile = new ProfileWidget(this.container);
 
-    //     this.update();
+        this.update();
 
-    //     return profile
-    // }
+        return profile
+    }
 
     private update()
     {

@@ -26,12 +26,23 @@ export class Backend
     public players: Map<UserId,   User>;
     public battles: Map<BattleId, Battle>;
 
-    constructor()
+    private static _instance: Backend;
+
+    private constructor()
     {
         this.server = <any>null;
 
         this.players   = new Map();
         this.battles = new Map();
+    }
+
+    public static instance(): Backend
+    {
+        if (!Backend._instance) {
+            Backend._instance = new Backend();
+        }
+
+        return Backend._instance;
     }
 
     public mode(mode: BackendMode)

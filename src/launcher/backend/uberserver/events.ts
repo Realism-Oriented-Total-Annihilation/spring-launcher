@@ -6,30 +6,78 @@ import { EventEmitter } from "events";
 
 import { Command } from "./cmds";
 
-
-export class UberEvents
+// string => listener/emitter argument types
+interface VizEventTypes
 {
-    private _bus: EventEmitter;
+    "newbattle": {};
+}
 
-    public constructor()
+
+export class ListenerHandle
+{
+    private emitter: EventEmitter;
+
+    private key:      string;
+    private listener: (...args: any[]) => void;
+
+    constructor(emitter: EventEmitter, key: string, listener: (...args: any[]) => void)
     {
-        this._bus = new EventEmitter();
+        this.emitter = emitter;
+
+        this.key      = key;
+        this.listener = listener;
     }
 
-    public emit(cmd: Command, ...args: any[]): UberEvents
+    public listen(): void
     {
-        this._bus.emit(Command[cmd], ...args);
-
-        return this;
+        this.emitter.addListener(this.key, this.listener);
     }
 
-    public on(cmd: Command, listener: (...args: any[]) => void)
+    public pause(): void
     {
-        this._bus.on(Command[cmd], listener);
+        this.remove();
     }
 
-    public once(cmd: Command, listener: (...args: any[]) => void)
+    public resume(): void
     {
-        this._bus.once(Command[cmd], listener);
+        this.listen();
+    }
+
+    public remove(): void
+    {
+        this.emitter.removeListener(this.key, this.listener);
     }
 }
+
+
+export class VizEvents
+{
+    private emitter: EventEmitter;
+
+    private static _instance: VizEvents;
+
+    private constructor()
+    {
+        this.emitter = new EventEmitter();
+    }
+
+    public static instance(): VizEvents
+    {
+        if (!VizEvents._instance) {
+            VizEvents._instance = new this();
+        }
+
+        return VizEvents._instance;
+    }
+
+    public emit<K extends keyof VizEventTypes>(key: K, args: VizEventTypes[K]): void {
+        this.emitter.emit(key, args)
+    }
+
+    public register<K extends keyof VizEventTypes>(key: K, listener: (args: VizEventTypes[K]) => void): ListenerHandle
+    {
+        let handle = new ListenerHandle(this.emitter, key, listener);
+        return handle;
+    }
+}
+

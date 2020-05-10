@@ -2,7 +2,7 @@
 // ChatTab bottom bar
 //
 import { WidgetBase } from "../../../../../common/widget";
-import { sl } from "../../../../../../renderer";
+// import { sl } from "../../../../../../renderer";
 
 
 export class ChatBar extends WidgetBase<HTMLDivElement>

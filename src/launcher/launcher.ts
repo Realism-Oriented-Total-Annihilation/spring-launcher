@@ -13,22 +13,30 @@ import { BackendMode } from "./backend";
 export class Launcher
 {
     public gui:     Gui;
-    // public chat:    Chat;
     public backend: Backend;
+    // public chat:    Chat;
+    private static _instance: Launcher
 
-    constructor()
+    private constructor()
     {
-        this.gui     = <any>null;
-        this.backend = <any>null;
-    }
-
-    public run()
-    {
-        this.gui     = new Gui();
-        this.backend = new Backend();
+        this.gui     = Gui.instance();
+        this.backend = Backend.instance();
 
         this.switch_online();
     }
+
+    public static instance(): Launcher
+    {
+        if (!Launcher._instance) {
+            Launcher._instance = new Launcher()
+        }
+
+        return Launcher._instance;
+    }
+    // public run()
+    // {
+    //     // this.backend = new Backend();
+    // }
 
     public switch_online()
     {
