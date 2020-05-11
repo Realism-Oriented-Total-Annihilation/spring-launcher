@@ -5,7 +5,7 @@ import * as fs   from "fs";
 import * as path from "path";
 
 import { WidgetBase } from "../../../../common/widget";
-import { VizEvents } from "../../../../backend/uberserver/events";
+import { GuiEvents } from "../../../../backend/uberserver/events";
 
 
 export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
@@ -102,7 +102,7 @@ export class BattleList extends WidgetBase<HTMLDivElement>
     private controllerdiv: HTMLDivElement;
     private controller: BattleController;
 
-    private events = VizEvents.instance();
+    private events = GuiEvents.instance();
 
     constructor(parent: HTMLDivElement)
     {

@@ -7,7 +7,7 @@ import { EventEmitter } from "events";
 import { Command } from "./cmds";
 
 // string => listener/emitter argument types
-interface VizEventTypes
+interface GuiEventTypes
 {
     "newbattle": {};
 }
@@ -50,31 +50,31 @@ export class ListenerHandle
 }
 
 
-export class VizEvents
+export class GuiEvents
 {
     private emitter: EventEmitter;
 
-    private static _instance: VizEvents;
+    private static _instance: GuiEvents;
 
     private constructor()
     {
         this.emitter = new EventEmitter();
     }
 
-    public static instance(): VizEvents
+    public static instance(): GuiEvents
     {
-        if (!VizEvents._instance) {
-            VizEvents._instance = new this();
+        if (!GuiEvents._instance) {
+            GuiEvents._instance = new this();
         }
 
-        return VizEvents._instance;
+        return GuiEvents._instance;
     }
 
-    public emit<K extends keyof VizEventTypes>(key: K, args: VizEventTypes[K]): void {
+    public emit<K extends keyof GuiEventTypes>(key: K, args: GuiEventTypes[K]): void {
         this.emitter.emit(key, args)
     }
 
-    public register<K extends keyof VizEventTypes>(key: K, listener: (args: VizEventTypes[K]) => void): ListenerHandle
+    public register<K extends keyof GuiEventTypes>(key: K, listener: (args: GuiEventTypes[K]) => void): ListenerHandle
     {
         let handle = new ListenerHandle(this.emitter, key, listener);
         return handle;

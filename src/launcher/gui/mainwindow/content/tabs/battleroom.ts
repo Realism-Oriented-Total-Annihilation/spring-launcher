@@ -2,7 +2,9 @@
 //
 //
 import { WidgetBase } from "../../../../common/widget";
-import { VizEvents, ListenerHandle } from "../../../../backend/uberserver/events";
+
+import { GuiEvents }      from "../../../../backend/uberserver/events";
+import { ListenerHandle } from "../../../../backend/uberserver/events";
 
 
 export class BattleRoom extends WidgetBase<HTMLDivElement>
@@ -13,7 +15,7 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
 
     private matchinfo:    MatchInfo;
 
-    private events = VizEvents.instance();
+    private events = GuiEvents.instance();
 
     private handle_add_battle: ListenerHandle;
 
