@@ -201,14 +201,14 @@ class PlayerWidget extends WidgetBase<HTMLTableRowElement>
         this.td_color.style.backgroundColor = `${color}`;
     }
 
-    public set faction(fac: "arm" | "noe" | "?")
+    public set faction(fac: "arm" | "core" | "?")
     {
         switch (fac) {
             case "arm":
                 this.td_faction.id = "armpic";
                 break;
 
-            case "noe":
+            case "core":
                 this.td_faction.id = "armpic";
                 break;
 
