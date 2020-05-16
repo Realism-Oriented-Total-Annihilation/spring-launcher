@@ -3,7 +3,7 @@
 //
 import { WidgetBase } from "../../../../common/widget";
 import { sl } from "../../../../../renderer";
-import { User } from "../../../../model/user";
+import { User } from "../../../../delme_model/user";
 
 
 export class Profile extends WidgetBase<HTMLDivElement>

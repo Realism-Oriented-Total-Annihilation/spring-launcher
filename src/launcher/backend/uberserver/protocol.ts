@@ -1,35 +1,52 @@
 //
 // Uber Lobby Server (Online / WAN Games)
 //
-import { UberServer } from "./uberserver/server";
+import { UberServer } from "./server";
 
-import { sl } from "../../renderer";
+import { GuiMode } from "../../gui/gui";
 
-import { GuiMode } from "../gui";
+import { Command }  from "./cmds";
+import { Response } from "./incoming/response";
 
-import { Command }  from "./uberserver/cmds";
-import { Response } from "./uberserver/reps/response";
+import { ReqPing }       from "./outgoing/misc";
+import { ReqLogin }      from "./outgoing/login";
+import { ReqRegister }   from "./outgoing/login";
+import { ReqConfirmAgreement } from "./outgoing/login";
+import { RepAddUser, RepBattleOpened, RepJoinedBattle, RepLeftBattle, RepClientStatus } from "./incoming/misc";
 
-import { ReqPing }       from "./uberserver/reqs/misc";
-import { ReqLogin }      from "./uberserver/reqs/login";
-import { ReqRegister }   from "./uberserver/reqs/login";
-import { ReqConfirmAgreement } from "./uberserver/reqs/login";
-import { RepAddUser, RepBattleOpened, RepJoinedBattle, RepLeftBattle, RepClientStatus } from "./uberserver/reps/misc";
-import { User } from "../model/user";
-import { Battle } from "../model/battle";
+import { User }     from "../../delme_model/user";
+import { Battle }   from "../../delme_model/battle";
+import { Backend }  from "../backend";
 
 
-export class UberBackend
+export class UberProtocol
 {
+    private backend: Backend;
+
     private server: UberServer;
 
     private tmp_creds?: {user: string, passwd: string};
 
-    constructor(host: string, port: number)
+    constructor(backend: Backend, host: string, port: number)
     {
+        this.backend = backend;
+
         this.server = new UberServer(host, port);
 
+        this.setup_listeners();
         this.setup_wiring();
+    }
+
+    public disconnect()
+    {
+        // TODO
+    }
+
+    private setup_listeners()
+    {
+        this.backend.register("connection.params", (params) => { this.process_connection_parameters(params); });
+
+        this.backend.emit("backend.ready");
     }
 
     private ping()
@@ -53,19 +70,19 @@ export class UberBackend
         this.server.request(new ReqConfirmAgreement(code));
     }
 
-    private handle_accepted(username: string)
+    private process_accepted(username: string)
     {
         sl.gui.mode(GuiMode.MainBattleList);
         require('electron').remote.getCurrentWindow().maximize();
     }
 
-    private handle_denied(username: string)
+    private process_denied(username: string)
     {
         sl.gui.mode(GuiMode.StartLogin);
         sl.gui.error("Invalid username or password");
     }
 
-    private handle_registration_accepted()
+    private process_registration_accepted()
     {
         if (this.tmp_creds)
         {
@@ -74,23 +91,23 @@ export class UberBackend
         }
     }
 
-    private handle_registration_denied(reason: string)
+    private process_registration_denied(reason: string)
     {
         sl.gui.mode(GuiMode.StartRegister);
         sl.gui.error(reason);
     }
 
-    private handle_confirm_agreement(terms: string)
+    private process_confirm_agreement(terms: string)
     {
         sl.gui.mode(GuiMode.StartTerms);
     }
 
-    private handle_pong()
+    private process_pong()
     {
         // NOOP
     }
 
-    private handle_add_user(_user: RepAddUser)
+    private process_add_user(_user: RepAddUser)
     {
         let user = new User(
             _user.userid,
@@ -102,7 +119,7 @@ export class UberBackend
         sl.backend.players.set(user.name, user);
     }
 
-    private handle_add_battle(_battle: RepBattleOpened)
+    private process_add_battle(_battle: RepBattleOpened)
     {
         let battle = new Battle(
             _battle.title,
@@ -118,7 +135,7 @@ export class UberBackend
         sl.backend.battles.set(_battle.battleid, battle);
     }
 
-    private handle_joined_battle(info: RepJoinedBattle)
+    private process_joined_battle(info: RepJoinedBattle)
     {
         let battle = sl.backend.battles.get(info.battleid);
         let user   = sl.backend.players.get(info.username);
@@ -136,7 +153,7 @@ export class UberBackend
         battle.joined(user);
     }
 
-    private handle_left_battle(info: RepLeftBattle)
+    private process_left_battle(info: RepLeftBattle)
     {
         let battle = sl.backend.battles.get(info.battleid);
         let user   = sl.backend.players.get(info.username);
@@ -154,7 +171,7 @@ export class UberBackend
         battle.left(user);
     }
 
-    private handle_client_status(status: RepClientStatus)
+    private process_client_status(status: RepClientStatus)
     {
         let user = sl.backend.players.get(status.username);
 
@@ -173,27 +190,27 @@ export class UberBackend
         user.update();
     }
 
-    private handle(rep: Response): void
+    private process(rep: Response): void
     {
         switch (rep.command)
         {
-            case Command.ACCEPTED:             this.handle_accepted(rep.username); break;
-            case Command.DENIED:               this.handle_denied(rep.reason); break;
-            case Command.REGISTRATIONACCEPTED: this.handle_registration_accepted(); break;
-            case Command.REGISTRATIONDENIED:   this.handle_registration_denied(rep.reason); break;
-            case Command.AGREEMENT:            this.handle_confirm_agreement(rep.terms); break;
-            case Command.PONG:                 this.handle_pong(); break;
-            case Command.ADDUSER:              this.handle_add_user(rep); break;
-            case Command.BATTLEOPENED:         this.handle_add_battle(rep); break;
-            case Command.JOINEDBATTLE:         this.handle_joined_battle(rep); break;
-            case Command.LEFTBATTLE:           this.handle_left_battle(rep); break;
-            case Command.CLIENTSTATUS:         this.handle_client_status(rep); break;
+            case Command.ACCEPTED:             this.process_accepted(rep.username); break;
+            case Command.DENIED:               this.process_denied(rep.reason); break;
+            case Command.REGISTRATIONACCEPTED: this.process_registration_accepted(); break;
+            case Command.REGISTRATIONDENIED:   this.process_registration_denied(rep.reason); break;
+            case Command.AGREEMENT:            this.process_confirm_agreement(rep.terms); break;
+            case Command.PONG:                 this.process_pong(); break;
+            case Command.ADDUSER:              this.process_add_user(rep); break;
+            case Command.BATTLEOPENED:         this.process_add_battle(rep); break;
+            case Command.JOINEDBATTLE:         this.process_joined_battle(rep); break;
+            case Command.LEFTBATTLE:           this.process_left_battle(rep); break;
+            case Command.CLIENTSTATUS:         this.process_client_status(rep); break;
         }
     }
 
     private setup_wiring()
     {
-        this.server.on_incoming = (rep) => { this.handle(rep); } ;
+        this.server.on_incoming = (rep) => { this.process(rep); } ;
 
         sl.gui.on_login       = (user, passwd)        => { this.login(user, passwd); };
         sl.gui.on_register    = (user, passwd, email) => { this.register(user, passwd, email); };

@@ -3,7 +3,7 @@
 //
 import { WidgetBase } from "../../common/widget";
 
-import { GuiMode } from "../../gui";
+import { GuiMode } from "../gui";
 
 import { FormSelector } from "./selector";
 import { FormLogin }    from "./login";

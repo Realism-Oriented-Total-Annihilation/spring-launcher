@@ -8,13 +8,13 @@ import { Socket } from "net";
 
 import { PtclBuffer } from "./handling/buffer";
 
-import { IRequest }  from "./reqs/request";
-import { parse }     from "./reps/response";
-import { Response }  from "./reps/response";
+import { IRequest }  from "./outgoing/request";
+import { parse }     from "./incoming/response";
+import { Response }  from "./incoming/response";
 
 import { Command }  from "./cmds";
 
-import { ReqPing } from "./reqs/misc";
+import { ReqPing } from "./outgoing/misc";
 
 
 export class UberServer
@@ -25,23 +25,20 @@ export class UberServer
     private timer:  NodeJS.Timeout;
     private buffer: PtclBuffer;
 
-    // protected commands: UberEvents;
-    protected timeout:  number;
+    protected timeout: number;
 
     public constructor(host: string, port: number, timeout?: number)
     {
-        this.sock     = new Socket();
-        this.buffer   = new PtclBuffer();
-        // this.commands = new UberEvents();
+        this.sock   = new Socket();
+        this.buffer = new PtclBuffer();
 
         this.timeout = timeout ? timeout : 5000;
+        this.timer   = this.reset_timer();
 
         this.setup_socket();
         this.setup_wiring();
 
         this.sock.connect(port, host);
-
-        this.timer = this.reset_timer();
     }
 
     public addr_local(): string

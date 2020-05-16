@@ -5,7 +5,7 @@ import { WidgetBase } from "../../../common/widget";
 
 import { TabContainer } from "./container";
 import { Tab } from "./tab";
-import { GuiMode } from "../../../gui";
+import { GuiMode } from "../../gui";
 
 
 export class Menu extends WidgetBase<HTMLDivElement>

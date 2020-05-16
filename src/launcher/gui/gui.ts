@@ -2,11 +2,11 @@
 // Graphical User Interface
 //
 
-import { StartWindow }  from "./gui/start/mod";
-import { MainWindow } from "./gui/mainwindow/mainwindow";
-import { BattleListRowWidget } from "./gui/mainwindow/content/tabs/battlelist";
-import { UserWidget } from "./gui/mainwindow/content/tabs/chat/players";
-import { ProfileWidget } from "./gui/mainwindow/content/tabs/profile";
+import { StartWindow }  from "./start/mod";
+import { MainWindow } from "./mainwindow/mainwindow";
+import { BattleListRowWidget } from "./mainwindow/content/tabs/battlelist";
+import { UserWidget } from "./mainwindow/content/tabs/chat/players";
+import { ProfileWidget } from "./mainwindow/content/tabs/profile";
 
 
 export enum GuiMode

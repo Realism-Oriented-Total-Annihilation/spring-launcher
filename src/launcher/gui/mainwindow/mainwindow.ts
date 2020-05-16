@@ -7,7 +7,7 @@ import { Menu }    from "./menu/menu";
 import { Content } from "./content/content";
 // import { Chat }    from "./chat/chat";
 // import { ChatBar } from "./chat/bar";
-import { GuiMode } from "../../gui";
+import { GuiMode } from "../gui";
 
 
 export class MainWindow extends WidgetBase<HTMLDivElement>
