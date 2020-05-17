@@ -14,6 +14,8 @@ export interface BackendEvents
     "register": OnlineRegistrationCredentials;
     "accept":   OnlineTermsAndConditions;
 
+    "disconnect": {};
+
     // backend signals
     "backend.ready": {};
 

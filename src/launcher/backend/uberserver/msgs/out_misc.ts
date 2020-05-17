@@ -1,12 +1,12 @@
 //
 // Ping/...
 //
-import { IRequest } from "./request";
+import { IOutbound } from "./out";
 
 import { Command } from "../cmds";
 
 
-export class ReqPing extends IRequest
+export class OutPing extends IOutbound
 {
     public readonly command = Command.PING;
 
@@ -16,7 +16,7 @@ export class ReqPing extends IRequest
     }
 }
 
-export class ReqMyStatus extends IRequest
+export class OutMyStatus extends IOutbound
 {
     public readonly command = Command.MYSTATUS;
 

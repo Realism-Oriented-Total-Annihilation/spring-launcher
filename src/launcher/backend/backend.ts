@@ -44,7 +44,7 @@ export class Backend
     private handle_modeswitch(mode: OnlineMode | OfflineMode)
     {
         if (this.server != null) {
-            this.server.disconnect();
+            this.emit("disconnect", {});
         }
 
         switch (mode.mode)

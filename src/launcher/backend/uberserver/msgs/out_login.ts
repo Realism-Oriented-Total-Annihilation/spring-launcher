@@ -1,5 +1,5 @@
 //
-// Login/Registration/Terms Requests
+// Login/Registration/Terms Outuests
 //
 import * as crypto from "crypto-js";
 
@@ -7,10 +7,10 @@ var md5    = crypto.MD5;
 var base64 = crypto.enc.Base64;
 
 import { Command }  from "../cmds";
-import { IRequest } from "./request";
+import { IOutbound } from "./out";
 
 
-export class ReqLogin extends IRequest
+export class OutLogin extends IOutbound
 {
     public readonly command = Command.LOGIN;
 
@@ -37,7 +37,7 @@ export class ReqLogin extends IRequest
 }
 
 
-export class ReqRegister extends IRequest
+export class OutRegister extends IOutbound
 {
     public readonly command = Command.REGISTER;
 
@@ -60,7 +60,7 @@ export class ReqRegister extends IRequest
 }
 
 
-export class ReqConfirmAgreement extends IRequest
+export class OutConfirmAgreement extends IOutbound
 {
     public readonly command = Command.CONFIRMAGREEMENT;
 

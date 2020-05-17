@@ -1,13 +1,13 @@
 //
 // Login/Registration/Terms Responses
 //
-import { IResponse } from "./response";
+import { IInbound } from "./in";
 
 import { Command } from "../cmds";
 import { PtclLine } from "../handling/line";
 
 
-export class RepAccepted implements IResponse
+export class InAccepted implements IInbound
 {
     public readonly command = Command.ACCEPTED;
 
@@ -21,7 +21,7 @@ export class RepAccepted implements IResponse
 }
 
 
-export class RepDenied implements IResponse
+export class InDenied implements IInbound
 {
     public readonly command = Command.DENIED;
 
@@ -34,13 +34,13 @@ export class RepDenied implements IResponse
 }
 
 
-export class RepRegistrationAccepted implements IResponse
+export class InRegistrationAccepted implements IInbound
 {
     public readonly command = Command.REGISTRATIONACCEPTED;
 }
 
 
-export class RepRegistrationDenied implements IResponse
+export class InRegistrationDenied implements IInbound
 {
     public readonly command = Command.REGISTRATIONDENIED;
 
@@ -53,7 +53,7 @@ export class RepRegistrationDenied implements IResponse
 }
 
 
-export class RepAgreement implements IResponse
+export class InAgreement implements IInbound
 {
     public readonly command = Command.AGREEMENT;
 

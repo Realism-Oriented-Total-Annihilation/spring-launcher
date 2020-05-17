@@ -1,18 +1,18 @@
 //
 // Pong/...
 //
-import { IResponse } from "./response";
+import { IInbound } from "./in";
 
 import { Command } from "../cmds";
 import { PtclLine } from "../handling/line";
 
 
-export class RepPong implements IResponse
+export class InPong implements IInbound
 {
     public readonly command = Command.PONG;
 }
 
-export class RepAddUser implements IResponse
+export class InAddUser implements IInbound
 {
     public readonly command = Command.ADDUSER;
 
@@ -30,7 +30,7 @@ export class RepAddUser implements IResponse
     }
 }
 
-export class RepBattleOpened implements IResponse
+export class InBattleOpened implements IInbound
 {
     public readonly command = Command.BATTLEOPENED;
 
@@ -73,7 +73,7 @@ export class RepBattleOpened implements IResponse
 }
 
 
-export class RepJoinedBattle implements IResponse
+export class InJoinedBattle implements IInbound
 {
     public readonly command = Command.JOINEDBATTLE;
 
@@ -90,7 +90,7 @@ export class RepJoinedBattle implements IResponse
 }
 
 
-export class RepLeftBattle implements IResponse
+export class InLeftBattle implements IInbound
 {
     public readonly command = Command.LEFTBATTLE;
 
@@ -105,7 +105,7 @@ export class RepLeftBattle implements IResponse
 }
 
 
-export class RepClientStatus implements IResponse
+export class InClientStatus implements IInbound
 {
     public readonly command = Command.CLIENTSTATUS;
 
@@ -134,17 +134,6 @@ export class RepClientStatus implements IResponse
         this.bot          = status & (1 << 6) ? true : false;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 // b0 = in game (0 - normal, 1 - in game)

@@ -74,7 +74,7 @@ gulp.task(TASK_SVG,  task_copy_svg);
 gulp.task(TASK_PNG,  task_copy_png);
 gulp.task(TASK_TS,   task_transpile_typescript);
 
-gulp.task("all", gulp.parallel(TASK_ALL));
+gulp.task("build", gulp.parallel(TASK_ALL));
 
 gulp.task(TASK_WATCH_HTML, function(done) { gulp.watch(GLOB_HTML, {ignoreInitial: false}, task_copy_html);            done(); })
 gulp.task(TASK_WATCH_CSS,  function(done) { gulp.watch(GLOB_CSS,  {ignoreInitial: false}, task_copy_css);             done(); })

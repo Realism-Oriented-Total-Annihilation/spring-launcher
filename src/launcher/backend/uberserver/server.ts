@@ -3,50 +3,22 @@
 //
 import { Socket } from "net";
 
-// import { UberEvents } from "./events";
-
-
 import { PtclBuffer } from "./handling/buffer";
 
-import { IRequest }  from "./outgoing/request";
-import { parse }     from "./incoming/response";
-import { Response }  from "./incoming/response";
+import { Command } from "./cmds";
 
-import { Command }  from "./cmds";
-
-import { ReqPing } from "./outgoing/misc";
+import { Inbound }   from "./msgs/in";
+import { IOutbound } from "./msgs/out";
 
 
-export class UberServer
+export class UberSocket
 {
-    public on_incoming: (rep: Response) => void = () => {};
+    public handle_inbound: (msg: Inbound) => void = () => {};
 
-    private sock:   Socket;
-    private timer:  NodeJS.Timeout;
-    private buffer: PtclBuffer;
+    public  socket: Socket     = new Socket();
+    private buffer: PtclBuffer = new PtclBuffer();
 
-    protected timeout: number;
-
-    public constructor(host: string, port: number, timeout?: number)
-    {
-        this.sock   = new Socket();
-        this.buffer = new PtclBuffer();
-
-        this.timeout = timeout ? timeout : 5000;
-        this.timer   = this.reset_timer();
-
-        this.setup_socket();
-        this.setup_wiring();
-
-        this.sock.connect(port, host);
-    }
-
-    public addr_local(): string
-    {
-        return this.sock.localAddress;
-    }
-
-    public request(cmd: IRequest)
+    public handle_outbound(cmd: IOutbound)
     {
         let raw = Command[cmd.command];
 
@@ -62,60 +34,17 @@ export class UberServer
 
         raw += "\n";
 
-        this.sock.write(raw);
-        this.reset_timer();
+        this.socket.write(raw);
     }
 
-    private recv(data: string)
+    public socket_receive(data: string)
     {
         this.buffer.append(data);
 
-        let lines = this.buffer.lines();
-
-        for (let line of lines)
+        for (let msg of this.buffer.parse())
         {
-            let rep = parse(line);
-
-            if (rep)
-            {
-                console.debug(`[server][<] ${Command[rep.command]}`);
-                this.on_incoming(rep);
-            }
+            console.debug(`[server][<] ${Command[msg.command]}`);
+            this.handle_inbound(msg);
         }
-    }
-
-    private setup_socket()
-    {
-        this.sock.setEncoding("utf8");
-    }
-
-    private setup_wiring()
-    {
-        this.sock.addListener("ready", () => {
-            this.setup_events();
-            this.reset_timer();
-        });
-
-        this.sock.addListener("data", (data: string) => {
-            this.recv(data);
-        });
-    }
-
-    private setup_events()
-    {
-        this.sock.addListener("close", () => { /* NOOP */ });
-        this.sock.addListener("error", () => { /* NOOP */ });
-    }
-
-    private reset_timer(): NodeJS.Timeout
-    {
-        clearInterval(this.timer);
-
-        this.timer = setInterval(
-            () => { this.request(new ReqPing()); },
-            30000
-        );
-
-        return this.timer;
     }
 }

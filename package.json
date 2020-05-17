@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "start": "electron .",
+    "build": "gulp build",
     "watch": "gulp watch"
   },
   "devDependencies": {

@@ -4,7 +4,7 @@
 import { Command } from "../cmds";
 
 
-export abstract class IRequest
+export abstract class IOutbound
 {
     public abstract readonly command: Command;
 
