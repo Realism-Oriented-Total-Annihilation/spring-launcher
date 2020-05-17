@@ -8,12 +8,11 @@ import { Download } from "./tabs/download";
 import { Profile } from "./tabs/profile";
 import { Settings } from "./tabs/settings";
 import { Chat } from "./tabs/chat/chat";
+import { MainWindow } from "../mainwindow";
 
 
 export class Content extends WidgetBase<HTMLDivElement>
 {
-    private parent: HTMLElement;
-
     public battlelist:  BattleList;
     public battleroom:  BattleRoom;
     public download:    Download;
@@ -21,12 +20,14 @@ export class Content extends WidgetBase<HTMLDivElement>
     public settings:    Settings;
     public chat:        Chat;
 
-    constructor(parent: HTMLElement)
-    {
-        super(parent, document.createElement("div"), { mode: "flex" })
-        this.parent = parent;
+    private static _instance: Content;
 
-        this.battlelist  = new BattleList(this.container);
+    // private constructor(parent: HTMLElement)
+    private constructor()
+    {
+        super(document.createElement("div"), { mode: "flex" })
+
+        this.battlelist  = BattleList.instance();
         this.battleroom  = new BattleRoom(this.container);
         this.download    = new Download(this.container);
         this.profile     = new Profile(this.container);
@@ -36,10 +37,25 @@ export class Content extends WidgetBase<HTMLDivElement>
         this.setup_dom();
     }
 
+    public static instance()
+    {
+        if (!Content._instance)
+        {
+            Content._instance = new Content()
+        }
+
+        return Content._instance
+    }
+
+    public append<T extends Node>(item: T)
+    {
+        this.container.appendChild(item)
+    }
+
     private setup_dom()
     {
         this.container.id = "content-container";
-        this.parent.appendChild(this.container);
+        MainWindow.instance().inner().appendChild(this.container);
     }
 
     private hideall()

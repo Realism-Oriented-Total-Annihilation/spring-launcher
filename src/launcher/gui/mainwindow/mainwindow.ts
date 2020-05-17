@@ -5,8 +5,6 @@ import { WidgetBase } from "../../common/widget";
 
 import { Menu }    from "./menu/menu";
 import { Content } from "./content/content";
-// import { Chat }    from "./chat/chat";
-// import { ChatBar } from "./chat/bar";
 import { GuiMode } from "../gui";
 
 
@@ -15,28 +13,32 @@ export class MainWindow extends WidgetBase<HTMLDivElement>
     public menu:    Menu;
     public content: Content;
 
-    // private chat:    Chat;
-    // private chatbar: ChatBar;
+    private static _instance: MainWindow;
 
-    constructor(parent: HTMLElement)
-    {
-        super(parent, document.createElement("div"), { mode: "flex" })
+    private constructor()
+        {
+        super(document.createElement("div"), { mode: "flex" })
 
         this.menu    = new Menu(this.container);
-        this.content = new Content(this.container);
-        // this.chat    = new Chat(this.container);
-        // this.chatbar = new ChatBar(this.container);
+        this.content = Content.instance();
 
         this.setup_dom();
         this.setup_wiring();
+    }
+
+    public static instance(): MainWindow
+    {
+        if (!MainWindow._instance) {
+            MainWindow._instance = new MainWindow()
+        }
+
+        return MainWindow._instance;
     }
 
     public show()
     {
         this.menu?.show();
         this.content?.show();
-        // this.chat?.show();
-        // this.chatbar?.show();
 
         super.show();
     }
@@ -45,8 +47,6 @@ export class MainWindow extends WidgetBase<HTMLDivElement>
     {
         this.menu?.hide();
         this.content?.hide();
-        // this.chat?.hide();
-        // this.chatbar?.hide();
 
         super.hide();
     }

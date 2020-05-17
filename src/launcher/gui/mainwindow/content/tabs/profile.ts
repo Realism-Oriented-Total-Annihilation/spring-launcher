@@ -2,7 +2,7 @@
 //
 //
 import { WidgetBase } from "../../../../common/widget";
-import { sl } from "../../../../../renderer";
+import { sl }   from "../../../../../renderer";
 import { User } from "../../../../delme_model/user";
 
 

@@ -11,14 +11,12 @@ interface WidgetBaseOptions
 
 export class WidgetBase<E extends HTMLElement>
 {
-    private _parent: HTMLElement;
     private _mode:   string;
 
     protected container: E;
 
-    constructor(parent: HTMLElement, self: E, options?: WidgetBaseOptions)
+    constructor(self: E, options?: WidgetBaseOptions)
     {
-        this._parent    = parent;
         this.container = self;
 
         if (options?.mode) {
@@ -28,8 +26,6 @@ export class WidgetBase<E extends HTMLElement>
         }
 
         this.hide();
-
-        this._parent.appendChild(this.container);
     }
 
     public show()
@@ -40,5 +36,10 @@ export class WidgetBase<E extends HTMLElement>
     public hide()
     {
         this.container.style.display = "none";
+    }
+
+    public inner(): E
+    {
+        return this.container;
     }
 }

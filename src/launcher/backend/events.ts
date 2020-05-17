@@ -2,6 +2,8 @@
 // Event Interface for Backend Interaction
 //
 
+import { BattleListRowWidget } from "../gui/mainwindow/content/tabs/battlelist";
+
 
 export interface BackendEvents
 {
@@ -23,6 +25,11 @@ export interface BackendEvents
     "backend.registration.conditions": {terms: string};
     "backend.registration.success":    {};
     "backend.registration.failure":    {error: string};
+}
+
+export interface BattleListEvents
+{
+    "battle.selected": {battle: BattleListRowWidget};
 }
 
 

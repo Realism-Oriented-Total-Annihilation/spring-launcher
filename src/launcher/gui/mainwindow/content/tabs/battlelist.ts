@@ -4,14 +4,17 @@
 import * as fs   from "fs";
 import * as path from "path";
 
+import { mixin } from "../../../../../common/mixin";
+
 import { WidgetBase } from "../../../../common/widget";
 import { GuiEvents } from "../../../../backend/uberserver/events";
+import { Content } from "../content";
+import { Events } from "../../../../../common/events";
+import { BattleListEvents } from "../../../../backend/events";
 
 
 export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
 {
-    public on_battle_selected: (battle: BattleListRowWidget) => void = () => {};
-
     private column_name:    HTMLTableDataCellElement;
     private column_players: HTMLTableDataCellElement;
     private column_game:    HTMLTableDataCellElement;
@@ -19,9 +22,11 @@ export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
     private column_founder: HTMLTableDataCellElement;
     private column_country: HTMLTableDataCellElement;
 
-    constructor(parent: HTMLTableElement)
+    private events = BattleList.instance()
+
+    constructor()
     {
-        super(parent, document.createElement("tr"), { mode: "table-row" });
+        super(document.createElement("tr"), { mode: "table-row" });
 
         this.column_name    = document.createElement("td");
         this.column_players = document.createElement("td");
@@ -71,15 +76,10 @@ export class BattleListRowWidget extends WidgetBase<HTMLTableRowElement>
         this.column_country.style.backgroundSize = `100% 100%`;
     }
 
-    public inner(): HTMLTableRowElement
-    {
-        return this.container;
-    }
-
     private setup_dom()
     {
         this.container.addEventListener("click", () => {
-            this.on_battle_selected(this);
+            this.events.emit("battle.selected", {battle: this});
         })
     }
 }
@@ -102,11 +102,13 @@ export class BattleList extends WidgetBase<HTMLDivElement>
     private controllerdiv: HTMLDivElement;
     private controller: BattleController;
 
+    private static _instance: BattleList;
+
     private events = GuiEvents.instance();
 
-    constructor(parent: HTMLDivElement)
+    private constructor()
     {
-        super(parent, document.createElement("div"));
+        super(document.createElement("div"));
 
         this.topspace = document.createElement("div");
 
@@ -121,9 +123,22 @@ export class BattleList extends WidgetBase<HTMLDivElement>
         this.createbtn = document.createElement("button");
 
         this.controllerdiv = document.createElement("div");
-        this.controller = new BattleController(this.controllerdiv);
+        this.controller = new BattleController();
+
+        this.controllerdiv.appendChild(this.controller.inner());
+
+        Content.instance().append(this.container);
 
         this.setup_dom();
+    }
+
+    public static instance(): BattleList
+    {
+        if (!BattleList._instance) {
+            BattleList._instance = new BattleList()
+        }
+
+        return BattleList._instance;
     }
 
     private setup_dom()
@@ -172,11 +187,12 @@ export class BattleList extends WidgetBase<HTMLDivElement>
 
     public create_battle(): BattleListRowWidget
     {
-        let battle = new BattleListRowWidget(this.table);
+        let battle = new BattleListRowWidget();
 
         this.update();
         this.tbody.appendChild(battle.inner());
 
+        this.table.appendChild(battle.inner());
         return battle;
     }
 
@@ -221,9 +237,9 @@ class BattleController extends WidgetBase<HTMLDivElement>
     private widget: BattleListInfoWidget;
 
 
-    constructor(parent: HTMLDivElement)
+    constructor()
     {
-        super(parent, document.createElement("div"));
+        super(document.createElement("div"));
 
         this.logodiv = document.createElement("div");
         this.logodiv.innerHTML = fs.readFileSync(
@@ -232,7 +248,9 @@ class BattleController extends WidgetBase<HTMLDivElement>
         );
         this.logo = this.logodiv.getElementsByTagName("svg")[0];
 
-        this.widget = new BattleListInfoWidget(this.container);
+        this.widget = new BattleListInfoWidget();
+
+        this.container.appendChild(this.widget.inner());
 
         this.setup_dom();
         this.show();
@@ -260,9 +278,9 @@ export class BattleListInfoWidget extends WidgetBase<HTMLDivElement>
 
     private join_btn: HTMLButtonElement;
 
-    constructor(parent: HTMLDivElement)
+    constructor()
     {
-        super(parent, document.createElement("div"), { mode: "flex" })
+        super(document.createElement("div"), { mode: "flex" })
 
         this.infodiv    = document.createElement("div");
         this.mappreview = document.createElement("div");
@@ -296,6 +314,10 @@ export class BattleListInfoWidget extends WidgetBase<HTMLDivElement>
         this.mappreview.style.backgroundSize  = `100% 100%`;
     }
 }
+
+export interface BattleList extends Events<BattleListEvents> {};
+
+mixin(BattleList, [new Events<BattleListEvents>()]);
 
 
 // mapname

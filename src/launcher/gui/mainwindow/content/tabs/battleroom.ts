@@ -19,17 +19,16 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
 
     private handle_add_battle: ListenerHandle;
 
-    constructor(parent: HTMLDivElement)
+    constructor()
     {
-        super(parent, document.createElement("div"), { mode: "flex" });
+        super(document.createElement("div"), { mode: "flex" });
 
         this.players_chat = document.createElement("div");
 
-        this.matchplayers = new MatchPlayers(this.players_chat);
-        this.matchchat    = new MatchChat(this.players_chat);
-        this.container.appendChild(this.players_chat);
+        this.matchplayers = new MatchPlayers();
+        this.matchchat    = new MatchChat();
 
-        this.matchinfo = new MatchInfo(this.container);
+        this.matchinfo = new MatchInfo();
 
         this.handle_add_battle = <any>null;
 
@@ -40,6 +39,12 @@ export class BattleRoom extends WidgetBase<HTMLDivElement>
     {
         this.players_chat.id = "battleroom_leftdiv";
         this.container.id    = "battleroom";
+
+        this.players_chat.appendChild(this.matchplayers.inner());
+        this.players_chat.appendChild(this.matchchat.inner());
+
+        this.container.appendChild(this.matchinfo.inner());
+        this.container.appendChild(this.players_chat);
     }
 
     private setup_registring()
@@ -68,9 +73,9 @@ export class BattleroomSettingsWidget extends WidgetBase<HTMLDivElement>
 {
     // private max_units: HTMLDivElement;
 
-    constructor(parent: HTMLDivElement)
+    constructor()
     {
-        super(parent, document.createElement("div"))
+        super(document.createElement("div"))
 
         this.setup_dom();
     }
@@ -91,9 +96,9 @@ class PlayerWidget extends WidgetBase<HTMLTableRowElement>
     public td_team:     HTMLTableDataCellElement;
     public td_country:  HTMLTableDataCellElement;
 
-    constructor(parent: HTMLTableSectionElement)
+    constructor()
     {
-        super(parent, document.createElement("tr"))
+        super(document.createElement("tr"))
 
         this.td_ready    = document.createElement("td");
         this.td_color    = document.createElement("td");
@@ -235,9 +240,9 @@ class MatchPlayers extends WidgetBase<HTMLTableElement>
     private thead: HTMLTableSectionElement;
     private tbody: HTMLTableSectionElement;
 
-    constructor(parent: HTMLDivElement)
+    constructor()
     {
-        super(parent, document.createElement("table"))
+        super(document.createElement("table"))
 
         this.thead = document.createElement("thead");
         this.tbody = document.createElement("tbody");
@@ -252,7 +257,9 @@ class MatchPlayers extends WidgetBase<HTMLTableElement>
 
     public create_player()
     {
-        new PlayerWidget(this.tbody);
+        let player = new PlayerWidget();
+
+        this.tbody.appendChild(player.inner());
         this.update();
     }
 
@@ -321,9 +328,9 @@ class MatchInfo extends WidgetBase<HTMLDivElement>
     private map:        HTMLDivElement;
     private parameters: HTMLDivElement;
 
-    constructor(parent: HTMLDivElement)
+    constructor()
     {
-        super(parent, document.createElement("div"), { mode: "flex" });
+        super(document.createElement("div"), { mode: "flex" });
 
         this.map        = document.createElement("div");
         this.parameters = document.createElement("div");
@@ -350,9 +357,9 @@ export class MatchChat extends WidgetBase<HTMLDivElement>
     private textarea:  HTMLTextAreaElement;
     private sendbtn:   HTMLButtonElement;
 
-    constructor(parent: HTMLDivElement)
+    constructor()
     {
-        super(parent, document.createElement("div"), { mode: "flex" })
+        super(document.createElement("div"), { mode: "flex" })
 
         this.chatfield = document.createElement("div");
         this.inputbar  = document.createElement("div");
